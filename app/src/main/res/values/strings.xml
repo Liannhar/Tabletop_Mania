@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">TabletopApplication</string>
+
+    <string name="arrow_back_description">Arrow back</string>
+    <string name="download">Download</string>
+    <string name="image_material">Image Material</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="dotted_line">DottedLine</string>
+    <string name="example_title">Title</string>
+    <string name="example_description">Description</string>
 </resources>
