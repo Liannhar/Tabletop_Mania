@@ -30,6 +30,6 @@ class CMRecyclerAdapter(private val listMaterials:List<Materials>):RecyclerView.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.nameTextView.text=listMaterials[position].name
         holder.descriptionTextView.text=listMaterials[position].description
-        Glide.with(holder.image.context).load(listMaterials[position].image).into(holder.image)
+        holder.image.setImageResource(listMaterials[position].image)
     }
 }
