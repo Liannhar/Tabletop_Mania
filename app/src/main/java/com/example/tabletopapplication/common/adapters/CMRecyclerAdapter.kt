@@ -5,46 +5,69 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.common.Material
 
 class CMRecyclerAdapter(
-    private val listMaterials: ArrayList<Material> = arrayListOf()
+    private val materials: ArrayList<Material> = arrayListOf(),
+    private val editMode: Boolean = false
 ) : RecyclerView.Adapter<CMRecyclerAdapter.ViewHolder>() {
 
-    class ViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
-        val nameTextView: TextView = itemView.findViewById(R.id.tv_name_text_card_material)
-        val descriptionTextView: TextView = itemView.findViewById(R.id.tv_description_text_card_material)
-        val image: ImageView = itemview.findViewById(R.id.iv_card_material)
+    class ViewHolder(
+        itemView: View,
+        private val adapter: CMRecyclerAdapter
+    ) : RecyclerView.ViewHolder(itemView) {
+        private val nameTextView: TextView = itemView.findViewById(R.id.card_material__name)
+        private val descriptionTextView: TextView = itemView.findViewById(R.id.card_material__description)
+        private val image: ImageView = itemView.findViewById(R.id.card_material__image)
+        private val deleteButton: CardView = itemView.findViewById(R.id.card_material__delete_button)
+
+        fun bind(material: Material, editMode: Boolean) {
+            nameTextView.text = material.name
+            descriptionTextView.text = material.description
+            image.setImageResource(material.image)
+            deleteButton.isVisible = editMode
+
+            deleteButton.setOnClickListener {
+                adapter.removeMaterial(material)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_material, parent, false)
-        return ViewHolder(itemView)
+        return ViewHolder(itemView, this)
     }
 
     override fun getItemCount(): Int {
-        return listMaterials.size
+        return materials.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.nameTextView.text = listMaterials[position].name
-        holder.descriptionTextView.text = listMaterials[position].description
-        Glide.with(holder.image.context)
-            .load(listMaterials[position].image)
-            .into(holder.image)
+        holder.bind(materials[position], editMode)
     }
 
     fun addMaterial(material: Material) {
-        listMaterials.add(material)
-        notifyItemChanged(listMaterials.size - 1)
+        materials.add(material)
+        notifyItemChanged(materials.size - 1)
     }
 
     fun addListMaterials(materials: List<Material>) {
-        listMaterials.addAll(materials)
-        notifyItemRangeChanged(listMaterials.size - materials.size, materials.size)
+        this.materials.addAll(materials)
+        notifyItemRangeChanged(this.materials.size - materials.size, materials.size)
+    }
+
+    fun removeMaterialAt(position: Int) {
+        materials.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun removeMaterial(material: Material) {
+        val position = materials.indexOf(material)
+        removeMaterialAt(position)
     }
 }

@@ -9,4 +9,9 @@
     <string name="dotted_line">DottedLine</string>
     <string name="example_title">Title</string>
     <string name="example_description">Description</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="remove">Remove</string>
+    <string name="gameedit">GameEdit</string>
+    <string name="add">Add</string>
 </resources>

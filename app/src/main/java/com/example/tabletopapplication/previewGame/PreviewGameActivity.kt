@@ -11,7 +11,7 @@ import com.example.tabletopapplication.common.Game
 import com.example.tabletopapplication.common.Material
 import com.example.tabletopapplication.common.adapters.CMRecyclerAdapter
 
-class GamePreviewActivity: AppCompatActivity(R.layout.activity_preview_game) {
+class PreviewGameActivity: AppCompatActivity(R.layout.activity_preview_game) {
 
     private lateinit var game: Game
     private lateinit var CMRadapter: CMRecyclerAdapter
@@ -32,7 +32,7 @@ class GamePreviewActivity: AppCompatActivity(R.layout.activity_preview_game) {
         )
 
         CMRadapter = CMRecyclerAdapter()
-        findViewById<RecyclerView>(R.id.activity_preview_game_rv).apply {
+        findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = CMRadapter
         }
@@ -41,13 +41,13 @@ class GamePreviewActivity: AppCompatActivity(R.layout.activity_preview_game) {
     }
 
     private fun setGameProperties(game: Game) {
-        findViewById<ImageView>(R.id.activity_preview_game_image).apply {
+        findViewById<ImageView>(R.id.activity_preview_game__image).apply {
             setImageResource(game.image)
         }
-        findViewById<TextView>(R.id.activity_preview_game_title).apply {
+        findViewById<TextView>(R.id.activity_preview_game__title).apply {
             text = game.title
         }
-        findViewById<TextView>(R.id.activity_preview_game_description).apply {
+        findViewById<TextView>(R.id.activity_preview_game__description).apply {
             text = game.description
         }
 

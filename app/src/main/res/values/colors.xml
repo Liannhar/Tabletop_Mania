@@ -12,4 +12,5 @@
     <color name="primary_color_app">#FF238FAD</color>
     <color name="second_color_app">#FF43E0CE</color>
     <color name="third_color_app">#FF25567A</color>
+    <color name="delete_color">#FFF03233</color>
 </resources>
