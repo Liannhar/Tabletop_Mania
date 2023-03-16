@@ -11,7 +11,7 @@ import com.example.tabletopapplication.common.Game
 import com.example.tabletopapplication.common.Material
 import com.example.tabletopapplication.common.adapters.CMRecyclerAdapter
 
-class PreviewGameActivity: AppCompatActivity(R.layout.activity_preview_game) {
+class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
     private lateinit var game: Game
     private lateinit var CMRadapter: CMRecyclerAdapter
@@ -24,7 +24,8 @@ class PreviewGameActivity: AppCompatActivity(R.layout.activity_preview_game) {
             game = arguments.getSerializable("Game") as Game
 
         // Test data
-        game = Game("Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes,
+        game = Game(
+            "Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes,
             arrayListOf(
                 Material("Material1", "Description1", R.drawable.cubes),
                 Material("Material2", "Description2", R.drawable.cubes),

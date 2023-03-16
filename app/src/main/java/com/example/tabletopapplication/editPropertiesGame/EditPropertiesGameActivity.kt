@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.common.Game
 
-class EditPropertiesGameActivity: AppCompatActivity(R.layout.activity_edit_properties_game) {
+class EditPropertiesGameActivity : AppCompatActivity(R.layout.activity_edit_properties_game) {
 
     private lateinit var game: Game
 
