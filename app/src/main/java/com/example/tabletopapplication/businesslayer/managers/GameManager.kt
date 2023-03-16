@@ -10,7 +10,7 @@ class  GameManager {
         provider.getGames { result, error ->
             when {
 
-                result != null -> callback(result.map(GameMapper::map), null)
+                result != null -> callback(result, null)
 
                 error != null -> callback(null, error)
             }

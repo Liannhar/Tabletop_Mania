@@ -8,14 +8,15 @@
 
 
     <FrameLayout
-android:layout_marginTop="8dp"
+            android:layout_marginTop="8dp"
+         app:layout_constraintTop_toBottomOf="@+id/my_games_back"
             android:id="@+id/recycler_host"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/my_games_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            />
+
+ />
 
     <ImageView
             android:layout_width="wrap_content"
@@ -48,6 +49,13 @@ android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout="@layout/fragment_navbar" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_end="56dp"
+            android:id="@+id/guideline" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

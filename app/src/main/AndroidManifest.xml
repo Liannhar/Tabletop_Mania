@@ -22,7 +22,7 @@
         </activity>
         <activity
                 android:name=".ChooseMaterial.ChooseMaterialActivity"
-                android:exported="true">
+               >
         </activity>
     </application>
 

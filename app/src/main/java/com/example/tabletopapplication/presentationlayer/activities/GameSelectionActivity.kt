@@ -19,7 +19,7 @@ class GameSelectionActivity : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.fragmentContainerView, NavBarFragment.newInstance(), NavBarFragment.TAG)
                 .replace(R.id.recycler_host, GameListFragment.newInstance(), GameListFragment.TAG)
-                .commitNow()
+                .commit()
         }
     }
 }
