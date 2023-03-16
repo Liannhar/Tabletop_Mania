@@ -38,7 +38,8 @@
             app:cardBackgroundColor="@color/delete_color"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:cardCornerRadius="50dp">
+            app:cardCornerRadius="50dp"
+            android:visibility="invisible">
 
             <ImageView
                 android:layout_width="match_parent"

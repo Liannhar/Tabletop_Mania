@@ -39,25 +39,33 @@
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
-        <androidx.cardview.widget.CardView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:cardCornerRadius="@dimen/image_corner_radius_card_material"
-            android:layout_margin="10dp">
+            android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/activity_preview_game__image"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@color/black"
-                android:contentDescription="@string/image_material" />
+                android:layout_margin="10dp"
+                app:cardCornerRadius="@dimen/image_corner_radius_card_material">
 
-        </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/activity_preview_game__image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/black"
+                    android:contentDescription="@string/image_material" />
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical"
             android:layout_weight="1">
 
@@ -70,8 +78,8 @@
                 android:text="@string/example_title"
                 android:textSize="25sp"
                 android:textColor="@color/white"
-                android:layout_margin="5dp"
-                tools:ignore="NestedWeights" />
+                tools:ignore="NestedWeights"
+                android:layout_margin="5dp" />
 
             <TextView
                 android:id="@+id/activity_preview_game__description"
@@ -107,7 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Materials:"
+            android:text="@string/materials"
             android:textSize="30sp"
             android:textColor="@color/third_color_app" />
 

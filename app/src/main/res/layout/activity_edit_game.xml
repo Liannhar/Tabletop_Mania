@@ -131,21 +131,26 @@
             android:contentDescription="@string/dotted_line" />
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="200dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/MaterialCardViewStyle"
             app:cardBackgroundColor="@color/second_color_app"
             android:layout_gravity="center"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Materials:"
+                android:text="@string/materials"
                 android:textSize="30sp"
-                android:textColor="@color/third_color_app" />
+                android:textColor="@color/third_color_app"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="5dp"/>
 
         </com.google.android.material.card.MaterialCardView>
 

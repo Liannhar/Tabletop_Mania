@@ -19,6 +19,10 @@ class PreviewGameActivity: AppCompatActivity(R.layout.activity_preview_game) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val arguments = intent.extras
+        if (arguments != null)
+            game = arguments.getSerializable("Game") as Game
+
         // Test data
         game = Game("Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes,
             arrayListOf(
@@ -52,18 +56,5 @@ class PreviewGameActivity: AppCompatActivity(R.layout.activity_preview_game) {
         }
 
         CMRadapter.addListMaterials(game.materials)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putSerializable("Game", game)
-    }
-
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        game = savedInstanceState.getSerializable("Game") as Game
     }
 }
