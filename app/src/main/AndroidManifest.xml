@@ -21,7 +21,7 @@
                     android:value="" />
         </activity>
         <activity
-                android:name=".Dice.DiceSettingsActivity"
+                android:name=".ChooseMaterial.ChooseMaterialActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
