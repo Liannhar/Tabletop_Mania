@@ -4,6 +4,7 @@
     <dimen name="icon_top_panel_width">48dp</dimen>
     <dimen name="icon_top_panel_margin">10dp</dimen>
     <dimen name="image_size_card_material">110dp</dimen>
+
     <dimen name="image_corner_radius_card_material">16dp</dimen>
     <dimen name="image_margin_start_card_material">32dp</dimen>
     <dimen name="text_margin_start">24dp</dimen>
