@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
+import com.example.tabletopapplication.common.Material
+import com.example.tabletopapplication.common.adapters.CMRecyclerAdapter
 
-class ChooseMaterialActivity: AppCompatActivity() {
+class ChooseMaterialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choose_material_activity)
@@ -16,9 +18,10 @@ class ChooseMaterialActivity: AppCompatActivity() {
         recyclerView.adapter = CMRecyclerAdapter(CreateObjects())
     }
 
-    fun CreateObjects():List<Materials>
-    {
-        return listOf(Materials(),Materials("Кубы","Это кубы",R.drawable.cubes),
-        Materials("Заметки","Твои прекрасные заметки",R.drawable.notes))
+    fun CreateObjects(): ArrayList<Material> {
+        return arrayListOf(
+            Material(), Material("Кубы", "Это кубы", R.drawable.cubes),
+            Material("Заметки", "Твои прекрасные заметки", R.drawable.notes)
+        )
     }
 }
