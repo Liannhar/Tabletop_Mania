@@ -1,4 +1,4 @@
-package com.example.tabletopapplication.common.adapters
+package com.example.tabletopapplication.presentationlayer.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +9,16 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.common.Material
+import com.example.tabletopapplication.presentationlayer.models.Material
 
-class CMRecyclerAdapter(
+class MaterialRecyclerAdapter(
     private val materials: ArrayList<Material> = arrayListOf(),
     private val editMode: Boolean = false
-) : RecyclerView.Adapter<CMRecyclerAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MaterialRecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(
         itemView: View,
-        private val adapter: CMRecyclerAdapter
+        private val adapter: MaterialRecyclerAdapter
     ) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.card_material__name)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.card_material__description)

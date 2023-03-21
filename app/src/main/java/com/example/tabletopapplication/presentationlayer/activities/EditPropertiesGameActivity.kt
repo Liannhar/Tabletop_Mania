@@ -1,11 +1,11 @@
-package com.example.tabletopapplication.editPropertiesGame
+package com.example.tabletopapplication.presentationlayer.activities
 
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.common.Game
+import com.example.tabletopapplication.presentationlayer.models.Game
 
 class EditPropertiesGameActivity : AppCompatActivity(R.layout.activity_edit_properties_game) {
 

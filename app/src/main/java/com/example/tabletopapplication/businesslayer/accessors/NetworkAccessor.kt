@@ -5,11 +5,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkAccessor {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.punkapi.com")
+        .baseUrl("http://127.0.0.1:8000/")
         .addConverterFactory(GsonConverterFactory.create())
         .build();
 
-    private val service = retrofit.create(PunkApi::class.java)
+    private val service = retrofit.create(Request::class.java)
 
-    fun requireService(): PunkApi = service
+    fun getService(): Request = service
 }
