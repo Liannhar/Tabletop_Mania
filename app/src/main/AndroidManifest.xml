@@ -14,13 +14,17 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentationlayer.activities.GameSelectionActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+                android:name=".ChooseMaterial.ChooseMaterialActivity"
+               >
         </activity>
     </application>
 
