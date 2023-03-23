@@ -21,6 +21,11 @@ class DiceResultActivity : AppCompatActivity() {
 
         val item = intent.getSerializableExtra("dice")
         val res = findViewById<TextView>(R.id.dice_result_cv_3_text)
-        res.setText("Выпало в сумме: ${item.toString()}")
+        if (item as Int == 12) {
+            res.setText("Выпало в сумме: ${(2..(item as Int)).random().toString()}")
+        }
+        else {
+            res.setText("Выпало в сумме: ${(1..(item as Int)).random().toString()}")
+        }
     }
 }
