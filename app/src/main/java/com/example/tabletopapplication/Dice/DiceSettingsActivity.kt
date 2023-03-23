@@ -1,8 +1,10 @@
 package com.example.tabletopapplication.Dice
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import com.example.tabletopapplication.R
 
@@ -18,6 +20,11 @@ class DiceSettingsActivity : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,dices)
         arrayAdapter.setDropDownViewResource(R.layout.custom_dropdown)
         spinner.adapter = arrayAdapter
+
+        findViewById<Button>(R.id.dice_setting_button).setOnClickListener {
+            val intent = Intent(this, DiceResultActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }

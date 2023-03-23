@@ -14,6 +14,15 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".Dice.DiceResultActivity"
+            android:exported="false"
+            android:label="@string/title_activity_dice_result"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Dice.DiceSettingsActivity"
             android:exported="true">
             <intent-filter>
@@ -22,10 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-                android:name=".ChooseMaterial.ChooseMaterialActivity"
-               >
-        </activity>
+        <activity android:name=".ChooseMaterial.ChooseMaterialActivity" />
     </application>
 
 </manifest>
