@@ -9,4 +9,5 @@
     <dimen name="image_margin_start_card_material">32dp</dimen>
     <dimen name="text_margin_start">24dp</dimen>
     <dimen name="text_margin_end">24dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

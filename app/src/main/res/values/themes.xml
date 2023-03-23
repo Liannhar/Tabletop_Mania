@@ -1,4 +1,4 @@
-<resources >
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.TabletopApplication" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -17,9 +17,19 @@
         <item name="fontFamily">@font/main_font</item>
 
     </style>
+
     <style name="AppTheme.NoActionBar" parent="Theme.TabletopApplication">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="AppTheme.NoActionBar.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
