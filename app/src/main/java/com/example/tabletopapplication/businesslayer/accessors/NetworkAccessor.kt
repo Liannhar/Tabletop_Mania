@@ -5,11 +5,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkAccessor {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://127.0.0.1:8000/")
+        .baseUrl("https://tabletop-mania-api.onrender.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build();
 
     private val service = retrofit.create(Request::class.java)
+
+    fun requireService(): Request = service
 
     fun getService(): Request = service
 }

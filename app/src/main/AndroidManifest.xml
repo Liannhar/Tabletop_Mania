@@ -26,6 +26,11 @@
                 android:name=".presentationlayer.activities.ChooseMaterialActivity"
                >
         </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            tools:replace="android:authorities"
+            android:authorities="${applicationId}.provider"/>
     </application>
+
 
 </manifest>

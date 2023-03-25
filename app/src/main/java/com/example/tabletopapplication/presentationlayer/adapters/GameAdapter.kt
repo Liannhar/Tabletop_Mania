@@ -36,7 +36,8 @@ class GameAdapter: RecyclerView.Adapter<GameAdapter.Holder>() {
         val name = view.findViewById<TextView>(R.id.game_name)
 
         fun bind(item: GameEntity) {
-            Glide.with(image).load(item.image_url).into(image)
+            /*Glide.with(image).load(item.image_url).into(image)*/
+            image.setImageResource(R.drawable.cubes)
             name.text = item.name
         }
     }

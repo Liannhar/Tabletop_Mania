@@ -1,6 +1,7 @@
 package com.example.tabletopapplication.presentationlayer.models
 
 import com.example.tabletopapplication.R
+import com.example.tabletopapplication.businesslayer.models.Material.Material
 
 data class Game(
     val title: String = "Title",

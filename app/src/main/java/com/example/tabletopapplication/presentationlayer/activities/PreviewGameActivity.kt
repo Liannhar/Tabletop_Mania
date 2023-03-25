@@ -8,13 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.models.Game
-import com.example.tabletopapplication.presentationlayer.models.Material
+import com.example.tabletopapplication.businesslayer.models.Material.Material
 import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
+import com.example.tabletopapplication.presentationlayer.adapters.ModelAdapter
+
 
 class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
     private lateinit var game: Game
-    private val materialAdapter = MaterialRecyclerAdapter()
+    private val materialAdapter = ModelAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,14 +29,16 @@ class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
         game = Game(
             "Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes,
             arrayListOf(
-                Material("Material1", "Description1", R.drawable.cubes),
-                Material("Material2", "Description2", R.drawable.cubes),
-                Material("Material3", "Description3", R.drawable.cubes),
-                Material("Material4", "Description4", R.drawable.cubes),
-                Material("Material5", "Description5", R.drawable.cubes),
-                Material("Material6", "Description6", R.drawable.cubes),
+                Material("Material1", "Description1", "A"),
+                Material("Material2", "Description2", "A"),
+                Material("Material3", "Description3", "A"),
+                Material("Material4", "Description4", "A"),
+                Material("Material5", "Description5", "A"),
+                Material("Material6", "Description6", "A"),
             )
         )
+
+        materialAdapter.setItems(game.materials)
 
         findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
             adapter = materialAdapter
@@ -55,6 +59,6 @@ class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
             text = game.description
         }
 
-        materialAdapter.addListMaterials(game.materials)
+        //materialAdapter.addListMaterials(game.materials)
     }
 }

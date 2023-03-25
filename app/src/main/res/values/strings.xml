@@ -20,4 +20,9 @@
     <string name="delete">Delete</string>
     <string name="title">Title</string>
     <string name="materials">Materials:</string>
+    <string name="your_note">You can add your note</string>
+    <string name="h1">H1</string>
+    <string name="h2">H2</string>
+    <string name="h3">H3</string>
+    <string name="b">B</string>
 </resources>

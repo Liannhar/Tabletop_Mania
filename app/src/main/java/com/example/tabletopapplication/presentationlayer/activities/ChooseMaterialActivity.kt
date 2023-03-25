@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.presentationlayer.models.Material
+import com.example.tabletopapplication.businesslayer.models.Material.Material
 import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 
 class ChooseMaterialActivity : AppCompatActivity() {
@@ -20,8 +20,8 @@ class ChooseMaterialActivity : AppCompatActivity() {
 
     fun CreateObjects(): ArrayList<Material> {
         return arrayListOf(
-            Material(), Material("Кубы", "Это кубы", R.drawable.cubes),
-            Material("Заметки", "Твои прекрасные заметки", R.drawable.notes)
+            Material("Кубы", "Это кубы", "A"),
+            Material("Заметки", "Твои прекрасные заметки","A")
         )
     }
 }
