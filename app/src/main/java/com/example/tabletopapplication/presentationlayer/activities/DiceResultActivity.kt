@@ -6,9 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.tabletopapplication.R
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class DiceResultActivity : AppCompatActivity() {
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,13 +24,28 @@ class DiceResultActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val item = intent.getSerializableExtra("dice")
+        lifecycleScope.launch {
+            showAnimation()
+        }
+    }
+
+    private suspend fun showAnimation() {
+        val img = findViewById<ImageView>(R.id.dice_result_pic)
+        Glide.with(this).load(R.drawable.kuban_stub).into(img)
         val res = findViewById<TextView>(R.id.dice_result_cv_3_text)
+        res.text = "Смотрим анимацию."
+        delay(1000)
+        res.text = "Смотрим анимацию.."
+        delay(1000)
+        res.text = "Смотрим анимацию..."
+        delay(1000)
+        Glide.with(this).load(R.drawable.double_dice).into(img)
+        val item = intent.getSerializableExtra("dice")
         if (item as Int == 12) {
-            res.setText("Выпало в сумме: ${(2..(item as Int)).random().toString()}")
+            res.text = "Выпало в сумме: ${(2..(item as Int)).random().toString()}"
         }
         else {
-            res.setText("Выпало в сумме: ${(1..(item as Int)).random().toString()}")
+            res.text = "Выпало в сумме: ${(1..(item as Int)).random().toString()}"
         }
     }
 }

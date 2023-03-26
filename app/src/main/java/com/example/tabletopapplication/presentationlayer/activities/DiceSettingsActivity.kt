@@ -44,6 +44,5 @@ class DiceSettingsActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
-
     }
 }
