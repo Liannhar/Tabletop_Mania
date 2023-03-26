@@ -1,4 +1,4 @@
-package com.example.tabletopapplication.previewGame
+package com.example.tabletopapplication.presentationlayer.activities
 
 import android.os.Bundle
 import android.widget.ImageView
@@ -7,14 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.common.Game
-import com.example.tabletopapplication.common.Material
-import com.example.tabletopapplication.common.adapters.CMRecyclerAdapter
+import com.example.tabletopapplication.presentationlayer.models.Game
+import com.example.tabletopapplication.presentationlayer.models.Material
+import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 
-class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
+class EditGameActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
     private lateinit var game: Game
-    private lateinit var CMRadapter: CMRecyclerAdapter
+    private lateinit var CMRadapter: MaterialRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +36,8 @@ class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
             )
         )
 
-        CMRadapter = CMRecyclerAdapter()
-        findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
+        CMRadapter = MaterialRecyclerAdapter(editMode = true)
+        findViewById<RecyclerView>(R.id.activity_edit_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = CMRadapter
         }
@@ -46,13 +46,13 @@ class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
     }
 
     private fun setGameProperties(game: Game) {
-        findViewById<ImageView>(R.id.activity_preview_game__image).apply {
+        findViewById<ImageView>(R.id.activity_edit_game__image).apply {
             setImageResource(game.image)
         }
-        findViewById<TextView>(R.id.activity_preview_game__title).apply {
+        findViewById<TextView>(R.id.activity_edit_game__title).apply {
             text = game.title
         }
-        findViewById<TextView>(R.id.activity_preview_game__description).apply {
+        findViewById<TextView>(R.id.activity_edit_game__description).apply {
             text = game.description
         }
 

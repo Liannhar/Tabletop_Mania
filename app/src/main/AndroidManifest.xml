@@ -15,7 +15,7 @@
         tools:targetApi="31">
         <!-- Активити реализующее настройку броска кубиков -->
         <activity
-            android:name=".Dice.DiceSettingsActivity"
+            android:name=".presentationlayer.activities.DiceSettingsActivity"
             android:screenOrientation="portrait"
             android:exported="false"
             android:label="@string/title_activity_dice_settings"
@@ -26,7 +26,7 @@
         </activity>
         <!-- Активити реализующее результат броска кубиков -->
         <activity
-            android:name=".Dice.DiceResultActivity"
+            android:name=".presentationlayer.activities.DiceResultActivity"
             android:screenOrientation="portrait"
             android:exported="false"
             android:label="@string/title_activity_dice_result"
@@ -44,8 +44,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Активити выбора материала -->
-        <activity android:name=".ChooseMaterial.ChooseMaterialActivity" />
+
+        <activity
+                android:name=".presentationlayer.activities.ChooseMaterialActivity"
+               >
+        </activity>
     </application>
 
 </manifest>
