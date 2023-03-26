@@ -14,7 +14,7 @@ class GameViewModel: ViewModel() {
 
     fun load() {
         state.postValue(LoadState.Pending())
-        manager.getGame(3) { result, error ->
+        manager.getGame(1) { result, error ->
             when {
                 result != null -> state.postValue(LoadState.Success(result))
                 error != null -> state.postValue(LoadState.Error(error))

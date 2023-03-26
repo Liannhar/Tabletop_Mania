@@ -12,33 +12,46 @@ import com.example.tabletopapplication.R
 import com.example.tabletopapplication.businesslayer.models.GameEntity
 
 @SuppressLint("NotifyDataSetChanged")
-class GameAdapter: RecyclerView.Adapter<GameAdapter.Holder>() {
-    private var items: List<GameEntity> = emptyList()
+class GameAdapter(
+    private var games: ArrayList<GameEntity> = arrayListOf()
+) : RecyclerView.Adapter<GameAdapter.Holder>() {
 
-    fun submitItems(data: List<GameEntity>) {
-        items = data
-        notifyDataSetChanged()
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameAdapter.Holder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.game_element, parent, false)
-
-        return Holder(view)
-    }
-
-    override fun onBindViewHolder(holder: GameAdapter.Holder, position: Int) = holder.bind(items[position])
-
-    override fun getItemCount(): Int = items.size
-
-    inner class Holder(view: View): RecyclerView.ViewHolder(view) {
-         val image by lazy { view.findViewById<ImageView>(R.id.game_img) }
+    class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val name = view.findViewById<TextView>(R.id.game_name)
+        val image = view.findViewById<ImageView>(R.id.game_img)
 
         fun bind(item: GameEntity) {
-            Glide.with(image).load(item.image_url).into(image)
             name.text = item.name
+
+            Glide.with(image)
+                 .load(item.image)
+                 .error(R.drawable.black_rectangle)
+                 .into(image)
         }
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.game_element, parent, false)
+        return Holder(view)
+    }
+
+    override fun onBindViewHolder(holder: Holder, position: Int) =
+        holder.bind(games[position])
+
+    override fun getItemCount(): Int = games.size
+
+    fun submitItems(data: ArrayList<GameEntity>) {
+        games = data
+        notifyDataSetChanged()
+    }
+
+    fun addGame(game: GameEntity) {
+        games.add(game)
+        notifyItemChanged(games.size - 1)
+    }
+
+    fun addListGames(games: List<GameEntity>) {
+        this.games.addAll(games)
+        notifyItemRangeInserted(this.games.size - games.size, games.size)
+    }
 }
