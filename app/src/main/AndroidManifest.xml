@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".presentationlayer.activities.GameSelectionActivity"
+            android:name=".presentationlayer.activities.EditGameActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,10 +26,15 @@
                 android:name=".presentationlayer.activities.ChooseMaterialActivity"
                >
         </activity>
+        <activity
+            android:name=".presentationlayer.activities.NoteActivity"
+            >
+        </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
             tools:replace="android:authorities"
-            android:authorities="${applicationId}.provider"/>
+            android:authorities="${applicationId}.provider"
+            tools:node="remove"/>
     </application>
 
 

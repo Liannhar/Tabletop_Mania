@@ -1,26 +1,26 @@
-package com.example.tabletopapplication.businesslayer.models.Material
+package com.example.tabletopapplication.presentationlayer.models.Note
+
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.tabletopapplication.businesslayer.models.Note.Note
 import com.example.tabletopapplication.businesslayer.models.NotesDao
 
-@Database(entities = arrayOf(Note::class), version = 1, exportSchema = false)
-abstract class MaterialDatabase : RoomDatabase() {
+@Database(entities = [Note::class], version = 1, exportSchema = false)
+abstract class NoteDatabase : RoomDatabase() {
 
     abstract fun getNotesDao(): NotesDao
 
     companion object {
         @Volatile
-        private var INSTANCE: MaterialDatabase? = null
+        private var INSTANCE: NoteDatabase? = null
 
-        fun getDatabase(context: Context): MaterialDatabase {
+        fun getDatabase(context: Context): NoteDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    MaterialDatabase::class.java,
+                    NoteDatabase::class.java,
                     "note_database"
                 ).build()
                 INSTANCE = instance

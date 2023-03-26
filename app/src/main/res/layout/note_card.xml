@@ -18,6 +18,7 @@
         android:textSize="20sp"
         android:background="@color/white"
         android:lines="3"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:focusable="false"/>
 
 </androidx.cardview.widget.CardView>

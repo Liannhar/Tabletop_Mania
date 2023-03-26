@@ -3,23 +3,23 @@ package com.example.tabletopapplication.businesslayer.models
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.tabletopapplication.businesslayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.Note.Note
 
 @Dao
 interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(note : Note)
+    fun insert(note : Note)
 
     @Delete
-    suspend fun delete(note: Note)
+    fun delete(note: Note)
 
     @Update
-    suspend fun update(note: Note)
+    fun update(note: Note)
 
     @Query("Select * from notesTable order by id ASC")
     fun getAllNotes(): LiveData<List<Note>>
 
     @Query("Select * from notesTable Where id=:id")
-    fun getOneNote(id:Int): Note
+    fun getOneNote(id:Int): LiveData<Note>
 }

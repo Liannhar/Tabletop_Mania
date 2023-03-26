@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.models.Game
-import com.example.tabletopapplication.businesslayer.models.Material.Material
-import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.example.tabletopapplication.presentationlayer.adapters.ModelAdapter
 
 
@@ -27,15 +25,7 @@ class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
         // Test data
         game = Game(
-            "Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes,
-            arrayListOf(
-                Material("Material1", "Description1", "A"),
-                Material("Material2", "Description2", "A"),
-                Material("Material3", "Description3", "A"),
-                Material("Material4", "Description4", "A"),
-                Material("Material5", "Description5", "A"),
-                Material("Material6", "Description6", "A"),
-            )
+            "Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes
         )
 
         materialAdapter.setItems(game.materials)
@@ -46,6 +36,7 @@ class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
         }
 
         setGameProperties(game)
+
     }
 
     private fun setGameProperties(game: Game) {

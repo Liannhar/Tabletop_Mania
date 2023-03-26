@@ -1,12 +1,12 @@
-package com.example.tabletopapplication.presentationlayer.models
+package com.example.tabletopapplication.presentationlayer.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.tabletopapplication.businesslayer.models.Note.Note
-import com.example.tabletopapplication.businesslayer.models.Note.NoteDatabase
-import com.example.tabletopapplication.businesslayer.models.Note.NoteRepository
+import com.example.tabletopapplication.presentationlayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.Note.NoteDatabase
+import com.example.tabletopapplication.presentationlayer.models.Note.NoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

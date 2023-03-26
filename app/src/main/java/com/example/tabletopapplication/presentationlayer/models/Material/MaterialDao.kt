@@ -1,20 +1,20 @@
-package com.example.tabletopapplication.businesslayer.models.Material
+package com.example.tabletopapplication.presentationlayer.models.Material
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.tabletopapplication.businesslayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.Note.Note
 
 @Dao
 interface MaterialDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(material: Material)
+    fun insert(material: Material)
 
     @Delete
-    suspend fun delete(material: Material)
+    fun delete(material: Material)
 
     @Update
-    suspend fun update(material: Material)
+    fun update(material: Material)
 
     @Query("Select * from materialsTable order by id ASC")
     fun getAllMaterials(): LiveData<List<Material>>

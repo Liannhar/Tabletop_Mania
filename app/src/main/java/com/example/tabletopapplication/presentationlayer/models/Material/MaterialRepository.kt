@@ -1,7 +1,7 @@
-package com.example.tabletopapplication.businesslayer.models.Material
+package com.example.tabletopapplication.presentationlayer.models.Material
 
 import androidx.lifecycle.LiveData
-import com.example.tabletopapplication.businesslayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.businesslayer.models.NotesDao
 
 class MaterialRepository(private val materialDao: MaterialDao) {
@@ -12,15 +12,15 @@ class MaterialRepository(private val materialDao: MaterialDao) {
         return materialDao.getOneMaterial(id)
     }
 
-    suspend fun insert(material:Material) {
+    suspend fun insert(material: Material) {
         materialDao.insert(material)
     }
 
-    suspend fun delete(material:Material){
+    suspend fun delete(material: Material){
         materialDao.delete(material)
     }
 
-    suspend fun update(material:Material){
+    suspend fun update(material: Material){
         materialDao.update(material)
     }
 }

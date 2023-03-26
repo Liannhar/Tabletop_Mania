@@ -2,17 +2,18 @@ package com.example.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.tabletopapplication.businesslayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.presentationlayer.models.NoteViewModel
-import java.util.*
+import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
+import com.example.tabletopapplication.presentationlayer.models.Material.Material
+import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
 
 class NoteActivity: AppCompatActivity() {
 
@@ -30,8 +31,12 @@ class NoteActivity: AppCompatActivity() {
         )[NoteViewModel::class.java]
 
         val noteId = intent.getIntExtra("idnote",-1)
-        val noteDescription = viewModel.getNote(noteId)
-        noteEdit.setText(noteDescription.noteDescription)
+        val noteObserver = Observer<Note> { data ->
+            val note = data
+            noteEdit.setText(note.noteDescription)
+        }
+        viewModel.getNote(noteId).observe(this,noteObserver)
+
 
         saveButton.setOnClickListener {
             SaveNote(viewModel,noteEdit,noteId)
@@ -55,13 +60,12 @@ class NoteActivity: AppCompatActivity() {
                 }
                 .show()
             }
-            startActivity(Intent(applicationContext, PreviewGameActivity::class.java))
+            startActivity(Intent(applicationContext, EditGameActivity::class.java))
             this.finish()
         }
+    }
 
-        }
-
-    fun SaveNote(viewModel:NoteViewModel,noteEdit:EditText,noteId:Int){
+    fun SaveNote(viewModel: NoteViewModel, noteEdit:EditText, noteId:Int){
         val noteDescription = noteEdit.text.toString()
         val updatedNote = Note(noteDescription)
         updatedNote.id = noteId

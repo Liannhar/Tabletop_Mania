@@ -1,51 +1,77 @@
 package com.example.tabletopapplication.presentationlayer.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.presentationlayer.models.Game
-import com.example.tabletopapplication.businesslayer.models.Material.Material
 import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
+import com.example.tabletopapplication.presentationlayer.models.Game
+import com.example.tabletopapplication.presentationlayer.adapters.ModelAdapter
+import com.example.tabletopapplication.presentationlayer.models.Material.Material
+import com.example.tabletopapplication.presentationlayer.models.Model
+import com.example.tabletopapplication.presentationlayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
 
 class EditGameActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
     private lateinit var game: Game
-    private lateinit var CMRadapter: MaterialRecyclerAdapter
+    private val differentMaterialsadapter = ModelAdapter()
+    private val noteViewModel by lazy{ViewModelProvider(this)[NoteViewModel::class.java]}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val arguments = intent.extras
+        /*val arguments = intent.extras
         if (arguments != null)
             game = arguments.getSerializable("Game") as Game
 
         // Test data
         game = Game(
-            "Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes,
-            arrayListOf(
-                Material("Material1", "Description1", "A"),
-                Material("Material2", "Description2", "A"),
-                Material("Material3", "Description3", "A"),
-                Material("Material4", "Description4", "A"),
-                Material("Material5", "Description5", "A"),
-                Material("Material6", "Description6", "A"),
+            "Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes, arrayListOf(
+                Note("")
             )
-        )
-
-        CMRadapter = MaterialRecyclerAdapter(editMode = true)
+        )*/
         findViewById<RecyclerView>(R.id.activity_edit_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = CMRadapter
+            adapter = differentMaterialsadapter
         }
 
-        setGameProperties(game)
+        //setGameProperties(game)
+
+        val addButton = findViewById<ImageView>(R.id.activity_edit_game__add_button)
+
+        addButton.setOnClickListener {
+            val intent = Intent(this, ChooseMaterialActivity::class.java)
+            startActivity(intent)
+        }
     }
 
-    private fun setGameProperties(game: Game) {
+    override fun onResume() {
+        super.onResume()
+        val id = intent.getIntExtra("idMaterial", -1)
+        Log.i("AAA",id.toString())
+        when (intent.getIntExtra("typoMaterial", -1)) {
+            1 -> {
+                val noteObserver = Observer<Note> { data ->
+
+                    differentMaterialsadapter.setItem(data)
+                }
+                noteViewModel.getNote(id).observe(this,noteObserver)
+            }
+            else -> {}
+        }
+    }
+
+
+
+    /*fun setGameProperties(game: Game) {
         findViewById<ImageView>(R.id.activity_edit_game__image).apply {
             setImageResource(game.image)
         }
@@ -56,6 +82,6 @@ class EditGameActivity : AppCompatActivity(R.layout.activity_edit_game) {
             text = game.description
         }
 
-        CMRadapter.addListMaterials(game.materials)
-    }
+        //CMRadapter.addListMaterials(game.materials)
+    }*/
 }

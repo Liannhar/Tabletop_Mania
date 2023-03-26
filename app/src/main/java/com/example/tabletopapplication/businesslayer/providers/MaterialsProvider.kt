@@ -28,7 +28,7 @@ class MaterialsProvider {
             val result: ArrayList<MaterialEntity> = arrayListOf()
             var error: Throwable? = null
             for (id in listId) {
-                getMaterial(id) { id_result, id_error ->
+                 getMaterial(id) { id_result, id_error ->
                     when {
                         id_result != null -> result.add(id_result)
                         id_error != null -> error = id_error

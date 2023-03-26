@@ -11,7 +11,5 @@ object NetworkAccessor {
 
     private val service = retrofit.create(Request::class.java)
 
-    fun requireService(): Request = service
-
     fun getService(): Request = service
 }

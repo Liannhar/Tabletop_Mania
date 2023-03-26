@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.businesslayer.models.Model
-import com.example.tabletopapplication.businesslayer.models.Note.Note
-import com.example.tabletopapplication.presentationlayer.activities.EditGameActivity
+import com.example.tabletopapplication.presentationlayer.models.Model
+import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.presentationlayer.activities.NoteActivity
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 
