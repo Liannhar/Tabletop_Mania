@@ -29,6 +29,7 @@ class DiceResultActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private suspend fun showAnimation() {
         val img = findViewById<ImageView>(R.id.dice_result_pic)
         Glide.with(this).load(R.drawable.kuban_stub).into(img)
@@ -40,12 +41,12 @@ class DiceResultActivity : AppCompatActivity() {
         res.text = "Смотрим анимацию..."
         delay(1000)
         Glide.with(this).load(R.drawable.double_dice).into(img)
-        val item = intent.getSerializableExtra("dice")
-        if (item as Int == 12) {
-            res.text = "Выпало в сумме: ${(2..(item as Int)).random().toString()}"
+        val item = intent.getIntExtra(DiceConstants.SERIALIZABLE_DICE_NAME, DiceConstants.DEFAULT_FACE_OF_THE_CUBE)
+        if (item == 12) {
+            res.text = "Выпало в сумме: ${(2..item).random()}"
         }
         else {
-            res.text = "Выпало в сумме: ${(1..(item as Int)).random().toString()}"
+            res.text = "Выпало в сумме: ${(1..item).random()}"
         }
     }
 }

@@ -12,15 +12,15 @@ import com.example.tabletopapplication.R
 
 class DiceSettingsActivity : AppCompatActivity() {
 
-    val dices = arrayOf("d6", "d8", "d12", "d100")
-    var selectedDice: Int = 0
+    private val dices = arrayOf("d6", "d8", "d12", "d100")
+    var selectedDice: Int = 6
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings_dice)
 
         val spinner = findViewById<Spinner>(R.id.dice_setting_spinner)
-        val arrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,dices)
+        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,dices)
         arrayAdapter.setDropDownViewResource(R.layout.custom_dropdown)
         spinner.adapter = arrayAdapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -40,7 +40,7 @@ class DiceSettingsActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.dice_setting_button).setOnClickListener {
             val intent = Intent(this, DiceResultActivity::class.java).apply {
-                putExtra("dice", selectedDice)
+                putExtra(DiceConstants.SERIALIZABLE_DICE_NAME, selectedDice)
             }
             startActivity(intent)
         }
