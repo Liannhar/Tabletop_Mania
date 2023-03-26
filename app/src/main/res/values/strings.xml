@@ -20,4 +20,6 @@
     <string name="delete">Delete</string>
     <string name="title">Title</string>
     <string name="materials">Materials:</string>
+    <string name="title_activity_dice_result">DiceResultActivity</string>
+    <string name="title_activity_dice_settings">DiceSettingsActivity</string>
 </resources>

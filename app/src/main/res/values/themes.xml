@@ -1,4 +1,4 @@
-<resources >
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.TabletopApplication" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -15,9 +15,11 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
     </style>
+
     <style name="AppTheme.NoActionBar" parent="Theme.TabletopApplication">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
 </resources>

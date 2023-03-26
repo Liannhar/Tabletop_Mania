@@ -13,15 +13,38 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="31">
+        <!-- Активити реализующее настройку броска кубиков -->
+        <activity
+            android:name=".presentationlayer.activities.DiceSettingsActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:label="@string/title_activity_dice_settings"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <!-- Активити реализующее результат броска кубиков -->
+        <activity
+            android:name=".presentationlayer.activities.DiceResultActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:label="@string/title_activity_dice_result"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <!-- Главный экран -->
         <activity
             android:name=".presentationlayer.activities.GameSelectionActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
                 android:name=".presentationlayer.activities.ChooseMaterialActivity"
                >
