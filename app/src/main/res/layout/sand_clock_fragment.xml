@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/timer_back"
+        android:id="@+id/timer_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:text="00:00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="64sp"
+        android:layout_marginStart="24dp"
+        android:id="@+id/time"
+        app:layout_constraintTop_toTopOf="@+id/timer_back"
+        app:layout_constraintBottom_toBottomOf="@+id/timer_back"
+        app:layout_constraintStart_toStartOf="@+id/timer_back" />
+
+    <Button
+        android:id="@+id/stop_button"
+        android:layout_width="120dp"
+        android:layout_height="64dp"
+        android:text="Stop"
+        app:layout_constraintBottom_toBottomOf="@+id/timer_back"
+        app:layout_constraintEnd_toEndOf="@+id/timer_back"
+        app:layout_constraintStart_toEndOf="@+id/time"
+        android:layout_marginBottom="24dp"/>
+
+    <Button
+        android:id="@+id/set_button"
+        android:layout_width="120dp"
+        android:layout_height="64dp"
+        android:text="Set time"
+        app:layout_constraintTop_toTopOf="@+id/timer_back"
+        app:layout_constraintEnd_toEndOf="@+id/timer_back"
+        app:layout_constraintStart_toEndOf="@+id/time"
+        android:layout_marginTop="24dp"
+  />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/set_time_host"
+        app:layout_constraintBottom_toTopOf="@+id/timer_back"
+        app:layout_constraintEnd_toEndOf="@+id/timer_back"
+        app:layout_constraintStart_toStartOf="@+id/timer_back">
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
