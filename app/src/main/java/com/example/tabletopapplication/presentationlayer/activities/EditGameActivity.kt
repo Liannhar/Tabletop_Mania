@@ -14,9 +14,11 @@ import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.example.tabletopapplication.presentationlayer.models.Game
 import com.example.tabletopapplication.presentationlayer.adapters.ModelAdapter
+import com.example.tabletopapplication.presentationlayer.models.DIce.Dice
 import com.example.tabletopapplication.presentationlayer.models.Material.Material
 import com.example.tabletopapplication.presentationlayer.models.Model
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.Timer.Timer
 import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
 
 class EditGameActivity : AppCompatActivity(R.layout.activity_edit_game) {
@@ -56,7 +58,6 @@ class EditGameActivity : AppCompatActivity(R.layout.activity_edit_game) {
     override fun onResume() {
         super.onResume()
         val id = intent.getIntExtra("idMaterial", -1)
-        Log.i("AAA",id.toString())
         when (intent.getIntExtra("typoMaterial", -1)) {
             1 -> {
                 val noteObserver = Observer<Note> { data ->
@@ -64,6 +65,12 @@ class EditGameActivity : AppCompatActivity(R.layout.activity_edit_game) {
                     differentMaterialsadapter.setItem(data)
                 }
                 noteViewModel.getNote(id).observe(this,noteObserver)
+            }
+            2->{
+                differentMaterialsadapter.setItem(Timer())
+            }
+            3->{
+                differentMaterialsadapter.setItem(Dice())
             }
             else -> {}
         }

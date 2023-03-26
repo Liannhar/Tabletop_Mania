@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 class Material (
     @ColumnInfo(name = "name") val name :String,
     @ColumnInfo(name = "description") val description :String,
-    @ColumnInfo(name = "image") val image :String)
+    @ColumnInfo(name = "image") val image :String?)
 {
     @PrimaryKey(autoGenerate = true) var id =0
 }

@@ -1,19 +1,22 @@
 package com.example.tabletopapplication.presentationlayer.adapters
 
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tabletopapplication.presentationlayer.adapters.Delegates.DiceDelegate
+import com.example.tabletopapplication.presentationlayer.adapters.Delegates.NoteDelegate
+import com.example.tabletopapplication.presentationlayer.adapters.Delegates.TimerDelegate
 import com.example.tabletopapplication.presentationlayer.models.Model
-import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegatesManager
 
-class ModelAdapter():RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ModelAdapter(val editMode:Boolean=false):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val adapterDelegateManager = AdapterDelegatesManager<ArrayList<Model>>()
     private val items = ArrayList<Model>()
 
     init{
-        adapterDelegateManager.addDelegate(NoteDelegate())
+        adapterDelegateManager.addDelegate(NoteDelegate(editMode))
+        adapterDelegateManager.addDelegate(DiceDelegate(editMode))
+        adapterDelegateManager.addDelegate(TimerDelegate(editMode))
     }
 
     fun setItems(mitems:List<Model>){

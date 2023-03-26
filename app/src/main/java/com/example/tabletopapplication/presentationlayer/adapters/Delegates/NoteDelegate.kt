@@ -1,4 +1,4 @@
-package com.example.tabletopapplication.presentationlayer.adapters
+package com.example.tabletopapplication.presentationlayer.adapters.Delegates
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -11,20 +11,22 @@ import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.presentationlayer.activities.NoteActivity
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 
-class NoteDelegate:AdapterDelegate<ArrayList<Model>>() {
+class NoteDelegate(val editMode:Boolean):AdapterDelegate<ArrayList<Model>>() {
 
     class NoteViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.note_card,parent,false))
     {
-        fun bind(item: Note)
+        fun bind(item: Note,editMode:Boolean)
         {
             val note= itemView.findViewById<EditText>(R.id.editTextMini)
             note.setText(item.noteDescription)
-
-            note.setOnClickListener {
-                val intent = Intent(parent.context, NoteActivity::class.java)
-                intent.putExtra("idnote",item.id )
-                parent.context.startActivity(intent)
+            if (!editMode)
+            {
+                note.setOnClickListener {
+                    val intent = Intent(parent.context, NoteActivity::class.java)
+                    intent.putExtra("idnote",item.id )
+                    parent.context.startActivity(intent)
+                }
             }
         }
     }
@@ -43,6 +45,6 @@ class NoteDelegate:AdapterDelegate<ArrayList<Model>>() {
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as NoteViewHolder).bind(items[position] as Note)
+        (holder as NoteViewHolder).bind(items[position] as Note,editMode)
     }
 }

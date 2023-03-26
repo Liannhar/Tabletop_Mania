@@ -14,7 +14,7 @@ import com.example.tabletopapplication.presentationlayer.adapters.ModelAdapter
 class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
     private lateinit var game: Game
-    private val materialAdapter = ModelAdapter()
+    private val differentMaterialAdapter = ModelAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +28,10 @@ class PreviewGameActivity : AppCompatActivity(R.layout.activity_preview_game) {
             "Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes
         )
 
-        materialAdapter.setItems(game.materials)
+        differentMaterialAdapter.setItems(game.materials)
 
         findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
-            adapter = materialAdapter
+            adapter = differentMaterialAdapter
             layoutManager = LinearLayoutManager(context)
         }
 

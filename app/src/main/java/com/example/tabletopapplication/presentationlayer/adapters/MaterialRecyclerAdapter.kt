@@ -66,11 +66,18 @@ class MaterialRecyclerAdapter(
             when (material.id) {
                 1 -> {
                     val typeMaterial = Note("")
-                    Log.i("AAA",material.id.toString() + "A")
                     //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     intent.putExtra("idMaterial", typeMaterial.id)
                     intent.putExtra("typoMaterial", material.id)
                     viewModel.addNote(typeMaterial)
+                    context.startActivity(intent)
+                }
+                2->{
+                    intent.putExtra("typoMaterial", material.id)
+                    context.startActivity(intent)
+                }
+                3->{
+                    intent.putExtra("typoMaterial", material.id)
                     context.startActivity(intent)
                 }
                 else -> {}
