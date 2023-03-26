@@ -18,7 +18,7 @@
             android:screenOrientation="portrait"
             android:exported="false"
             android:label="@string/title_activity_dice_result"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
