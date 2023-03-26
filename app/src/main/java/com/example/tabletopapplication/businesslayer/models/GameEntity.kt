@@ -6,9 +6,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GameEntity(
-    @SerializedName("id")          var id: Int,
-    @SerializedName("name")        var name: String,
-    @SerializedName("description") var description: String,
-    @SerializedName("image")       var image: String?,
-    @SerializedName("materials")   var materials: ArrayList<Int>
+    @SerializedName("id")          var id: Int = 0,
+    @SerializedName("name")        var name: String = "Name",
+    @SerializedName("description") var description: String = "Description",
+    @SerializedName("image")       var image: String? = null,
+    @SerializedName("materials")   var materials: ArrayList<Int> = arrayListOf()
 ) : Parcelable

@@ -45,10 +45,10 @@
             </intent-filter>
         </activity>
 
-        <activity
-                android:name=".presentationlayer.activities.ChooseMaterialActivity"
-               >
-        </activity>
+        <activity android:name=".presentationlayer.activities.ChooseMaterialActivity" />
+        <activity android:name=".presentationlayer.activities.GamePreviewActivity" />
+        <activity android:name=".presentationlayer.activities.GameEditActivity" />
+        <activity android:name=".presentationlayer.activities.GameEditPropertiesActivity" />
     </application>
 
 </manifest>

@@ -8,11 +8,12 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.presentationlayer.models.Material
+import com.example.tabletopapplication.businesslayer.models.MaterialEntity
 
 class MaterialRecyclerAdapter(
-    private val materials: ArrayList<Material> = arrayListOf(),
+    private val materials: ArrayList<MaterialEntity> = arrayListOf(),
     private val editMode: Boolean = false
 ) : RecyclerView.Adapter<MaterialRecyclerAdapter.ViewHolder>() {
 
@@ -25,14 +26,19 @@ class MaterialRecyclerAdapter(
         private val image: ImageView = itemView.findViewById(R.id.card_material__image)
         private val deleteButton: CardView = itemView.findViewById(R.id.card_material__delete_button)
 
-        fun bind(material: Material, editMode: Boolean) {
-            nameTextView.text = material.name
-            descriptionTextView.text = material.description
-            image.setImageResource(material.image)
+        fun bind(item: MaterialEntity, editMode: Boolean) {
+            nameTextView.text = item.name
+            descriptionTextView.text = item.description
+
+            Glide.with(image)
+                 .load(item.image_url)
+                 .error(R.drawable.baseline_error_outline_24)
+                 .into(image)
+
             deleteButton.isVisible = editMode
 
             deleteButton.setOnClickListener {
-                adapter.removeMaterial(material)
+                adapter.removeMaterial(item)
             }
         }
     }
@@ -51,12 +57,12 @@ class MaterialRecyclerAdapter(
         holder.bind(materials[position], editMode)
     }
 
-    fun addMaterial(material: Material) {
+    fun addMaterial(material: MaterialEntity) {
         materials.add(material)
         notifyItemChanged(materials.size - 1)
     }
 
-    fun addListMaterials(materials: List<Material>) {
+    fun addListMaterials(materials: List<MaterialEntity>) {
         this.materials.addAll(materials)
         notifyItemRangeChanged(this.materials.size - materials.size, materials.size)
     }
@@ -66,7 +72,7 @@ class MaterialRecyclerAdapter(
         notifyItemRemoved(position)
     }
 
-    fun removeMaterial(material: Material) {
+    fun removeMaterial(material: MaterialEntity) {
         val position = materials.indexOf(material)
         removeMaterialAt(position)
     }
