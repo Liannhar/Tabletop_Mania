@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ChooseMaterial.ChooseMaterialActivity"
+                android:name=".presentationlayer.activities.ChooseMaterialActivity"
                >
         </activity>
     </application>

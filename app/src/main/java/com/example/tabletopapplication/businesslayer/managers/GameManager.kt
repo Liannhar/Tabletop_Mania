@@ -1,19 +1,24 @@
 package com.example.tabletopapplication.businesslayer.managers
 
 import com.example.tabletopapplication.businesslayer.models.GameEntity
-import com.example.tabletopapplication.businesslayer.providers.GamesProvider
+import com.example.tabletopapplication.businesslayer.providers.GameProvider
 
-class  GameManager {
-    private val provider = GamesProvider()
+class GameManager {
+    private val provider = GameProvider()
 
-    fun getGames(callback1: Int, callback: (result: List<GameEntity>?, error: Throwable?) -> Unit)  {
-        provider.getGames { result, error ->
-            when {
+    fun getGame(id: Int, callback: (result: GameEntity?, error: Throwable?) -> Unit) {
 
-                result != null -> callback(result, null)
+        provider.getGame(id) { result, error ->
+            callback(result, error)
+        }
+    }
 
-                error != null -> callback(null, error)
-            }
+    fun getGames(
+        listId: ArrayList<Int>,
+        callback: (result: ArrayList<GameEntity>?, error: Throwable?) -> Unit) {
+
+        provider.getGames(listId) { result, error ->
+            callback(result, error)
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.tabletopapplication.common
+package com.example.tabletopapplication.presentationlayer.models
 
 import com.example.tabletopapplication.R
 
