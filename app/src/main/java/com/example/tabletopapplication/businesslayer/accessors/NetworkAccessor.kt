@@ -7,7 +7,7 @@ object NetworkAccessor {
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://tabletop-mania-api.onrender.com/")
         .addConverterFactory(GsonConverterFactory.create())
-        .build();
+        .build()
 
     private val service = retrofit.create(Request::class.java)
 

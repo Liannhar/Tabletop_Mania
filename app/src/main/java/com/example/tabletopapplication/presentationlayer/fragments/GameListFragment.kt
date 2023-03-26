@@ -28,7 +28,11 @@ class GameListFragment : Fragment(R.layout.games_recycler_fragment) {
             when (state) {
                 is LoadState.Initialized -> Unit
                 is LoadState.Pending -> Unit
-                is LoadState.Success<*> -> gameAdapter.submitItems(state.result as List<GameEntity>)
+                is LoadState.Success<*> ->
+                    when(state.result) {
+                        is GameEntity -> gameAdapter.addGame(state.result)
+                        is ArrayList<*> -> gameAdapter.addListGames(state.result as ArrayList<GameEntity>)
+                    }
                 is LoadState.Error -> Unit
             }
         }
