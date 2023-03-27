@@ -1,13 +1,9 @@
 package com.example.tabletopapplication.presentationlayer.adapters
 
-import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
@@ -24,8 +20,12 @@ import com.example.tabletopapplication.presentationlayer.viewmodels.DiceDBViewMo
 import com.example.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
+import com.example.tabletopapplication.businesslayer.models.MaterialEntity
+import com.example.tabletopapplication.presentationlayer.models.Material
 
 class MaterialRecyclerAdapter(
+    private val materials: ArrayList<Material> = arrayListOf(),
+    private val editMode: Boolean = false
     private val materials: List<Material>,
     private val noteViewModel: NoteViewModel,
     private val diceViewModel: DiceDBViewModel,
@@ -35,17 +35,19 @@ class MaterialRecyclerAdapter(
 
     class ViewHolder(
         itemView: View,
-
+        private val adapter: MaterialRecyclerAdapter
     ) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.card_material__name)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.card_material__description)
         private val image: ImageView = itemView.findViewById(R.id.card_material__image)
         private val deleteButton: CardView = itemView.findViewById(R.id.card_material__delete_button)
-        private val cardMaterial:LinearLayout = itemView.findViewById(R.id.card_material_all)
 
         fun bind(material: Material,isChooseMaterial: Boolean,noteViewModel: NoteViewModel,diceViewModel: DiceDBViewModel, timerViewModel: TimerDBViewModel,) {
+        fun bind(material: Material, editMode: Boolean) {
             nameTextView.text = material.name
             descriptionTextView.text = material.description
+            image.setImageResource(material.image)
+            deleteButton.isVisible = editMode
 
             Glide.with(image)
                 .load(material.image)
@@ -60,6 +62,9 @@ class MaterialRecyclerAdapter(
                 }
             }
 
+            deleteButton.setOnClickListener {
+                adapter.removeMaterial(material)
+            }
         }
 
         private fun sendID(
@@ -101,7 +106,7 @@ class MaterialRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_material, parent, false)
-        return ViewHolder(itemView)
+        return ViewHolder(itemView, this)
     }
 
     override fun getItemCount(): Int {
@@ -109,10 +114,11 @@ class MaterialRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(materials[position], editMode)
         holder.bind(materials[position],isChooseMaterial,noteViewModel, diceViewModel, timerViewModel)
     }
 
-    /*fun addMaterial(material: Material) {
+    fun addMaterial(material: Material) {
         materials.add(material)
         notifyItemChanged(materials.size - 1)
     }
@@ -130,5 +136,30 @@ class MaterialRecyclerAdapter(
     fun removeMaterial(material: Material) {
         val position = materials.indexOf(material)
         removeMaterialAt(position)
-    }*/
+    }
+
+    /*fun bind(item: MaterialEntity) {
+        name.text = item.name
+        description.text = item.description
+
+        Glide.with(image)
+            .load(item.image_url)
+            .error(R.drawable.baseline_error_outline_24)
+            .into(image)
+
+        when(materialView.context) {
+            is GamePreviewActivity -> {
+                materialView.setOnClickListener {
+                    // TODO переход на материал
+                }
+            }
+            is GameEditActivity -> {
+                deleteButton.isVisible = true
+                deleteButton.setOnClickListener {
+                    adapter.removeMaterial(item)
+                }
+            }
+        }
+    }
+}*/
 }
