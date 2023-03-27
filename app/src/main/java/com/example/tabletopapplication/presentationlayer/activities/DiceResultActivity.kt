@@ -8,10 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.tabletopapplication.presentationlayer.activities.DiceConstants
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
-import com.example.tabletopapplication.presentationlayer.models.DiceConstants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

@@ -40,7 +40,7 @@ class NoteActivity: AppCompatActivity() {
 
         saveButton.setOnClickListener {
             SaveNote(viewModel,noteEdit,noteId)
-            startActivity(Intent(applicationContext, PreviewGameActivity::class.java))
+            startActivity(Intent(applicationContext,GamePreviewActivity::class.java))
             this.finish()
         }
 
@@ -60,7 +60,7 @@ class NoteActivity: AppCompatActivity() {
                 }
                 .show()
             }
-            startActivity(Intent(applicationContext, EditGameActivity::class.java))
+            startActivity(Intent(applicationContext, GameEditActivity::class.java))
             this.finish()
         }
     }

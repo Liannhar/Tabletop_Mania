@@ -1,31 +1,26 @@
 package com.example.tabletopapplication.presentationlayer.adapters
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.presentationlayer.activities.EditGameActivity
+import com.example.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.example.tabletopapplication.presentationlayer.models.DIce.Dice
 import com.example.tabletopapplication.presentationlayer.models.Material.Material
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.presentationlayer.models.Timer.Timer
-import com.example.tabletopapplication.presentationlayer.models.TimerViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.DiceDBViewModel
-import com.example.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
-import com.example.tabletopapplication.businesslayer.models.MaterialEntity
-import com.example.tabletopapplication.presentationlayer.models.Material
 
 class MaterialRecyclerAdapter(
-    private val materials: ArrayList<Material> = arrayListOf(),
-    private val editMode: Boolean = false
     private val materials: List<Material>,
     private val noteViewModel: NoteViewModel,
     private val diceViewModel: DiceDBViewModel,
@@ -40,30 +35,23 @@ class MaterialRecyclerAdapter(
         private val nameTextView: TextView = itemView.findViewById(R.id.card_material__name)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.card_material__description)
         private val image: ImageView = itemView.findViewById(R.id.card_material__image)
-        private val deleteButton: CardView = itemView.findViewById(R.id.card_material__delete_button)
 
-        fun bind(material: Material,isChooseMaterial: Boolean,noteViewModel: NoteViewModel,diceViewModel: DiceDBViewModel, timerViewModel: TimerDBViewModel,) {
-        fun bind(material: Material, editMode: Boolean) {
+        fun bind(material: Material,isChooseMaterial: Boolean,noteViewModel: NoteViewModel,diceViewModel: DiceDBViewModel, timerViewModel: TimerDBViewModel,){
             nameTextView.text = material.name
             descriptionTextView.text = material.description
-            image.setImageResource(material.image)
-            deleteButton.isVisible = editMode
 
             Glide.with(image)
                 .load(material.image)
                 .error(R.drawable.black_rectangle)
                 .into(image)
             val context = itemView.context
-            cardMaterial.setOnClickListener {
+
+            itemView.findViewById<LinearLayout>(R.id.card_material__material).setOnClickListener {
                 if (isChooseMaterial) {
-                    val intent = Intent(context, EditGameActivity::class.java)
+                    val intent = Intent(context, GameEditActivity::class.java)
                     sendID(material,noteViewModel,diceViewModel,timerViewModel,context,intent)
 
                 }
-            }
-
-            deleteButton.setOnClickListener {
-                adapter.removeMaterial(material)
             }
         }
 
@@ -114,28 +102,7 @@ class MaterialRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(materials[position], editMode)
         holder.bind(materials[position],isChooseMaterial,noteViewModel, diceViewModel, timerViewModel)
-    }
-
-    fun addMaterial(material: Material) {
-        materials.add(material)
-        notifyItemChanged(materials.size - 1)
-    }
-
-    fun addListMaterials(materials: List<Material>) {
-        this.materials.addAll(materials)
-        notifyItemRangeChanged(this.materials.size - materials.size, materials.size)
-    }
-
-    fun removeMaterialAt(position: Int) {
-        materials.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-    fun removeMaterial(material: Material) {
-        val position = materials.indexOf(material)
-        removeMaterialAt(position)
     }
 
     /*fun bind(item: MaterialEntity) {

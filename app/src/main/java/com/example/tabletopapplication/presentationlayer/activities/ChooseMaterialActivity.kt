@@ -44,7 +44,7 @@ class ChooseMaterialActivity : AppCompatActivity() {
         materialViewModel.getAllMaterials().observe(this,materialsObserver)
 
         back_button.setOnClickListener{
-            startActivity(Intent(applicationContext, EditGameActivity::class.java))
+            startActivity(Intent(applicationContext, GameEditActivity::class.java))
             intent.putExtra("idmaterial",-1)
             this.finish()
         }

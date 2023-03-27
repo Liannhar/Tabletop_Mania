@@ -53,10 +53,6 @@
             >
         </activity>
         <activity
-            android:name=".presentationlayer.activities.DiceSettingsActivity"
-            >
-        </activity>
-        <activity
             android:name=".presentationlayer.activities.PreviewGameActivity"
             >
         </activity>
