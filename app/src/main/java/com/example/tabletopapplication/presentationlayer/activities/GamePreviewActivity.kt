@@ -11,14 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.businesslayer.models.GameEntity
+import com.example.tabletopapplication.businesslayer.models.MaterialEntity
 import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.example.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
+import com.example.tabletopapplication.presentationlayer.models.LoadState
 import com.example.tabletopapplication.presentationlayer.viewmodels.GamePreviewViewModel
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
     private val viewModel = GamePreviewViewModel()
-    private val materialAdapter = MaterialRecyclerAdapter()
+
+    private lateinit var MRadapter: MaterialRecyclerAdapter
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,22 +33,20 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
             viewModel.game = arguments.getParcelable("Game", GameEntity::class.java)!!
 
 
+        MRadapter = MaterialRecyclerAdapter()
         findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
-            adapter = materialAdapter
+            adapter = MRadapter
             layoutManager = LinearLayoutManager(context)
         }
 
         // Clicks
         findViewById<ImageView>(R.id.activity_preview_game__back_button).setOnClickListener {
-            when(haveChanges) {
-                false -> {
-                    setResult(RESULT_CANCELED)
-                }
-                true -> {
-                    setResult(RESULT_OK, Intent().apply {
-                        putExtra("Game", viewModel.game)
-                    })
-                }
+            if (haveChanges) {
+                setResult(RESULT_OK, Intent().apply {
+                    putExtra("Game", viewModel.game)
+                })
+            } else {
+                setResult(RESULT_CANCELED)
             }
             finish()
         }
@@ -69,6 +70,21 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
             // TODO Добавить заполнение materials and image
         }
+
+        viewModel.LDstate.observe(this) { state ->
+            when (state) {
+                is LoadState.Initialized -> Unit
+                is LoadState.Pending -> Unit
+                is LoadState.Success<*> ->
+                    when(state.result) {
+                        is MaterialEntity -> MRadapter.addMaterial(state.result)
+                        is ArrayList<*> -> MRadapter.addMaterials(state.result as List<MaterialEntity>)
+                    }
+                is LoadState.Error -> Unit
+            }
+        }
+
+        viewModel.load()
     }
 
     private var haveChanges = false

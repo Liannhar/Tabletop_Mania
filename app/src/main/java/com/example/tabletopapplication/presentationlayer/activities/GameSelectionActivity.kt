@@ -30,13 +30,14 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
             layoutManager = GridLayoutManager(context, 2)
         }
 
+        // Clicks
         findViewById<ImageView>(R.id.add_game_button).setOnClickListener {
             val intent = Intent(this, GameEditActivity::class.java)
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE.EDIT.value)
         }
 
         // Observes
-        viewModel.state.observe(this) { state ->
+        viewModel.LDstate.observe(this) { state ->
             when (state) {
                 is LoadState.Initialized -> Unit
                 is LoadState.Pending -> Unit

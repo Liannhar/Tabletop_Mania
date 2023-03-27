@@ -16,7 +16,7 @@ class GameEditPropertiesViewModel: ViewModel() {
         set(value) {
             field = null
             if (value != null) {
-                MLDgame.value = value!!
+                MLDgame.value = value
             }
         }
 

@@ -31,7 +31,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
             viewModel.game = arguments.getParcelable("Game", GameEntity::class.java)!!
 
 
-        MRadapter = MaterialRecyclerAdapter(editMode = true)
+        MRadapter = MaterialRecyclerAdapter()
         findViewById<RecyclerView>(R.id.activity_edit_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = MRadapter
