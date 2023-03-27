@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.models.Material.Material
 import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
-import com.example.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
-import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
+import com.example.tabletopapplication.presentationlayer.viewmodels.*
 
 class ChooseMaterialActivity : AppCompatActivity() {
 
@@ -29,12 +28,18 @@ class ChooseMaterialActivity : AppCompatActivity() {
         val noteViewModel = ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[NoteViewModel::class.java]
+        val diceViewModel = ViewModelProvider(this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[DiceDBViewModel::class.java]
+        val timerViewModel = ViewModelProvider(this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[TimerDBViewModel::class.java]
 
 
         val recyclerView: RecyclerView = findViewById(R.id.rv_choose_material)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val materialsObserver = Observer<List<Material>> { data ->
-            recyclerView.adapter = MaterialRecyclerAdapter(data,noteViewModel,false,true)
+            recyclerView.adapter = MaterialRecyclerAdapter(data,noteViewModel,diceViewModel,timerViewModel,false,true)
         }
         materialViewModel.getAllMaterials().observe(this,materialsObserver)
 

@@ -6,7 +6,7 @@ import androidx.room.*
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
 
 @Dao
-interface NotesDao {
+interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(note : Note)

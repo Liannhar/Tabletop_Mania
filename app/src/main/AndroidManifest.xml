@@ -30,6 +30,18 @@
             android:name=".presentationlayer.activities.NoteActivity"
             >
         </activity>
+        <activity
+            android:name=".presentationlayer.activities.DiceSettingsActivity"
+            >
+        </activity>
+        <activity
+            android:name=".presentationlayer.activities.DiceResultActivity"
+            >
+        </activity>
+        <activity
+            android:name=".presentationlayer.activities.PreviewGameActivity"
+            >
+        </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
             tools:replace="android:authorities"

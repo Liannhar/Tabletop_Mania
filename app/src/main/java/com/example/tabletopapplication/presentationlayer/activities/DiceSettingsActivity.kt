@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.example.tabletopapplication.Dice.DiceConstants
-import com.example.tabletopapplication.Dice.DiceResultActivity
+import com.example.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.activities.GameSelectionActivity
 
@@ -47,7 +47,7 @@ class DiceSettingsActivity : AppCompatActivity() {
         }
 
         // Здесь задумывается переход на экран с игрой (сейчас реализован переход на главную страницу)
-        findViewById<ImageView>(R.id.dice_setting_goback).setOnClickListener {
+        findViewById<ImageView>(R.id.dice_setting_button).setOnClickListener {
             val intent = Intent(this, PreviewGameActivity::class.java)
             startActivity(intent)
         }

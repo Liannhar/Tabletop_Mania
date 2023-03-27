@@ -2,7 +2,6 @@ package com.example.tabletopapplication.presentationlayer.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.presentationlayer.models.Note.NoteDatabase
@@ -17,7 +16,7 @@ class NoteViewModel (application: Application) : AndroidViewModel(application) {
     init {
         val dao = NoteDatabase.getDatabase(application).getNotesDao()
         repository = NoteRepository(dao)
-        val allNotes = repository.allNotes
+
     }
 
     fun deleteNote (note: Note) = viewModelScope.launch(Dispatchers.IO) {
@@ -33,4 +32,6 @@ class NoteViewModel (application: Application) : AndroidViewModel(application) {
     }
 
     fun getNote(id:Int) = repository.getOneNote(id)
+
+    fun getAllNotes() = repository.allNotes
 }

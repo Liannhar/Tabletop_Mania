@@ -18,34 +18,28 @@ import com.example.tabletopapplication.presentationlayer.models.DIce.Dice
 import com.example.tabletopapplication.presentationlayer.models.Material.Material
 import com.example.tabletopapplication.presentationlayer.models.Model
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
-import com.example.tabletopapplication.presentationlayer.models.Timer.Timer
+import com.example.tabletopapplication.presentationlayer.viewmodels.DiceDBViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
+import com.example.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
 
 class EditGameActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
     private lateinit var game: Game
     private val differentMaterialsadapter = ModelAdapter()
     private val noteViewModel by lazy{ViewModelProvider(this)[NoteViewModel::class.java]}
+    private val diceViewModel by lazy{ViewModelProvider(this)[DiceDBViewModel::class.java]}
+    private val timerViewModel by lazy{ViewModelProvider(this)[TimerDBViewModel::class.java]}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        /*val arguments = intent.extras
-        if (arguments != null)
-            game = arguments.getSerializable("Game") as Game
-
-        // Test data
-        game = Game(
-            "Test", "Test Test Test Test Test Test Test Test Test", R.drawable.cubes, arrayListOf(
-                Note("")
-            )
-        )*/
         findViewById<RecyclerView>(R.id.activity_edit_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = differentMaterialsadapter
         }
 
-        //setGameProperties(game)
+
+
+        fillRecycler()
 
         val addButton = findViewById<ImageView>(R.id.activity_edit_game__add_button)
 
@@ -55,24 +49,39 @@ class EditGameActivity : AppCompatActivity(R.layout.activity_edit_game) {
         }
     }
 
+    private fun fillRecycler() {
+        noteViewModel.getAllNotes().observe(this) {note ->
+            differentMaterialsadapter.setItems(note)
+        }
+        diceViewModel.getAllDice().observe(this) {dice ->
+            differentMaterialsadapter.setItems(dice)
+        }
+        timerViewModel.getAllTimer().observe(this) {timer ->
+            differentMaterialsadapter.setItems(timer)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        val id = intent.getIntExtra("idMaterial", -1)
-        when (intent.getIntExtra("typoMaterial", -1)) {
-            1 -> {
-                val noteObserver = Observer<Note> { data ->
 
-                    differentMaterialsadapter.setItem(data)
+        when (intent.getIntExtra("idMaterial", -1)) {
+            1 -> {
+                noteViewModel.getAllNotes().observe(this) {note ->
+                    differentMaterialsadapter.setItems(note)
                 }
-                noteViewModel.getNote(id).observe(this,noteObserver)
             }
-            2->{
-                differentMaterialsadapter.setItem(Timer())
+            2 ->{
+
+                diceViewModel.getAllDice().observe(this) {dice ->
+                    differentMaterialsadapter.setItems(dice)
+                }
             }
             3->{
-                differentMaterialsadapter.setItem(Dice())
+                timerViewModel.getAllTimer().observe(this) {timer ->
+                    differentMaterialsadapter.setItems(timer)
+                }
             }
-            else -> {}
+            else -> {Log.i("AAAAAAAAAAAAAA","435")}
         }
     }
 

@@ -14,12 +14,12 @@ import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.presentationlayer.models.Timer.Timer
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 
-class TimerDelegate(val editMode:Boolean): AdapterDelegate<ArrayList<Model>>() {
+class TimerDelegate(): AdapterDelegate<ArrayList<Model>>() {
 
     class TimerViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.set_time_fragment,parent,false))
     {
-        fun bind(item: Timer, editMode:Boolean)
+        fun bind(item: Timer, )
         {
 
         }
@@ -39,6 +39,6 @@ class TimerDelegate(val editMode:Boolean): AdapterDelegate<ArrayList<Model>>() {
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as TimerViewHolder).bind(items[position] as Timer,editMode)
+        (holder as TimerViewHolder).bind(items[position] as Timer)
     }
 }

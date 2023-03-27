@@ -1,9 +1,9 @@
 package com.example.tabletopapplication.presentationlayer.models.Note
 
 import androidx.lifecycle.LiveData
-import com.example.tabletopapplication.businesslayer.models.NotesDao
+import com.example.tabletopapplication.businesslayer.models.NoteDao
 
-class NoteRepository(private val notesDao: NotesDao) {
+class NoteRepository(private val notesDao: NoteDao) {
 
     val allNotes: LiveData<List<Note>> = notesDao.getAllNotes()
 

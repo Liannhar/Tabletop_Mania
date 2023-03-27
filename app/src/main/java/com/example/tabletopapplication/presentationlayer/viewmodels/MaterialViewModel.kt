@@ -44,7 +44,7 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
     fun getAllMaterialsFromApi(){
         viewModelScope.launch{
             //val materials = arrayListOf(1,2,3)
-            materialManager.getRangeMaterials(1,3){
+            materialManager.getRangeMaterials(1,4){
                 result, error ->
                 when{
                     result!= null -> {

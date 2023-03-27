@@ -1,16 +1,15 @@
 package com.example.tabletopapplication.presentationlayer.models.Note
 
-
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.tabletopapplication.businesslayer.models.NotesDao
+import com.example.tabletopapplication.businesslayer.models.NoteDao
 
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class NoteDatabase : RoomDatabase() {
 
-    abstract fun getNotesDao(): NotesDao
+    abstract fun getNotesDao(): NoteDao
 
     companion object {
         @Volatile

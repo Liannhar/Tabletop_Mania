@@ -2,7 +2,6 @@ package com.example.tabletopapplication.presentationlayer.models.Material
 
 import androidx.lifecycle.LiveData
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
-import com.example.tabletopapplication.businesslayer.models.NotesDao
 
 class MaterialRepository(private val materialDao: MaterialDao) {
 
