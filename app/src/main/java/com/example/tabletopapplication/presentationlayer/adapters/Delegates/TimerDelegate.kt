@@ -17,11 +17,24 @@ import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 class TimerDelegate(): AdapterDelegate<ArrayList<Model>>() {
 
     class TimerViewHolder(val parent: ViewGroup) :
-        RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.set_time_fragment,parent,false))
+        RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.sand_clock_fragment,parent,false))
     {
-        fun bind(item: Timer, )
+        fun bind(item: Timer)
         {
 
+            /* when(itemView.context) {
+               is GamePreviewActivity -> {
+                   itemView.setOnClickListener {
+                       // TODO переход на материал
+                   }
+               }
+               is GameEditActivity -> {
+                   deleteButton.isVisible = true
+                   deleteButton.setOnClickListener {
+                       adapter.removeMaterial(item)
+                   }
+               }
+           }*/
         }
     }
 

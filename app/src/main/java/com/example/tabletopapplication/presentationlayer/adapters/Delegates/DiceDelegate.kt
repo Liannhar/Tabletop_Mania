@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
@@ -20,6 +21,20 @@ class DiceDelegate(): AdapterDelegate<ArrayList<Model>>() {
         fun bind(item: Dice)
         {
             val dice= itemView.findViewById<CardView>(R.id.dice_card_mini)
+
+           /* when(itemView.context) {
+                is GamePreviewActivity -> {
+                    itemView.setOnClickListener {
+                        // TODO переход на материал
+                    }
+                }
+                is GameEditActivity -> {
+                    deleteButton.isVisible = true
+                    deleteButton.setOnClickListener {
+                        adapter.removeMaterial(item)
+                    }
+                }
+            }*/
 
             dice.setOnClickListener {
                 val intent = Intent(parent.context, DiceSettingsActivity::class.java)

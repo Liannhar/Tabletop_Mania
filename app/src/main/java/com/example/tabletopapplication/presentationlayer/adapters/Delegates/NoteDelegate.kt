@@ -25,6 +25,20 @@ class NoteDelegate():AdapterDelegate<ArrayList<Model>>() {
                     intent.putExtra("idnote",item.id )
                     parent.context.startActivity(intent)
             }
+
+            /* when(itemView.context) {
+               is GamePreviewActivity -> {
+                   itemView.setOnClickListener {
+                       // TODO переход на материал
+                   }
+               }
+               is GameEditActivity -> {
+                   deleteButton.isVisible = true
+                   deleteButton.setOnClickListener {
+                       adapter.removeMaterial(item)
+                   }
+               }
+           }*/
         }
     }
 

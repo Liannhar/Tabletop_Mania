@@ -21,18 +21,11 @@ class ModelAdapter():RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             .addDelegate(NoteDelegate())
     }
 
-    /*fun setAdapterDelegateManager(typeMaterial:Int,editMode: Boolean){
-      when(typeMaterial){
-          1->adapterDelegateManager.addDelegate(NoteDelegate(editMode))
-          2->adapterDelegateManager.addDelegate(DiceDelegate(editMode))
-          3->adapterDelegateManager.addDelegate(TimerDelegate(editMode))
-      }
-    }*/
-
     fun setItems(mitems:List<Model>){
+        val length=items.size
         this.items.addAll(mitems)
 
-        notifyItemRangeChanged(this.items.size - items.size, items.size)
+        notifyItemRangeChanged(length-1, items.size)
     }
 
     fun setItem(item:Model){

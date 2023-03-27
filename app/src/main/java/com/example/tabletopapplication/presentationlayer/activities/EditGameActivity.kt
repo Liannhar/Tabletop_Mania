@@ -81,7 +81,7 @@ class EditGameActivity : AppCompatActivity(R.layout.activity_edit_game) {
                     differentMaterialsadapter.setItems(timer)
                 }
             }
-            else -> {Log.i("AAAAAAAAAAAAAA","435")}
+            else -> {}
         }
     }
 

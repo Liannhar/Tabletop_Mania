@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.tabletopapplication.Dice.DiceConstants
+import com.example.tabletopapplication.presentationlayer.activities.DiceConstants
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
 import kotlinx.coroutines.delay

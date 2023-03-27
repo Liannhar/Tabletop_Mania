@@ -1,4 +1,4 @@
-package com.example.tabletopapplication.Dice
+package com.example.tabletopapplication.presentationlayer.activities
 
 object DiceConstants {
     const val SERIALIZABLE_DICE_NAME = "dice"

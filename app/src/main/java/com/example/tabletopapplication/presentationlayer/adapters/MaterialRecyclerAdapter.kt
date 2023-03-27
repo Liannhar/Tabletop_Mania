@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.activities.EditGameActivity
 import com.example.tabletopapplication.presentationlayer.models.DIce.Dice
@@ -29,7 +30,6 @@ class MaterialRecyclerAdapter(
     private val noteViewModel: NoteViewModel,
     private val diceViewModel: DiceDBViewModel,
     private val timerViewModel: TimerDBViewModel,
-    private val editMode: Boolean = false,
     private val isChooseMaterial:Boolean = false
 ) : RecyclerView.Adapter<MaterialRecyclerAdapter.ViewHolder>() {
 
@@ -43,16 +43,14 @@ class MaterialRecyclerAdapter(
         private val deleteButton: CardView = itemView.findViewById(R.id.card_material__delete_button)
         private val cardMaterial:LinearLayout = itemView.findViewById(R.id.card_material_all)
 
-        fun bind(material: Material, editMode: Boolean, isChooseMaterial: Boolean,noteViewModel: NoteViewModel,diceViewModel: DiceDBViewModel, timerViewModel: TimerDBViewModel,) {
+        fun bind(material: Material,isChooseMaterial: Boolean,noteViewModel: NoteViewModel,diceViewModel: DiceDBViewModel, timerViewModel: TimerDBViewModel,) {
             nameTextView.text = material.name
             descriptionTextView.text = material.description
-            image.setImageResource(R.drawable.notes)
-            deleteButton.isVisible = editMode
 
-            deleteButton.setOnClickListener {
-                //adapter.removeMaterial(material)
-            }
-
+            Glide.with(image)
+                .load(material.image)
+                .error(R.drawable.black_rectangle)
+                .into(image)
             val context = itemView.context
             cardMaterial.setOnClickListener {
                 if (isChooseMaterial) {
@@ -111,7 +109,7 @@ class MaterialRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(materials[position], editMode,isChooseMaterial,noteViewModel, diceViewModel, timerViewModel)
+        holder.bind(materials[position],isChooseMaterial,noteViewModel, diceViewModel, timerViewModel)
     }
 
     /*fun addMaterial(material: Material) {

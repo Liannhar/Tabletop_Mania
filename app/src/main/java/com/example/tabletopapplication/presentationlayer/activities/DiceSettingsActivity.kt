@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.example.tabletopapplication.Dice.DiceConstants
+import com.example.tabletopapplication.presentationlayer.activities.DiceConstants
 import com.example.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.presentationlayer.activities.GameSelectionActivity

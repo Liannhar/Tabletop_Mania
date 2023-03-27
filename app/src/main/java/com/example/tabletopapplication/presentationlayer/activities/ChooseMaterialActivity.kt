@@ -39,7 +39,7 @@ class ChooseMaterialActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.rv_choose_material)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val materialsObserver = Observer<List<Material>> { data ->
-            recyclerView.adapter = MaterialRecyclerAdapter(data,noteViewModel,diceViewModel,timerViewModel,false,true)
+            recyclerView.adapter = MaterialRecyclerAdapter(data,noteViewModel,diceViewModel,timerViewModel,true)
         }
         materialViewModel.getAllMaterials().observe(this,materialsObserver)
 
