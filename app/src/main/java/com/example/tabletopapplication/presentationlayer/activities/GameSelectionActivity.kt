@@ -1,25 +1,86 @@
 package com.example.tabletopapplication.presentationlayer.activities
 
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.presentationlayer.fragments.GameListFragment
-import com.example.tabletopapplication.presentationlayer.fragments.NavBarFragment
+import com.example.tabletopapplication.businesslayer.models.GameEntity
+import com.example.tabletopapplication.presentationlayer.adapters.GameAdapter
+import com.example.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
+import com.example.tabletopapplication.presentationlayer.models.LoadState
+import com.example.tabletopapplication.presentationlayer.viewmodels.GameListViewModel
 
-class GameSelectionActivity : AppCompatActivity() {
+class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
+
+    private val viewModel: GameListViewModel = GameListViewModel()
+    private lateinit var gameAdapter: GameAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val view = layoutInflater.inflate(R.layout.game_selection, null)
-        setContentView(view)
+        gameAdapter = GameAdapter()
+        findViewById<RecyclerView>(R.id.game_recycler).apply {
+            adapter = gameAdapter
+            layoutManager = GridLayoutManager(context, 2)
+        }
 
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragmentContainerView, NavBarFragment.newInstance(), NavBarFragment.TAG)
-                .replace(R.id.recycler_host, GameListFragment.newInstance(), GameListFragment.TAG)
-                .commit()
+        // Clicks
+        findViewById<ImageView>(R.id.add_game_button).setOnClickListener {
+            val intent = Intent(this, GameEditActivity::class.java)
+            startActivityForResult(intent, ACTIVITY_REQUEST_CODE.EDIT.value)
+        }
+
+        // Observes
+        viewModel.LDstate.observe(this) { state ->
+            when (state) {
+                is LoadState.Initialized -> Unit
+                is LoadState.Pending -> Unit
+                is LoadState.Success<*> ->
+                    when(state.result) {
+                        is GameEntity -> gameAdapter.addGame(state.result)
+                        is ArrayList<*> -> gameAdapter.addListGames(state.result as ArrayList<GameEntity>)
+                    }
+                is LoadState.Error -> Unit
+            }
+        }
+
+        viewModel.load()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode) {
+            ACTIVITY_REQUEST_CODE.PREVIEW.value -> {
+                when(resultCode) {
+                    RESULT_OK -> {
+                        val game = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            data?.extras?.getParcelable("Game", GameEntity::class.java)
+                        } else {
+                            data?.getParcelableExtra("Game")
+                        }
+                        gameAdapter.changeGame(game!!)
+                        // TODO("Добавить изменение игры, если есть)
+                    }
+                }
+            }
+            ACTIVITY_REQUEST_CODE.EDIT.value -> {
+                when(resultCode) {
+                    RESULT_OK -> {
+                        val newGame = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            data?.extras?.getParcelable("Game", GameEntity::class.java)
+                        } else {
+                            data?.getParcelableExtra("Game")
+                        }
+                        gameAdapter.addGame(newGame!!)
+                        // TODO("Добавить новую игру")
+                    }
+                }
+            }
         }
     }
 }
