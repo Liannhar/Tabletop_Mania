@@ -14,6 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/activity_preview_game__back_button"
             android:layout_width="@dimen/icon_top_panel_width"
             android:layout_height="match_parent"
             android:src="@drawable/baseline_arrow_back_24"
@@ -23,6 +24,7 @@
             android:contentDescription="@string/arrow_back_description" />
 
         <ImageView
+            android:id="@+id/activity_preview_game__edit_button"
             android:layout_width="@dimen/icon_top_panel_width"
             android:layout_height="match_parent"
             android:src="@drawable/baseline_edit_24"

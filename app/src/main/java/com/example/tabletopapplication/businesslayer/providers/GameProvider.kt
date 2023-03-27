@@ -30,10 +30,12 @@ class GameProvider {
             for (id in listId) {
                 getGame(id) { id_result, id_error ->
                     when {
-                        id_result != null -> result.add(id_result)
+                        id_result != null -> {
+                            result.add(id_result)
+                        }
                         id_error != null -> error = id_error
                     }
-                }
+                }.join()
             }
             callback(result.ifEmpty { null }, error)
         }

@@ -13,6 +13,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/activity_edit_properties_game__back_button"
             android:layout_width="@dimen/icon_top_panel_width"
             android:layout_height="match_parent"
             android:src="@drawable/baseline_arrow_back_24"
@@ -22,7 +23,7 @@
             android:contentDescription="@string/arrow_back_description" />
 
         <ImageView
-            android:id="@+id/activity_edit_game__save_button"
+            android:id="@+id/activity_edit_properties_game__save_button"
             android:layout_width="@dimen/icon_top_panel_width"
             android:layout_height="match_parent"
             android:src="@drawable/baseline_save_24"
@@ -153,7 +154,7 @@
         android:layout_marginEnd="20dp">
 
         <EditText
-            android:id="@+id/activity_edit_properties_game__title"
+            android:id="@+id/activity_edit_properties_game__name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="11dp"

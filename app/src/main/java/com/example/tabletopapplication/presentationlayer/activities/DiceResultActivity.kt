@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package com.example.tabletopapplication.Dice
+=======
+package com.example.tabletopapplication.presentationlayer.activities
+>>>>>>> origin/dev
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,6 +13,10 @@ import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.tabletopapplication.R
+<<<<<<< HEAD
+=======
+import com.example.tabletopapplication.presentationlayer.models.DiceConstants
+>>>>>>> origin/dev
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

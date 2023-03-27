@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.presentationlayer.activities.GameSelectionActivity
+import com.example.tabletopapplication.presentationlayer.models.DiceConstants
 
 class DiceSettingsActivity : AppCompatActivity() {
 
