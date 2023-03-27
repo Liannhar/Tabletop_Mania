@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import com.example.tabletopapplication.R
@@ -17,14 +16,17 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
 
     private val viewModel = GameEditPropertiesViewModel()
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Initialize
         val arguments = intent.extras
         if (arguments != null)
-            viewModel.game = arguments.getParcelable("Game", GameEntity::class.java)!!
+            viewModel.game = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arguments.getParcelable("Game", GameEntity::class.java)
+            } else {
+                intent.getParcelableExtra("Game")
+            }
 
         // Clicks
         findViewById<ImageView>(R.id.activity_edit_properties_game__back_button).setOnClickListener {

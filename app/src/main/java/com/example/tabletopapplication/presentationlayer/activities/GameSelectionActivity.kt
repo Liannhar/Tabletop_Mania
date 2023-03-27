@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
@@ -44,7 +42,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
                 is LoadState.Success<*> ->
                     when(state.result) {
                         is GameEntity -> gameAdapter.addGame(state.result)
-                        is ArrayList<*> -> gameAdapter.addListGames(state.result as List<GameEntity>)
+                        is ArrayList<*> -> gameAdapter.addListGames(state.result as ArrayList<GameEntity>)
                     }
                 is LoadState.Error -> Unit
             }
@@ -53,7 +51,6 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         viewModel.load()
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -61,19 +58,26 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
             ACTIVITY_REQUEST_CODE.PREVIEW.value -> {
                 when(resultCode) {
                     RESULT_OK -> {
-                        val game = data?.extras?.getParcelable("Game", GameEntity::class.java)
+                        val game = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            data?.extras?.getParcelable("Game", GameEntity::class.java)
+                        } else {
+                            data?.getParcelableExtra("Game")
+                        }
                         gameAdapter.changeGame(game!!)
-                        // TODO Добавить изменение игры, если есть
+                        // TODO("Добавить изменение игры, если есть)
                     }
                 }
             }
             ACTIVITY_REQUEST_CODE.EDIT.value -> {
                 when(resultCode) {
                     RESULT_OK -> {
-                        Log.d("ASDASD", resultCode.toString())
-                        val newGame = data?.extras?.getParcelable("Game", GameEntity::class.java)
+                        val newGame = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            data?.extras?.getParcelable("Game", GameEntity::class.java)
+                        } else {
+                            data?.getParcelableExtra("Game")
+                        }
                         gameAdapter.addGame(newGame!!)
-                        // TODO Добавить новую игру
+                        // TODO("Добавить новую игру")
                     }
                 }
             }

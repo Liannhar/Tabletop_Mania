@@ -19,7 +19,7 @@ class GameListViewModel: ViewModel() {
     fun load() {
         viewModelScope.launch {
             MLDstate.postValue(LoadState.Pending())
-            gameManager.getGame(1) { result, error ->
+            gameManager.getGames(arrayListOf(1, 2)) { result, error ->
                 when {
                     result != null -> MLDstate.postValue(LoadState.Success(result))
                     error != null -> MLDstate.postValue(LoadState.Error(error))

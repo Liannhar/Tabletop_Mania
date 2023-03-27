@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,14 +22,17 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
     private lateinit var MRadapter: MaterialRecyclerAdapter
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Initialize
         val arguments = intent.extras
         if (arguments != null)
-            viewModel.game = arguments.getParcelable("Game", GameEntity::class.java)!!
+            viewModel.game = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arguments.getParcelable("Game", GameEntity::class.java)
+            } else {
+                intent.getParcelableExtra("Game")
+            }
 
 
         MRadapter = MaterialRecyclerAdapter()
@@ -68,7 +70,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
                 text = game.description
             }
 
-            // TODO Добавить заполнение materials and image
+            // TODO("Добавить заполнение materials and image")
         }
 
         viewModel.LDstate.observe(this) { state ->
