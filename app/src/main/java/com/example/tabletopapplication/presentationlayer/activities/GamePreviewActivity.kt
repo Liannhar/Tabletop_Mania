@@ -3,106 +3,67 @@ package com.example.tabletopapplication.presentationlayer.activities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.businesslayer.models.GameEntity
 import com.example.tabletopapplication.businesslayer.models.MaterialEntity
 import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
+import com.example.tabletopapplication.presentationlayer.adapters.ModelAdapter
 import com.example.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
+import com.example.tabletopapplication.presentationlayer.models.DIce.Dice
 import com.example.tabletopapplication.presentationlayer.models.LoadState
-import com.example.tabletopapplication.presentationlayer.viewmodels.GamePreviewViewModel
+import com.example.tabletopapplication.presentationlayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.Timer.Timer
+import com.example.tabletopapplication.presentationlayer.viewmodels.*
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
     private val viewModel = GamePreviewViewModel()
-
-    private lateinit var MRadapter: MaterialRecyclerAdapter
+    private val gameDBViewModel by lazy{ ViewModelProvider(this)[GameDBViewModel::class.java]}
+    private val noteViewModel by lazy{ ViewModelProvider(this)[NoteViewModel::class.java]}
+    private val diceViewModel by lazy{ ViewModelProvider(this)[DiceDBViewModel::class.java]}
+    private val timerViewModel by lazy{ ViewModelProvider(this)[TimerDBViewModel::class.java]}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize
-        val arguments = intent.extras
-        if (arguments != null)
-            viewModel.game = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arguments.getParcelable("Game", GameEntity::class.java)
-            } else {
-                intent.getParcelableExtra("Game")
-            }
+        val gameId = intent.getLongExtra("gameId",-1)
 
-
-        MRadapter = MaterialRecyclerAdapter()
         findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
-            adapter = MRadapter
+            adapter = fillRecycler(gameId)
             layoutManager = LinearLayoutManager(context)
         }
-
-        // Clicks
         findViewById<ImageView>(R.id.activity_preview_game__back_button).setOnClickListener {
-            if (haveChanges) {
-                setResult(RESULT_OK, Intent().apply {
-                    putExtra("Game", viewModel.game)
-                })
-            } else {
-                setResult(RESULT_CANCELED)
-            }
-            finish()
+            val intent = Intent(this, GameSelectionActivity::class.java)
+            startActivityForResult(intent, ACTIVITY_REQUEST_CODE.PREVIEW.value)
         }
-
         findViewById<ImageView>(R.id.activity_preview_game__edit_button).setOnClickListener {
             val intent = Intent(this, GameEditActivity::class.java).apply {
-                putExtra("Game", viewModel.game)
+                //putExtra("Game", viewModel.game)
+                putExtra("gameId",gameId)
             }
             startActivityForResult(intent, ACTIVITY_REQUEST_CODE.EDIT.value)
         }
-
-
-        // ViewModel observes
-        viewModel.LDgame.observe(this) { game ->
-            findViewById<TextView>(R.id.activity_preview_game__title).apply {
-                text = game.name
-            }
-            findViewById<TextView>(R.id.activity_preview_game__description).apply {
-                text = game.description
-            }
-
-            // TODO("Добавить заполнение materials and image")
-        }
-
-        viewModel.LDstate.observe(this) { state ->
-            when (state) {
-                is LoadState.Initialized -> Unit
-                is LoadState.Pending -> Unit
-                is LoadState.Success<*> ->
-                    when(state.result) {
-                        is MaterialEntity -> MRadapter.addMaterial(state.result)
-                        is ArrayList<*> -> MRadapter.addMaterials(state.result as List<MaterialEntity>)
-                    }
-                is LoadState.Error -> Unit
-            }
-        }
-
-        viewModel.load()
     }
 
-    private var haveChanges = false
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when(requestCode) {
-            ACTIVITY_REQUEST_CODE.EDIT.value -> {
-                when(resultCode) {
-                    RESULT_OK -> {
-                        viewModel.game = data?.extras?.getParcelable("Game")
-                        haveChanges = true
-                    }
-                }
-            }
+    private fun fillRecycler(gameId:Long):ModelAdapter {
+        val differentMaterialsadapter = ModelAdapter(this,gameId)
+        gameDBViewModel.getAllNoteOfGame(gameId).observe(this) {note ->
+            differentMaterialsadapter.setItems(note)
         }
+        gameDBViewModel.getAllDiceOfGame(gameId).observe(this) {dice ->
+            differentMaterialsadapter.setItems(dice)
+        }
+        gameDBViewModel.getAllTimerOfGame(gameId).observe(this) {timer ->
+            differentMaterialsadapter.setItems(timer)
+        }
+        return differentMaterialsadapter
     }
 }

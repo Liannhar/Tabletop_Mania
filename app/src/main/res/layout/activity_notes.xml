@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_panel_height"
+        android:background="@color/primary_color_app"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/activity_notes_back_button"
+            android:layout_width="@dimen/icon_top_panel_width"
+            android:layout_height="match_parent"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/icon_top_panel_margin"
+            android:contentDescription="@string/arrow_back_description" />
+
+        <ImageView
+            android:id="@+id/activity_notes_save_button"
+            android:layout_width="@dimen/icon_top_panel_width"
+            android:layout_height="match_parent"
+            android:src="@drawable/baseline_save_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/icon_top_panel_margin"
+            android:contentDescription="@string/edit" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="top|start"
+            android:hint="@string/your_note"
+            android:textSize="20sp"
+            android:background="@color/white"
+            android:minLines="90"
+            android:inputType="textMultiLine" />
+    </ScrollView>
+
+</LinearLayout>

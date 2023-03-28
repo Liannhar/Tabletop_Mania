@@ -1,24 +1,55 @@
 package com.example.tabletopapplication.presentationlayer.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
+import com.example.tabletopapplication.presentationlayer.models.Material.Material
 import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
+import com.example.tabletopapplication.presentationlayer.viewmodels.*
 
 class ChooseMaterialActivity : AppCompatActivity() {
-
-    private lateinit var MRadapter: MaterialRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_material)
+        val gameId = intent.getLongExtra("gameId",-1)
+        val back_button = findViewById<ImageView>(R.id.arrow_back)
 
-        MRadapter = MaterialRecyclerAdapter()
-        findViewById<RecyclerView>(R.id.rv_choose_material).apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = MRadapter
+        val materialViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[MaterialViewModel::class.java]
+        val noteViewModel = ViewModelProvider(this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[NoteViewModel::class.java]
+        val diceViewModel = ViewModelProvider(this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[DiceDBViewModel::class.java]
+        val timerViewModel = ViewModelProvider(this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[TimerDBViewModel::class.java]
+
+
+        val recyclerView: RecyclerView = findViewById(R.id.rv_choose_material)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val materialsObserver = Observer<List<Material>> { data ->
+            recyclerView.adapter = MaterialRecyclerAdapter(data,noteViewModel,diceViewModel,timerViewModel,true,gameId)
+        }
+
+        materialViewModel.getAllMaterials().observe(this,materialsObserver)
+
+        back_button.setOnClickListener{
+            startActivity(Intent(applicationContext, GameEditActivity::class.java))
+            intent.putExtra("idmaterial",-1)
+            intent.putExtra("gameId",gameId)
+            this.finish()
         }
     }
 }

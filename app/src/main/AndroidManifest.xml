@@ -44,11 +44,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".presentationlayer.activities.ChooseMaterialActivity" />
-        <activity android:name=".presentationlayer.activities.GamePreviewActivity" />
-        <activity android:name=".presentationlayer.activities.GameEditActivity" />
+        <activity
+                android:name=".presentationlayer.activities.ChooseMaterialActivity"
+               >
+        </activity>
+        <activity
+            android:name=".presentationlayer.activities.NoteActivity"
+            >
+        </activity>
+        <activity
+            android:name=".presentationlayer.activities.GamePreviewActivity"
+            >
+        </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            tools:replace="android:authorities"
+            android:authorities="${applicationId}.provider"
+            tools:node="remove"/>
         <activity android:name=".presentationlayer.activities.GameEditPropertiesActivity" />
+        <activity android:name=".presentationlayer.activities.GameEditActivity" />
     </application>
 
 </manifest>

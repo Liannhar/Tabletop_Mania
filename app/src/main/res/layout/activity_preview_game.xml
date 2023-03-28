@@ -37,14 +37,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="160dp"
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1.4">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -53,14 +53,13 @@
                 app:cardCornerRadius="@dimen/image_corner_radius_card_material">
 
                 <ImageView
-                    android:id="@+id/activity_preview_game__image"
+                    android:id="@+id/activity_edit_game__image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@color/black"
                     android:contentDescription="@string/image_material" />
 
             </androidx.cardview.widget.CardView>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -72,24 +71,24 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/activity_preview_game__title"
+                android:id="@+id/activity_edit_game__title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:gravity="center"
                 android:text="@string/example_title"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:textColor="@color/white"
                 tools:ignore="NestedWeights"
                 android:layout_margin="5dp" />
 
             <TextView
-                android:id="@+id/activity_preview_game__description"
+                android:id="@+id/activity_edit_game__description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/example_description"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
                 android:layout_margin="5dp" />
 
@@ -105,21 +104,26 @@
         android:contentDescription="@string/dotted_line" />
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="200dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/MaterialCardViewStyle"
         app:cardBackgroundColor="@color/second_color_app"
         android:layout_gravity="center"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="10dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/materials"
-            android:textSize="30sp"
-            android:textColor="@color/third_color_app" />
+            android:textSize="20sp"
+            android:textColor="@color/third_color_app"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="5dp" />
 
     </com.google.android.material.card.MaterialCardView>
 

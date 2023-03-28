@@ -3,84 +3,89 @@ package com.example.tabletopapplication.presentationlayer.activities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.businesslayer.models.GameEntity
-import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
+import com.example.tabletopapplication.presentationlayer.adapters.ModelAdapter
 import com.example.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
-import com.example.tabletopapplication.presentationlayer.viewmodels.GameEditViewModel
+import com.example.tabletopapplication.presentationlayer.models.DIce.Dice
+import com.example.tabletopapplication.presentationlayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.Timer.Timer
+import com.example.tabletopapplication.presentationlayer.viewmodels.*
 
 class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
-    private val viewModel = GameEditViewModel()
-    private lateinit var MRadapter: MaterialRecyclerAdapter
+    private val gameId by lazy{ intent.getLongExtra("gameId",-1) }
+    private val differentMaterialsadapter by lazy{ ModelAdapter(this, gameId)}
+    private val gameDBViewModel by lazy{ ViewModelProvider(this)[GameDBViewModel::class.java]}
+    private val noteViewModel by lazy{ ViewModelProvider(this)[NoteViewModel::class.java]}
+    private val diceViewModel by lazy{ ViewModelProvider(this)[DiceDBViewModel::class.java]}
+    private val timerViewModel by lazy{ ViewModelProvider(this)[TimerDBViewModel::class.java]}
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize
-        val arguments = intent.extras
-        if (arguments != null)
-            viewModel.game = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arguments.getParcelable("Game", GameEntity::class.java)
-            } else {
-                intent.getParcelableExtra("Game")
-            }
 
-
-        MRadapter = MaterialRecyclerAdapter()
+        drawDB()
         findViewById<RecyclerView>(R.id.activity_edit_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = MRadapter
-        }
-
-        // Clicks
-        findViewById<ImageView>(R.id.activity_edit_game__back_button).setOnClickListener {
-            setResult(RESULT_CANCELED)
-            finish()
+            adapter = differentMaterialsadapter
         }
 
         findViewById<ImageView>(R.id.activity_edit_game__save_button).setOnClickListener {
-            setResult(RESULT_OK, Intent().apply {
-                putExtra("Game", viewModel.game)
-            })
-            finish()
+            val intent = Intent(this, GamePreviewActivity::class.java)
+            intent.putExtra("gameId",gameId)
+            startActivityForResult(intent, ACTIVITY_REQUEST_CODE.PREVIEW.value)
         }
 
-        findViewById<CardView>(R.id.activity_edit_game__edit_button).setOnClickListener {
-            val intent = Intent(this, GameEditPropertiesActivity::class.java).apply {
-                putExtra("Game", viewModel.game)
-            }
-            startActivityForResult(intent, ACTIVITY_REQUEST_CODE.EDIT_PROPERTIES.value)
+        findViewById<ImageView>(R.id.activity_edit_game__back_button).setOnClickListener {
+            val intent = Intent(this, GamePreviewActivity::class.java)
+            intent.putExtra("gameId",gameId)
+            startActivityForResult(intent, ACTIVITY_REQUEST_CODE.PREVIEW.value)
         }
 
-        viewModel.LDgame.observe(this) {
-            findViewById<TextView>(R.id.activity_edit_game__title).apply {
-                text = viewModel.game?.name ?: "Name"
-            }
-            findViewById<TextView>(R.id.activity_edit_game__description).apply {
-                text = viewModel.game?.description ?: "Description"
-            }
-            // TODO("Добавить заполнение materials and image")
+        val addButton = findViewById<ImageView>(R.id.activity_edit_game__add_button)
+
+        addButton.setOnClickListener {
+            val intent = Intent(this, ChooseMaterialActivity::class.java)
+            intent.putExtra("gameId",gameId)
+            startActivity(intent)
         }
+
+
     }
+    fun drawDB() {
+        val gameId = intent.getLongExtra("gameId",-1)
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when(requestCode) {
-            ACTIVITY_REQUEST_CODE.EDIT_PROPERTIES.value -> {
-                when(resultCode) {
-                    RESULT_OK -> {
-                        viewModel.game = data?.extras?.getParcelable("Game")
-                    }
+        val idMaterial = intent.getLongExtra("idMaterial", -1)
+        val typeMaterial = intent.getLongExtra("typeMaterial", -1)
+        Log.i("AAAAAAA",idMaterial.toString())
+        when (typeMaterial) {
+            1L -> {
+                gameDBViewModel.getOneDiceOfGame(gameId,idMaterial).observe(this) {dice ->
+                    differentMaterialsadapter.setItem(dice)
                 }
             }
+
+            2L ->{
+                gameDBViewModel.getOneNoteOfGame(gameId,idMaterial).observe(this) {note ->
+                    differentMaterialsadapter.setItem(note)
+
+                }
+            }
+            3L->{
+                gameDBViewModel.getOneTimerOfGame(gameId,idMaterial).observe(this) {timer ->
+                    differentMaterialsadapter.setItem(timer)
+                }
+            }
+            else -> {}
         }
     }
+
 }
