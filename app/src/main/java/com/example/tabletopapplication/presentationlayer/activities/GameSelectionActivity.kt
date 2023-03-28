@@ -13,6 +13,7 @@ import com.example.tabletopapplication.BuildConfig
 import com.example.tabletopapplication.R
 import com.example.tabletopapplication.businesslayer.models.GameEntity
 import com.example.tabletopapplication.presentationlayer.adapters.GameAdapter
+import com.example.tabletopapplication.presentationlayer.adapters.GameDbAdapter
 import com.example.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
 import com.example.tabletopapplication.presentationlayer.models.LoadState
 import com.example.tabletopapplication.presentationlayer.models.game.Game
@@ -37,12 +38,12 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
 
     private val viewModel: GameListViewModel = GameListViewModel()
-    private lateinit var gameAdapter: GameAdapter
+    private val gameAdapter = GameDbAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        gameAdapter = GameAdapter()
+
         findViewById<RecyclerView>(R.id.game_recycler).apply {
             adapter = gameAdapter
             layoutManager = GridLayoutManager(context, 2)
@@ -60,7 +61,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         }
 
         // Observes
-        viewModel.LDstate.observe(this) { state ->
+        /*viewModel.LDstate.observe(this) { state ->
             when (state) {
                 is LoadState.Initialized -> Unit
                 is LoadState.Pending -> Unit
@@ -73,15 +74,16 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
             }
         }
 
-        viewModel.load()
-
+        viewModel.load()*/
         DBCheck()
+        fillRecycler()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when(requestCode) {
+        /*when(requestCode) {
             ACTIVITY_REQUEST_CODE.PREVIEW.value -> {
                 when(resultCode) {
                     RESULT_OK -> {
@@ -108,6 +110,12 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
                     }
                 }
             }
+        }*/
+    }
+
+    private fun fillRecycler() {
+        gameDBViewModel.getAllGame().observe(this){
+            game-> gameAdapter.addListGames(game)
         }
     }
 

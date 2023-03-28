@@ -72,17 +72,17 @@ class MaterialRecyclerAdapter(
         ) {
 
             when (material.id) {
-                1L -> {
+                4L -> {
                     val typeMaterial = Dice(gameId)
                     intent.putExtra("idMaterial", typeMaterial.id)
                     diceViewModel.addDice(typeMaterial)
                 }
-                2L->{
+                5L->{
                     val typeMaterial = Note("", gameId)
                     intent.putExtra("idMaterial", typeMaterial.id)
                     noteViewModel.addNote(typeMaterial)
                 }
-                3L->{
+                6L->{
                     val typeMaterial = Timer(gameId)
                     intent.putExtra("idMaterial", typeMaterial.id)
                     timerViewModel.addTimer(typeMaterial)

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +33,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
         super.onCreate(savedInstanceState)
 
 
-        //drawDB()
+
         fillRecycler(gameId)
         findViewById<RecyclerView>(R.id.activity_edit_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
@@ -60,25 +61,33 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
             startActivity(intent)
         }
 
+        findViewById<CardView>(R.id.activity_edit_game__edit_button).setOnClickListener {
+            val intent = Intent(this, GameEditPropertiesActivity::class.java)
+            intent.putExtra("gameId",gameId)
+            startActivityForResult(intent, ACTIVITY_REQUEST_CODE.PREVIEW.value)
+        }
+
+
+
 
     }
     fun drawDB() {
         val idMaterial = intent.getLongExtra("idMaterial", -1)
         val typeMaterial = intent.getLongExtra("typeMaterial", -1)
         when (typeMaterial) {
-            1L -> {
+            4L -> {
                 gameDBViewModel.getOneDiceOfGame(gameId,idMaterial).observe(this) {dice ->
                     differentMaterialsadapter.setItem(dice)
                 }
             }
 
-            2L ->{
+            5L ->{
                 gameDBViewModel.getOneNoteOfGame(gameId,idMaterial).observe(this) {note ->
                     differentMaterialsadapter.setItem(note)
 
                 }
             }
-            3L->{
+            6L->{
                 gameDBViewModel.getOneTimerOfGame(gameId,idMaterial).observe(this) {timer ->
                     differentMaterialsadapter.setItem(timer)
                 }
