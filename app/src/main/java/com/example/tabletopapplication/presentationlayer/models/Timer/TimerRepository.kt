@@ -1,15 +1,14 @@
 package com.example.tabletopapplication.presentationlayer.models.Timer
 
 import androidx.lifecycle.LiveData
-import com.example.tabletopapplication.businesslayer.models.NoteDao
-import com.example.tabletopapplication.presentationlayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.game.GameDao
 
 
-class TimerRepository(private val timerDao: TimerDao) {
+class TimerRepository(private val timerDao: GameDao) {
 
     val allTimer: LiveData<List<Timer>> = timerDao.getAllTimer()
 
-    fun getOneTimer(id: Int): LiveData<Timer> {
+    fun getOneTimer(id: Long): LiveData<Timer> {
         return timerDao.getOneTimer(id)
     }
 

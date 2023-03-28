@@ -46,7 +46,7 @@ class DiceSettingsActivity : AppCompatActivity() {
         }
 
         // Здесь задумывается переход на экран с игрой (сейчас реализован переход на главную страницу)
-        findViewById<ImageView>(R.id.dice_setting_button).setOnClickListener {
+        findViewById<ImageView>(R.id.dice_setting_goback).setOnClickListener {
             val intent = Intent(this, GamePreviewActivity::class.java)
             startActivity(intent)
         }

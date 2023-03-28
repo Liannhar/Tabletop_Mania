@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
-import com.example.tabletopapplication.presentationlayer.models.Note.NoteDatabase
 import com.example.tabletopapplication.presentationlayer.models.Note.NoteRepository
+import com.example.tabletopapplication.presentationlayer.models.game.GameDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -14,7 +14,7 @@ class NoteViewModel (application: Application) : AndroidViewModel(application) {
     val repository : NoteRepository
 
     init {
-        val dao = NoteDatabase.getDatabase(application).getNotesDao()
+        val dao = GameDatabase.getDatabase(application).getGameDao()
         repository = NoteRepository(dao)
 
     }
@@ -31,7 +31,7 @@ class NoteViewModel (application: Application) : AndroidViewModel(application) {
         repository.insert(note)
     }
 
-    fun getNote(id:Int) = repository.getOneNote(id)
+    fun getNote(id:Long) = repository.getOneNote(id)
 
     fun getAllNotes() = repository.allNotes
 }

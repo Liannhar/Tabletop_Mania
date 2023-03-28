@@ -30,7 +30,7 @@ class NoteActivity: AppCompatActivity() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[NoteViewModel::class.java]
 
-        val noteId = intent.getIntExtra("idnote",-1)
+        val noteId = intent.getLongExtra("idnote",-1)
         val noteObserver = Observer<Note> { data ->
             val note = data
             noteEdit.setText(note.noteDescription)
@@ -53,21 +53,22 @@ class NoteActivity: AppCompatActivity() {
                     SaveNote(viewModel,noteEdit,noteId)
                     Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
                     dialog.cancel()
+                    startActivity(Intent(applicationContext, GameEditActivity::class.java))
+                    this.finish()
                 }
                 .setNegativeButton(
                     "No") { dialog, _ ->
+                    startActivity(Intent(applicationContext, GameEditActivity::class.java))
                     dialog.cancel()
                 }
                 .show()
             }
-            startActivity(Intent(applicationContext, GameEditActivity::class.java))
-            this.finish()
         }
     }
 
-    fun SaveNote(viewModel: NoteViewModel, noteEdit:EditText, noteId:Int){
+    fun SaveNote(viewModel: NoteViewModel, noteEdit:EditText, noteId:Long){
         val noteDescription = noteEdit.text.toString()
-        val updatedNote = Note(noteDescription)
+        val updatedNote = Note(noteDescription,intent.getLongExtra("gameId",-1))
         updatedNote.id = noteId
         viewModel.updateNote(updatedNote)
         Toast.makeText(this, "Note Updated..", Toast.LENGTH_LONG).show()

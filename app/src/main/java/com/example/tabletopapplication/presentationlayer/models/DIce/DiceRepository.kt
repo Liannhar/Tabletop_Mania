@@ -1,15 +1,14 @@
 package com.example.tabletopapplication.presentationlayer.models.DIce
 
 import androidx.lifecycle.LiveData
-import com.example.tabletopapplication.businesslayer.models.NoteDao
-import com.example.tabletopapplication.presentationlayer.models.Note.Note
+import com.example.tabletopapplication.presentationlayer.models.game.GameDao
 
 
-class DiceRepository(private val diceDao: DiceDao) {
+class DiceRepository(private val diceDao: GameDao) {
 
     val allDice: LiveData<List<Dice>> = diceDao.getAllDice()
 
-    fun getOneDice(id: Int): LiveData<Dice> {
+    fun getOneDice(id: Long): LiveData<Dice> {
         return diceDao.getOneDice(id)
     }
 

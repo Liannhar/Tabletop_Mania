@@ -2,6 +2,7 @@ package com.example.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -18,7 +19,7 @@ class ChooseMaterialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_material)
-
+        val gameId = intent.getLongExtra("gameId",-1)
         val back_button = findViewById<ImageView>(R.id.arrow_back)
 
         val materialViewModel = ViewModelProvider(
@@ -39,13 +40,15 @@ class ChooseMaterialActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.rv_choose_material)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val materialsObserver = Observer<List<Material>> { data ->
-            recyclerView.adapter = MaterialRecyclerAdapter(data,noteViewModel,diceViewModel,timerViewModel,true)
+            recyclerView.adapter = MaterialRecyclerAdapter(data,noteViewModel,diceViewModel,timerViewModel,true,gameId)
         }
+
         materialViewModel.getAllMaterials().observe(this,materialsObserver)
 
         back_button.setOnClickListener{
             startActivity(Intent(applicationContext, GameEditActivity::class.java))
             intent.putExtra("idmaterial",-1)
+            intent.putExtra("gameId",gameId)
             this.finish()
         }
     }

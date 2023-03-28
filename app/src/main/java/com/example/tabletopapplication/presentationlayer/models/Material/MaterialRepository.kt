@@ -7,7 +7,7 @@ class MaterialRepository(private val materialDao: MaterialDao) {
 
     val allMaterials: LiveData<List<Material>> = materialDao.getAllMaterials()
 
-    fun getOneMaterial(id: Int): Material {
+    fun getOneMaterial(id: Long): Material {
         return materialDao.getOneMaterial(id)
     }
 

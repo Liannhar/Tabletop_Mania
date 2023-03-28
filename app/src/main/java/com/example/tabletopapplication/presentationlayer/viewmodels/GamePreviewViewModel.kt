@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 class GamePreviewViewModel : ViewModel() {
 
     private val MLDgame = MutableLiveData(GameEntity())
+
     val LDgame: LiveData<GameEntity>
         get() = MLDgame
 
@@ -42,5 +43,8 @@ class GamePreviewViewModel : ViewModel() {
             }
         }
     }
+
+
+
 
 }

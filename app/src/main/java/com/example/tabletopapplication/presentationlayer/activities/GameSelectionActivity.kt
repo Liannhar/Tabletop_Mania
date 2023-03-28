@@ -2,10 +2,10 @@ package com.example.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,8 +15,12 @@ import com.example.tabletopapplication.businesslayer.models.GameEntity
 import com.example.tabletopapplication.presentationlayer.adapters.GameAdapter
 import com.example.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
 import com.example.tabletopapplication.presentationlayer.models.LoadState
+import com.example.tabletopapplication.presentationlayer.models.game.Game
+import com.example.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.GameListViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
+import java.util.concurrent.CountDownLatch
+
 
 class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
@@ -24,6 +28,13 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         this,
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     )[MaterialViewModel::class.java]}
+    val gameDBViewModel by lazy{ViewModelProvider(
+        this,
+        ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+    )[GameDBViewModel::class.java]
+
+    }
+
 
     private val viewModel: GameListViewModel = GameListViewModel()
     private lateinit var gameAdapter: GameAdapter
@@ -39,8 +50,13 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
         // Clicks
         findViewById<ImageView>(R.id.add_game_button).setOnClickListener {
-            val intent = Intent(this, GameEditActivity::class.java)
-            startActivityForResult(intent, ACTIVITY_REQUEST_CODE.EDIT.value)
+            val gameId = gameDBViewModel.addGame(Game("","",""))
+            intent.putExtra("gameId",-1)
+            gameId.observe(this){id->
+                val intent = Intent(this, GameEditActivity::class.java)
+                intent.putExtra("gameId",id)
+                startActivityForResult(intent, ACTIVITY_REQUEST_CODE.EDIT.value)
+            }
         }
 
         // Observes
@@ -100,7 +116,6 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         val currentVersionCode = BuildConfig.VERSION_CODE
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         val savedVersionCode = prefs.getInt("version_code", -1)
-        Log.i("AAA",savedVersionCode.toString())
         if (savedVersionCode == -1) {
             // This is a new install (or the user cleared the shared preferences)
             fillRoom()
@@ -112,5 +127,8 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
     }
     private fun fillRoom() {
         materialViewModel.getAllMaterialsFromApi()
+        gameDBViewModel.getAllGameFromApi()
+
+
     }
 }

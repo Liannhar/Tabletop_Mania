@@ -37,7 +37,7 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
         repository.insert(material)
     }
 
-    fun getMaterial(id:Int) = repository.getOneMaterial(id)
+    fun getMaterial(id:Long) = repository.getOneMaterial(id)
 
     fun getAllMaterials() = repository.allMaterials
 
@@ -48,7 +48,7 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
                 result, error ->
                 when{
                     result!= null -> {
-                        result.forEach { addMaterial(Material(it.name,it.description,it.image_url)) }
+                        result.forEach { addMaterial(Material(it.name,it.description,it.image_url,it.id.toLong())) }
                         //addMaterial(Material(result.name,result.description,result.image_url))
                     }
                     error!=null->null

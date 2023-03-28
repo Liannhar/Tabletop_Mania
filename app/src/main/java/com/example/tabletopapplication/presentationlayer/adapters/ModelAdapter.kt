@@ -1,7 +1,9 @@
 package com.example.tabletopapplication.presentationlayer.adapters
 
+import android.app.Activity
 import android.util.Log
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.presentationlayer.adapters.Delegates.DiceDelegate
 import com.example.tabletopapplication.presentationlayer.adapters.Delegates.NoteDelegate
@@ -10,27 +12,26 @@ import com.example.tabletopapplication.presentationlayer.adapters.Delegates.Time
 import com.example.tabletopapplication.presentationlayer.models.Model
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegatesManager
 
-class ModelAdapter():RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ModelAdapter(val context:FragmentActivity,val gameId:Long):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val adapterDelegateManager = AdapterDelegatesManager<ArrayList<Model>>()
     private val items = ArrayList<Model>()
 
     init{
         adapterDelegateManager.addDelegate(DiceDelegate())
-            .addDelegate(TimerDelegate())
-            .addDelegate(NoteDelegate())
+            .addDelegate(TimerDelegate(context))
+            .addDelegate(NoteDelegate(gameId))
     }
 
     fun setItems(mitems:List<Model>){
-        val length=items.size
-        this.items.addAll(mitems)
+        this.items.addAll(0,items)
 
-        notifyItemRangeChanged(length-1, items.size)
     }
 
     fun setItem(item:Model){
-        items.add(item)
-        notifyItemChanged(items.size - 1)
+        this.items.add(item)
+        Log.i("AAAAAAA",items.size.toString()+" setItem")
+        notifyItemRangeInserted(0, items.size);
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

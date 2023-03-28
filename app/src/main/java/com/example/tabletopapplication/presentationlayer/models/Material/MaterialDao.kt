@@ -20,5 +20,5 @@ interface MaterialDao {
     fun getAllMaterials(): LiveData<List<Material>>
 
     @Query("Select * from materialsTable Where id=:id")
-    fun getOneMaterial(id:Int): Material
+    fun getOneMaterial(id:Long): Material
 }
