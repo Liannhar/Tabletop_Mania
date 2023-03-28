@@ -36,7 +36,6 @@ class MaterialRecyclerAdapter(
 
     class ViewHolder(
         itemView: View,
-        private val adapter: MaterialRecyclerAdapter
     ) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.card_material__name)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.card_material__description)
@@ -97,7 +96,7 @@ class MaterialRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_material, parent, false)
-        return ViewHolder(itemView, this)
+        return ViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {

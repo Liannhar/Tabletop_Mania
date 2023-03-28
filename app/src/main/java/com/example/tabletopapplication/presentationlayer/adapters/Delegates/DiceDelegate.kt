@@ -14,11 +14,11 @@ import com.example.tabletopapplication.presentationlayer.models.Model
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 
-class DiceDelegate(): AdapterDelegate<ArrayList<Model>>() {
+class DiceDelegate(val gameId:Long): AdapterDelegate<ArrayList<Model>>() {
     class DiceViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dice_card,parent,false))
     {
-        fun bind(item: Dice)
+        fun bind(item: Dice,gameId: Long)
         {
             val dice= itemView.findViewById<CardView>(R.id.dice_card_mini)
 
@@ -38,6 +38,7 @@ class DiceDelegate(): AdapterDelegate<ArrayList<Model>>() {
 
             dice.setOnClickListener {
                 val intent = Intent(parent.context, DiceSettingsActivity::class.java)
+                intent.putExtra("gameId",gameId)
                 parent.context.startActivity(intent)
             }
         }
@@ -57,6 +58,6 @@ class DiceDelegate(): AdapterDelegate<ArrayList<Model>>() {
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as DiceViewHolder).bind(items[position] as Dice)
+        (holder as DiceViewHolder).bind(items[position] as Dice,gameId)
     }
 }

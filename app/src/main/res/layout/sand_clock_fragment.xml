@@ -49,15 +49,5 @@
         android:layout_marginTop="24dp"
   />
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/set_time_host"
-        app:layout_constraintBottom_toBottomOf="@+id/timer_back"
-        app:layout_constraintEnd_toEndOf="@+id/timer_back"
-        app:layout_constraintStart_toStartOf="@+id/timer_back"
-        >
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
