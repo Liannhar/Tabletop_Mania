@@ -21,7 +21,7 @@ class NoteActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes)
-
+        val gameId = intent.getLongExtra("gameId",-1)
         val saveButton = findViewById<ImageView>(R.id.activity_notes_save_button)
         val backButton = findViewById<ImageView>(R.id.activity_notes_back_button)
         val noteEdit = findViewById<EditText>(R.id.editText)
@@ -39,25 +39,31 @@ class NoteActivity: AppCompatActivity() {
 
 
         saveButton.setOnClickListener {
-            SaveNote(viewModel,noteEdit,noteId)
+            SaveNote(viewModel,noteEdit,noteId,gameId)
+
+            intent.putExtra("gameId",gameId)
             startActivity(Intent(applicationContext,GamePreviewActivity::class.java))
             this.finish()
         }
 
         backButton.setOnClickListener {
             val noteDescription = noteEdit.text.toString()
+
             if (noteDescription.isNotEmpty()) {
                 AlertDialog.Builder(this).setMessage("Do you want save note?")
                 .setPositiveButton(
                     "Yes") { dialog, _ ->
-                    SaveNote(viewModel,noteEdit,noteId)
+                    SaveNote(viewModel,noteEdit,noteId,gameId)
                     Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
                     dialog.cancel()
+
+                    intent.putExtra("gameId",gameId)
                     startActivity(Intent(applicationContext, GameEditActivity::class.java))
                     this.finish()
                 }
                 .setNegativeButton(
                     "No") { dialog, _ ->
+                    intent.putExtra("gameId",gameId)
                     startActivity(Intent(applicationContext, GameEditActivity::class.java))
                     dialog.cancel()
                 }
@@ -66,9 +72,9 @@ class NoteActivity: AppCompatActivity() {
         }
     }
 
-    fun SaveNote(viewModel: NoteViewModel, noteEdit:EditText, noteId:Long){
+    fun SaveNote(viewModel: NoteViewModel, noteEdit:EditText, noteId:Long,gameId:Long){
         val noteDescription = noteEdit.text.toString()
-        val updatedNote = Note(noteDescription,intent.getLongExtra("gameId",-1))
+        val updatedNote = Note(noteDescription, gameId)
         updatedNote.id = noteId
         viewModel.updateNote(updatedNote)
         Toast.makeText(this, "Note Updated..", Toast.LENGTH_LONG).show()

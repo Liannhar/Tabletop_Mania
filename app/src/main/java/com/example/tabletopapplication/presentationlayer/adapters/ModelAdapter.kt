@@ -18,20 +18,19 @@ class ModelAdapter(val context:FragmentActivity,val gameId:Long):RecyclerView.Ad
     private val items = ArrayList<Model>()
 
     init{
-        adapterDelegateManager.addDelegate(DiceDelegate())
+        adapterDelegateManager.addDelegate(DiceDelegate(gameId))
             .addDelegate(TimerDelegate(context))
             .addDelegate(NoteDelegate(gameId))
     }
 
     fun setItems(mitems:List<Model>){
-        this.items.addAll(0,items)
-
+        items.addAll(mitems)
+        notifyItemRangeInserted(this.items.size - items.size, mitems.size)
     }
 
     fun setItem(item:Model){
-        this.items.add(item)
-        Log.i("AAAAAAA",items.size.toString()+" setItem")
-        notifyItemRangeInserted(0, items.size);
+        items.add(item)
+        notifyItemRangeInserted(this.items.size - items.size, 1)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
