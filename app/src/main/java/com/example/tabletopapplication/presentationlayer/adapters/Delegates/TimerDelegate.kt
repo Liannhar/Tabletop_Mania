@@ -9,19 +9,23 @@ import android.widget.EditText
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
+import com.example.tabletopapplication.presentationlayer.activities.GameEditActivity
+import com.example.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.example.tabletopapplication.presentationlayer.activities.NoteActivity
 import com.example.tabletopapplication.presentationlayer.fragments.TimerFragment
 import com.example.tabletopapplication.presentationlayer.models.Model
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.presentationlayer.models.Timer.Timer
+import com.example.tabletopapplication.presentationlayer.models.TimerViewModel
+import com.example.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 
-class TimerDelegate(val contextt:FragmentActivity): AdapterDelegate<ArrayList<Model>>() {
+class TimerDelegate(val contextt:FragmentActivity,val timerViewModel: TimerDBViewModel): AdapterDelegate<ArrayList<Model>>() {
 
     class TimerViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.timer_host_layout,parent,false))
     {
-        fun bind(item: Timer,contextt: FragmentActivity)
+        fun bind(item: Timer,contextt: FragmentActivity,timerViewModel: TimerDBViewModel)
         {
             contextt.supportFragmentManager.let {
                 val transaction = it.beginTransaction()
@@ -30,19 +34,15 @@ class TimerDelegate(val contextt:FragmentActivity): AdapterDelegate<ArrayList<Mo
             }
 
 
-            /* when(itemView.context) {
+             when(itemView.context) {
                is GamePreviewActivity -> {
                    itemView.setOnClickListener {
-                       // TODO переход на материал
                    }
                }
                is GameEditActivity -> {
-                   deleteButton.isVisible = true
-                   deleteButton.setOnClickListener {
-                       adapter.removeMaterial(item)
-                   }
+
                }
-           }*/
+           }
         }
     }
 
@@ -60,6 +60,6 @@ class TimerDelegate(val contextt:FragmentActivity): AdapterDelegate<ArrayList<Mo
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as TimerViewHolder).bind(items[position] as Timer,contextt)
+        (holder as TimerViewHolder).bind(items[position] as Timer,contextt, timerViewModel)
     }
 }

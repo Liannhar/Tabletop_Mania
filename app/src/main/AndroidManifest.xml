@@ -56,6 +56,10 @@
             android:name=".presentationlayer.activities.GamePreviewActivity"
             >
         </activity>
+        <activity
+            android:name=".presentationlayer.activities.InstallMaterialActivity"
+            >
+        </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
             tools:replace="android:authorities"

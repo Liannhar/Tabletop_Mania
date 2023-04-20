@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.tabletopapplication.R
+import com.example.tabletopapplication.presentationlayer.activities.GameEditActivity
+import com.example.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.example.tabletopapplication.presentationlayer.models.TimerViewModel
 
 class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
@@ -44,7 +46,13 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
             onSetClick()
         }
 
+        when(context) {
+            is GamePreviewActivity -> {
+            }
+            is GameEditActivity -> {
 
+            }
+        }
 
     }
 
@@ -65,5 +73,6 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
         fun newInstance(): Fragment = TimerFragment()
 
         const val TAG = "GameListFragment"
+
     }
 }
