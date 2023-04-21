@@ -10,11 +10,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tabletopapplication.R
+import com.example.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
 import com.example.tabletopapplication.presentationlayer.activities.GameEditActivity
+import com.example.tabletopapplication.presentationlayer.activities.GamePreviewActivity
+import com.example.tabletopapplication.presentationlayer.activities.InstallMaterialActivity
 import com.example.tabletopapplication.presentationlayer.contract.MyActivityResultContract
 import com.example.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
 import com.example.tabletopapplication.presentationlayer.models.DIce.Dice
@@ -24,6 +29,8 @@ import com.example.tabletopapplication.presentationlayer.models.Timer.Timer
 import com.example.tabletopapplication.presentationlayer.viewmodels.DiceDBViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
 import com.example.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+import com.google.android.play.core.splitinstall.SplitInstallRequest
 
 class MaterialRecyclerAdapter(
     private val materials: List<Material>,
@@ -58,6 +65,28 @@ class MaterialRecyclerAdapter(
                     sendID(material,noteViewModel,diceViewModel,timerViewModel,gameId,intent)
                     Log.i("AAAAAAA",material.id.toString()+"AAAA")
                     itemView.context.startActivity(intent)
+                }
+            }
+
+            when(itemView.context) {
+                is GamePreviewActivity -> {
+                }
+                is InstallMaterialActivity -> {
+                    val installButton=itemView.findViewById<CardView>(R.id.card_material__install_button)
+                    installButton.isVisible = true
+                    installButton.setOnClickListener {
+                        val splitInstallManager = SplitInstallManagerFactory.create(itemView.context)
+                        val request =
+                            SplitInstallRequest
+                                .newBuilder()
+                                .addModule("@string/title_note")
+                                .build()
+
+                        splitInstallManager
+                            .startInstall(request)
+                            .addOnSuccessListener { sessionId ->  }
+                            .addOnFailureListener { exception ->  }
+                    }
                 }
             }
         }

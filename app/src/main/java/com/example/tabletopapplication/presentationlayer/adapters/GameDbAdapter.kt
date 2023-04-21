@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -41,7 +42,8 @@ class GameDbAdapter(
                 when(context) {
                     is GameSelectionActivity -> {
                         val intent = Intent(context, GamePreviewActivity::class.java).apply {
-                            putExtra("gameId", item.id) }
+                            context.getSharedPreferences("MyPrefsFile", AppCompatActivity.MODE_PRIVATE).edit().putLong("currentGameId",item.id).apply()
+                        }
                         startActivityForResult(context, intent, ACTIVITY_REQUEST_CODE.PREVIEW.value, Bundle())
                     }
                 }
