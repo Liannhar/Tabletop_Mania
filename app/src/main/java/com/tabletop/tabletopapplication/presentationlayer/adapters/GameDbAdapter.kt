@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.tabletopapplication.R
+import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameSelectionActivity
 import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE

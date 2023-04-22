@@ -1,45 +1,18 @@
 package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.tabletopapplication.R
-
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
-import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
-import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
-import com.tabletop.tabletopapplication.presentationlayer.activities.InstallMaterialActivity
-import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
-import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
-import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
-import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
-import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
-import com.tabletop.tabletopapplication.presentationlayer.models.Timer.Timer
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DiceDBViewModel
+import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
 
 class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_properties_game) {
 

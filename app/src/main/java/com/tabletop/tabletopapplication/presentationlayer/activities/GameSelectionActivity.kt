@@ -7,8 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tabletopapplication.BuildConfig
-import com.example.tabletopapplication.R
+import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.GameDbAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
 import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
@@ -114,17 +113,17 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
     private fun DBCheck(){
 
-        val currentVersionCode = BuildConfig.VERSION_CODE
+        //val currentVersionCode = BuildConfig.VERSION_CODE
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         val savedVersionCode = prefs.getInt("version_code", -1)
         if (savedVersionCode == -1) {
             // This is a new install (or the user cleared the shared preferences)
             fillRoom()
-        } else if (currentVersionCode > savedVersionCode) {
+        } else if (1 > savedVersionCode) {
             // This is an upgrade
         }
 
-        prefs.edit().putInt("version_code", currentVersionCode).apply()
+        prefs.edit().putInt("version_code", 1).apply()
     }
     private fun fillRoom() {
         materialViewModel.getAllMaterialsFromApi()

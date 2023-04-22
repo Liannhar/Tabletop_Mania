@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tabletopapplication.R
+import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DiceDBViewModel

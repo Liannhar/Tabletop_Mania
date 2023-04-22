@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.tabletopapplication.R
+import com.tabletop.tabletopapplication.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

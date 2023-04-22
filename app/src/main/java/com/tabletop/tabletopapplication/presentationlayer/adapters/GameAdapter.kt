@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.tabletopapplication.R
+import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.businesslayer.models.GameEntity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameSelectionActivity

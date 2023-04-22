@@ -18,14 +18,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
-        release {
-            storeFile file('../upload-keystore.jks')
-            storePassword 'OLEGSAMPARA'
-            keyAlias 'OLEGSAMPARA'
-            keyPassword 'OLEGSAMPARA'
-        }
-    }
+
 
     buildTypes {
         release {

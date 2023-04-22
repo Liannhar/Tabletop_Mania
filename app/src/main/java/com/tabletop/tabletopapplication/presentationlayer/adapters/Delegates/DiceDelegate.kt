@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tabletopapplication.R
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
+import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity

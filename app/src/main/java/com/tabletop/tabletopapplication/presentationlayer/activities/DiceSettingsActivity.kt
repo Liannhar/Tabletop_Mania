@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.example.tabletopapplication.R
+import com.tabletop.tabletopapplication.R
 
 class DiceSettingsActivity : AppCompatActivity() {
 

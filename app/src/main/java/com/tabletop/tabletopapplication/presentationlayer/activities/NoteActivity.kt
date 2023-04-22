@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.tabletopapplication.R
+import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
 

@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import com.example.tabletopapplication.R
+import com.tabletop.tabletopapplication.R
 
 class SetTimeFragment : Fragment(R.layout.set_time_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
