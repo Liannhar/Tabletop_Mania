@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.tabletopapplication'
+    namespace 'com.tabletop.tabletopapplication'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.tabletopapplication"
+        applicationId "com.tabletop.tabletopapplication"
         minSdk 24
         targetSdk 33
         versionCode 1
