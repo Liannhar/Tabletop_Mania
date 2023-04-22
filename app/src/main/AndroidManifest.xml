@@ -16,13 +16,18 @@
         <!-- Активити для песочных часов -->
         <activity
             android:name=".presentationlayer.activities.HourglassActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_hourglass"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <!-- Активити реализующее настройку броска кубиков -->
         <activity
@@ -56,6 +61,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        -->
+        <activity android:name=".presentationlayer.activities.ChooseMaterialActivity"></activity>
+        <activity android:name=".presentationlayer.activities.NoteActivity"></activity>
+        <activity android:name=".presentationlayer.activities.GamePreviewActivity"></activity>
 
         <activity
                 android:name=".presentationlayer.activities.ChooseMaterialActivity"
