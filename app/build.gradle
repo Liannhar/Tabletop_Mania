@@ -18,11 +18,20 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file('../upload-keystore.jks')
+            storePassword 'OLEGSAMPARA'
+            keyAlias 'OLEGSAMPARA'
+            keyPassword 'OLEGSAMPARA'
+        }
+    }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -35,7 +44,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    dynamicFeatures = [':Note']
+    dynamicFeatures = [":note"]
 }
 
 dependencies {

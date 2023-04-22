@@ -16,7 +16,7 @@
     <string name="remove">Remove</string>
     <string name="gameedit">GameEdit</string>
     <string name="add">Add</string>
-    <string name="select_file">Select File</string>
+    <string name="select_file">Select Photo</string>
     <string name="delete">Delete</string>
     <string name="title">Title</string>
     <string name="materials">Materials:</string>
@@ -27,6 +27,6 @@
     <string name="h2">H2</string>
     <string name="h3">H3</string>
     <string name="dice_roll">Брось свои кубаны на встречу приключениям</string>
-    <string name="title_note">Note Material</string>
+    <string name="title_note">note</string>
     <string name="install">Install</string>
 </resources>
