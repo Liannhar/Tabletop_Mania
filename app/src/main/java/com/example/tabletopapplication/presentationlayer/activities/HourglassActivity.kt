@@ -25,7 +25,7 @@ class HourglassActivity : AppCompatActivity() {
         val tvTimer1 = findViewById<TextView>(R.id.hourglass_cv_1_text)
         tvTimer1.text = (timerInterval / 1000).toString()
         val tvTimer3 = findViewById<TextView>(R.id.hourglass_cv_3_text)
-        tvTimer3.text = "Крути телефон влево, для запуска песочных часов!"
+        tvTimer3.text = "Крути телефон влево для запуска песочных часов!"
         val img = findViewById<ImageView>(R.id.hourglass_pic)
         sensManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val sens = sensManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
