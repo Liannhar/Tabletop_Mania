@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import com.tabletop.tabletopapplication.R
+import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
 class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_properties_game) {
@@ -23,7 +24,6 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
 
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         val gameId = prefs.getLong("currentGameId", -1)
-        //val game =
         // Initialize
        /* val arguments = intent.extras
         if (arguments != null)
@@ -32,10 +32,6 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
             } else {
                 intent.getParcelableExtra("Game")
             }*/
-        viewModel.getGame(gameId).observe(this) {game->
-            game.name= findViewById<EditText>(R.id.activity_edit_properties_game__name).text.toString()
-            viewModel.updateGame(game)
-        }
         // Clicks
         findViewById<ImageView>(R.id.activity_edit_properties_game__back_button).setOnClickListener {
             setResult(RESULT_CANCELED)
@@ -45,18 +41,19 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
         }
 
         findViewById<ImageView>(R.id.activity_edit_properties_game__save_button).setOnClickListener {
-            setResult(RESULT_OK, Intent().apply {
-            })
-            viewModel.getGame(gameId).observe(this) {game->
+            setResult(RESULT_OK, Intent().apply {})
+            /*viewModel.getGame(gameId).observe(this) {game->
                 game.name= findViewById<EditText>(R.id.activity_edit_properties_game__name).text.toString()
                 viewModel.updateGame(game)
             }
             viewModel.getGame(gameId).observe(this) {game->
                 game.description= findViewById<EditText>(R.id.activity_edit_properties_game__description).text.toString()
                 viewModel.updateGame(game)
-            }
+            }*/
             viewModel.getGame(gameId).observe(this) {game->
-                game.image= findViewById<ImageView>(R.id.activity_edit_properties_game__image).toString()
+                game.name= findViewById<EditText>(R.id.activity_edit_properties_game__name).text.toString()
+                game.description= findViewById<EditText>(R.id.activity_edit_properties_game__description).text.toString()
+                game.image= findViewById<ImageView>(R.id.activity_edit_properties_game__image).drawable.toString()
                 viewModel.updateGame(game)
             }
             val intent = Intent(this, GameEditActivity::class.java)
@@ -76,13 +73,14 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
                 setImageURI(Uri.parse(game.image))
             }
         }
+
         val selectImageIntent = registerForActivityResult(ActivityResultContracts.GetContent())
         { uri ->
             findViewById<ImageView>(R.id.activity_edit_properties_game__image).apply {setImageURI(uri) }
-
         }
         findViewById<CardView>(R.id.activity_edit_properties_game__select_file).setOnClickListener {
             selectImageIntent.launch("image/*")
         }
+
     }
 }

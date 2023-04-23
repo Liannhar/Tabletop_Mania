@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tabletop.tabletopapplication.BuildConfig
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.GameDbAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
@@ -17,11 +18,11 @@ import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialVie
 
 class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
-    val materialViewModel by lazy{ ViewModelProvider(
+    private val materialViewModel by lazy{ ViewModelProvider(
         this,
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     )[MaterialViewModel::class.java]}
-    val gameDBViewModel by lazy{ViewModelProvider(
+    private val gameDBViewModel by lazy{ViewModelProvider(
         this,
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     )[GameDBViewModel::class.java]
@@ -40,7 +41,11 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
             adapter = gameAdapter
             layoutManager = GridLayoutManager(context, 2)
         }
+        findViewById<ImageView>(R.id.downloaded_materials_button).setOnClickListener{
+            getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit().putLong("currentGameId", -1).apply()
+            startActivity(Intent(applicationContext, InstallMaterialActivity::class.java))
 
+        }
         // Clicks
         findViewById<ImageView>(R.id.add_game_button).setOnClickListener {
             val gameId = gameDBViewModel.addGame(Game("Set Title","Set Description",""))
@@ -113,17 +118,17 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
     private fun DBCheck(){
 
-        //val currentVersionCode = BuildConfig.VERSION_CODE
+        val currentVersionCode = BuildConfig.VERSION_CODE
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         val savedVersionCode = prefs.getInt("version_code", -1)
         if (savedVersionCode == -1) {
             // This is a new install (or the user cleared the shared preferences)
             fillRoom()
-        } else if (1 > savedVersionCode) {
+        } else if (currentVersionCode > savedVersionCode) {
             // This is an upgrade
         }
 
-        prefs.edit().putInt("version_code", 1).apply()
+        prefs.edit().putInt("version_code", currentVersionCode).apply()
     }
     private fun fillRoom() {
         materialViewModel.getAllMaterialsFromApi()

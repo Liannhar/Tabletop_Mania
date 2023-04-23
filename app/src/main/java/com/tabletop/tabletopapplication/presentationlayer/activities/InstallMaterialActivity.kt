@@ -21,10 +21,10 @@ class InstallMaterialActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_choose_material)
+        setContentView(R.layout.actvity_download_materials)
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         val gameId = prefs.getLong("currentGameId", -1)
-        val back_button = findViewById<ImageView>(R.id.arrow_back)
+        val backButton = findViewById<ImageView>(R.id.arrow_back)
 
         val materialViewModel = ViewModelProvider(
             this,
@@ -53,10 +53,18 @@ class InstallMaterialActivity : AppCompatActivity() {
 
         materialViewModel.getAllMaterials().observe(this, materialsObserver)
 
-        back_button.setOnClickListener {
-            startActivity(Intent(applicationContext, GameEditActivity::class.java))
-            prefs.edit().putInt("idmaterial", -1).apply()
-            this.finish()
+        backButton.setOnClickListener {
+            if (gameId == -1L){
+                startActivity(Intent(applicationContext, GameSelectionActivity::class.java))
+                prefs.edit().putInt("idmaterial", -1).apply()
+                this.finish()
+            }
+            else {
+                startActivity(Intent(applicationContext, ChooseMaterialActivity::class.java))
+                prefs.edit().putInt("idmaterial", -1).apply()
+                this.finish()
+            }
+
         }
     }
 }
