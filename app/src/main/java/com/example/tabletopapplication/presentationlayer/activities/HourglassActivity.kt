@@ -79,11 +79,11 @@ class HourglassActivity : AppCompatActivity() {
             override fun onFinish() {
                 if (sideFlag) {
                     tvTimer3.text = "Песок закончился!\n" +
-                            "Крути телефон вправо, чтобы запустить часы снова!"
+                        "Крути телефон вправо, чтобы запустить часы снова!"
                     sideFlag = false
                 } else {
                     tvTimer3.text = "Песок закончился!\nКрути телефон влево, " +
-                            "чтобы запустить часы снова!"
+                        "чтобы запустить часы снова!"
                     sideFlag = true
                 }
                 Glide.with(applicationContext).load(R.drawable.hourglass1).into(img)
