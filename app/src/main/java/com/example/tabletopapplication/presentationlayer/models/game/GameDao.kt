@@ -23,7 +23,7 @@ interface GameDao {
     fun getAllGame(): LiveData<List<Game>>
 
     @Query("Select * from gameTable Where id=:id")
-    fun getOneGame(id:Long): Game
+    fun getOneGame(id:Long): LiveData<Game>
 
     @Query("SELECT n.id,n.gameId,n.noteDescription FROM gameTable AS g JOIN notesTable AS n ON g.id = n.gameId WHERE n.gameId = :id")
     fun getAllNoteOfGame(id:Long): LiveData<List<Note>>
@@ -34,13 +34,13 @@ interface GameDao {
     @Query("Select t.gameId,t.id from gameTable as g join timerTable as t on g.id=t.gameId Where t.gameId=:id")
     fun getAllTimerOfGame(id:Long): LiveData<List<Timer>>
 
-    @Query("Select n.id,n.noteDescription,n.gameId from gameTable as g join notesTable as n on g.id=n.gameId Where n.gameId=:gameid AND n.id=:noteid ")
+    @Query("Select n.id,n.noteDescription,n.gameId from gameTable as g join notesTable as n on g.id=n.gameId Where n.gameId=:gameid AND n.id=:noteid Order BY n.id ")
     fun getOneNoteOfGame(gameid:Long,noteid:Long): LiveData<Note>
 
-    @Query("Select d.id,d.gameId from gameTable as g join diceTable as d on g.id=d.gameId Where d.gameId=:gameid AND d.id=:diceid")
+    @Query("Select d.id,d.gameId from gameTable as g join diceTable as d on g.id=d.gameId Where d.gameId=:gameid AND d.id=:diceid Order BY d.id")
     fun getOneDiceOfGame(gameid:Long,diceid:Long): LiveData<Dice>
 
-    @Query("Select t.id,t.gameId from gameTable as g join timerTable as t on g.id=t.gameId Where t.gameId=:gameid AND t.id=:timerid")
+    @Query("Select t.id,t.gameId from gameTable as g join timerTable as t on g.id=t.gameId Where t.gameId=:gameid AND t.id=:timerid Order BY t.id")
     fun getOneTimerOfGame(gameid:Long,timerid:Long): LiveData<Timer>
 
 

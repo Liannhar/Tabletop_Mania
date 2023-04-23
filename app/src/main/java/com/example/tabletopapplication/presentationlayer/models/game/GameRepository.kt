@@ -11,7 +11,7 @@ class GameRepository(private val gameDao: GameDao) {
 
     val allGame: LiveData<List<Game>> = gameDao.getAllGame()
 
-    fun getOneGame(id: Long): Game {
+    fun getOneGame(id: Long): LiveData<Game> {
         return gameDao.getOneGame(id)
     }
 

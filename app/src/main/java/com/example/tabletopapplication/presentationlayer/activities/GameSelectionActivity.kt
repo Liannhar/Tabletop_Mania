@@ -42,7 +42,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        getSharedPreferences("MyPrefsFile", MODE_PRIVATE).getLong("currentGameId", -1)
 
         findViewById<RecyclerView>(R.id.game_recycler).apply {
             adapter = gameAdapter
@@ -51,11 +51,11 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
         // Clicks
         findViewById<ImageView>(R.id.add_game_button).setOnClickListener {
-            val gameId = gameDBViewModel.addGame(Game("","",""))
-            intent.putExtra("gameId",-1)
+            val gameId = gameDBViewModel.addGame(Game("Set Title","Set Description",""))
+            getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit().putLong("currentGameId", -1).apply()
             gameId.observe(this){id->
                 val intent = Intent(this, GameEditActivity::class.java)
-                intent.putExtra("gameId",id)
+                getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit().putLong("currentGameId", id).apply()
                 startActivityForResult(intent, ACTIVITY_REQUEST_CODE.EDIT.value)
             }
         }
@@ -136,7 +136,5 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
     private fun fillRoom() {
         materialViewModel.getAllMaterialsFromApi()
         gameDBViewModel.getAllGameFromApi()
-
-
     }
 }

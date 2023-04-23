@@ -4,43 +4,52 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.EditText
+import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabletopapplication.R
+import com.example.tabletopapplication.presentationlayer.activities.GameEditActivity
+import com.example.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.example.tabletopapplication.presentationlayer.models.Model
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.presentationlayer.activities.NoteActivity
+import com.example.tabletopapplication.presentationlayer.adapters.ModelAdapter
+import com.example.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
+import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 
-class NoteDelegate(val gameId:Long):AdapterDelegate<ArrayList<Model>>() {
+class NoteDelegate(val adapter: ModelAdapter,val noteViewModel: NoteViewModel):AdapterDelegate<ArrayList<Model>>() {
 
     class NoteViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.note_card,parent,false))
     {
-        fun bind(item: Note,gameId: Long)
+        fun bind(item: Note,adapter: ModelAdapter,position: Int,noteViewModel: NoteViewModel)
         {
             val note= itemView.findViewById<EditText>(R.id.editTextMini)
-            note.setText(item.noteDescription)
-            note.setOnClickListener {
-                    val intent = Intent(parent.context, NoteActivity::class.java)
-                    intent.putExtra("idnote",item.id )
-                    intent.putExtra("gameId",gameId )
-                    parent.context.startActivity(intent)
-            }
 
-            /* when(itemView.context) {
+
+             when(itemView.context) {
                is GamePreviewActivity -> {
-                   itemView.setOnClickListener {
-                       // TODO переход на материал
+                   note.setText(item.noteDescription)
+                   note.setOnClickListener {
+                       val intent = Intent(parent.context, NoteActivity::class.java)
+                       parent.context.startActivity(intent)
                    }
                }
                is GameEditActivity -> {
+                   val deleteButton=itemView.findViewById<CardView>(R.id.edit_text_delete)
                    deleteButton.isVisible = true
                    deleteButton.setOnClickListener {
-                       adapter.removeMaterial(item)
+                       adapter.removeItem(position)
+                       noteViewModel.deleteNote(item)
                    }
                }
-           }*/
+           }
+
+
         }
     }
 
@@ -58,6 +67,6 @@ class NoteDelegate(val gameId:Long):AdapterDelegate<ArrayList<Model>>() {
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as NoteViewHolder).bind(items[position] as Note,gameId)
+        (holder as NoteViewHolder).bind(items[position] as Note,adapter,position,noteViewModel)
     }
 }

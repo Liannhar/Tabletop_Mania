@@ -53,7 +53,7 @@
                 app:cardCornerRadius="@dimen/image_corner_radius_card_material">
 
                 <ImageView
-                    android:id="@+id/activity_edit_game__image"
+                    android:id="@+id/activity_preview_game__image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@color/black"
@@ -71,7 +71,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/activity_edit_game__title"
+                android:id="@+id/activity_preview_game__title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
@@ -83,7 +83,7 @@
                 android:layout_margin="5dp" />
 
             <TextView
-                android:id="@+id/activity_edit_game__description"
+                android:id="@+id/activity_preview_game__description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

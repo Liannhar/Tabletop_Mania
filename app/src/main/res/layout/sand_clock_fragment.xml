@@ -8,6 +8,7 @@
     app:layout_constraintBottom_toBottomOf="parent">
 
     <ImageView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/timer_back"
@@ -48,6 +49,20 @@
         app:layout_constraintStart_toEndOf="@+id/time"
         android:layout_marginTop="24dp"
   />
-
+    <androidx.cardview.widget.CardView
+        android:id="@+id/edit_text_delete"
+        android:visibility="invisible"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:cardCornerRadius="24dp"
+        app:cardBackgroundColor="#FF0000"
+        app:layout_constraintEnd_toEndOf="@id/timer_back"
+        app:layout_constraintTop_toTopOf="@id/timer_back"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/baseline_horizontal_rule_24"/>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
