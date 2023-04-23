@@ -6,14 +6,13 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.tabletopapplication.R
-import kotlin.math.abs
 
 class HourglassActivity : AppCompatActivity() {
     lateinit var sensManager: SensorManager
@@ -43,8 +42,7 @@ class HourglassActivity : AppCompatActivity() {
                             startHourglassTimer(timerInterval)
                             startFlag = false
                         }
-                    }
-                    else if (!sideFlag && (it < -3.4)) {
+                    } else if (!sideFlag && (it < -3.4)) {
                         tvTimer3.text = "Песочные часы запущены!"
                         Glide.with(applicationContext).load(R.drawable.hourglass).into(img)
                         if (startFlag) {
@@ -63,8 +61,8 @@ class HourglassActivity : AppCompatActivity() {
 
         findViewById<ImageView>(R.id.hourglass_goback).setOnClickListener {
             val intent = Intent(this, GamePreviewActivity::class.java)
-            val gameId = intent.getLongExtra("gameId",-1)
-            intent.putExtra("gameId",gameId)
+            val gameId = intent.getLongExtra("gameId", -1)
+            intent.putExtra("gameId", gameId)
             startActivity(intent)
         }
     }
@@ -74,24 +72,24 @@ class HourglassActivity : AppCompatActivity() {
         val tvTimer3 = findViewById<TextView>(R.id.hourglass_cv_3_text)
         val img = findViewById<ImageView>(R.id.hourglass_pic)
         timer?.cancel()
-        timer = object: CountDownTimer(msec, refreshFunction) {
+        timer = object : CountDownTimer(msec, refreshFunction) {
             override fun onTick(p0: Long) {
                 tvTimer1.text = (p0 / 1000).toString()
             }
 
             override fun onFinish() {
                 if (sideFlag) {
-                    tvTimer3.text = "Песок закончился!\nКрути телефон вправо, чтобы запустить часы снова!"
+                    tvTimer3.text = "Песок закончился!\n" +
+                            "Крути телефон вправо, чтобы запустить часы снова!"
                     sideFlag = false
-                }
-                else {
-                    tvTimer3.text = "Песок закончился!\nКрути телефон влево, чтобы запустить часы снова!"
+                } else {
+                    tvTimer3.text = "Песок закончился!\nКрути телефон влево, " +
+                            "чтобы запустить часы снова!"
                     sideFlag = true
                 }
                 Glide.with(applicationContext).load(R.drawable.hourglass1).into(img)
                 startFlag = true
             }
-
         }.start()
     }
 
