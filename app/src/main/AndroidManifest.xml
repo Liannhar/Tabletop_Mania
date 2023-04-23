@@ -23,11 +23,6 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!-- Активити реализующее настройку броска кубиков -->
         <activity
@@ -51,7 +46,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <!-- Главный экран
+        <!-- Главный экран -->
         <activity
             android:name=".presentationlayer.activities.GameSelectionActivity"
             android:exported="true">
