@@ -21,6 +21,7 @@
                 android:contentDescription="@string/arrow_back_description"
                 />
         <ImageView
+                android:id="@+id/download"
                 android:layout_width="@dimen/icon_top_panel_width"
                 android:layout_height="match_parent"
                 android:src="@drawable/baseline_cloud_download_24"

@@ -28,4 +28,6 @@
     <string name="h2">H2</string>
     <string name="h3">H3</string>
     <string name="dice_roll">Брось свои кубаны на встречу приключениям</string>
+    <string name="title_note">Note Material</string>
+    <string name="install">Install</string>
 </resources>

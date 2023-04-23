@@ -11,8 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.tabletopapplication.presentationlayer.models.Note.Note
 import com.example.tabletopapplication.R
-import com.example.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
-import com.example.tabletopapplication.presentationlayer.models.Material.Material
 import com.example.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
 
 class NoteActivity: AppCompatActivity() {
@@ -21,7 +19,8 @@ class NoteActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes)
-        val gameId = intent.getLongExtra("gameId",-1)
+        val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
+        val gameId = prefs.getLong("currentGameId", -1)
         val saveButton = findViewById<ImageView>(R.id.activity_notes_save_button)
         val backButton = findViewById<ImageView>(R.id.activity_notes_back_button)
         val noteEdit = findViewById<EditText>(R.id.editText)
@@ -32,8 +31,7 @@ class NoteActivity: AppCompatActivity() {
 
         val noteId = intent.getLongExtra("idnote",-1)
         val noteObserver = Observer<Note> { data ->
-            val note = data
-            noteEdit.setText(note.noteDescription)
+            noteEdit.setText(data.noteDescription)
         }
         viewModel.getNote(noteId).observe(this,noteObserver)
 
@@ -41,7 +39,6 @@ class NoteActivity: AppCompatActivity() {
         saveButton.setOnClickListener {
             SaveNote(viewModel,noteEdit,noteId,gameId)
 
-            intent.putExtra("gameId",gameId)
             startActivity(Intent(applicationContext,GamePreviewActivity::class.java))
             this.finish()
         }
@@ -57,13 +54,11 @@ class NoteActivity: AppCompatActivity() {
                     Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
                     dialog.cancel()
 
-                    intent.putExtra("gameId",gameId)
                     startActivity(Intent(applicationContext, GameEditActivity::class.java))
                     this.finish()
                 }
                 .setNegativeButton(
                     "No") { dialog, _ ->
-                    intent.putExtra("gameId",gameId)
                     startActivity(Intent(applicationContext, GameEditActivity::class.java))
                     dialog.cancel()
                 }
