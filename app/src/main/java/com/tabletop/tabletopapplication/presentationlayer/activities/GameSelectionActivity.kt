@@ -48,7 +48,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         }
         // Clicks
         findViewById<ImageView>(R.id.add_game_button).setOnClickListener {
-            val gameId = gameDBViewModel.addGame(Game("Set Title","Set Description",""))
+            val gameId = gameDBViewModel.addGame(Game("Set Title","Set Description","", count = 0))
             getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit().putLong("currentGameId", -1).apply()
             gameId.observe(this){id->
                 val intent = Intent(this, GameEditActivity::class.java)

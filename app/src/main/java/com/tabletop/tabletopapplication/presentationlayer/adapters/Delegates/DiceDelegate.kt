@@ -14,13 +14,13 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreview
 import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DiceDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class DiceDelegate(val adapter: ModelAdapter, val diceDBViewModel: DiceDBViewModel): AdapterDelegate<ArrayList<Model>>() {
+class DiceDelegate(val adapter: ModelAdapter, val diceDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
     class DiceViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dice_card,parent,false))
     {
-        fun bind(item: Dice, adapter: ModelAdapter, position: Int, diceDBViewModel: DiceDBViewModel)
+        fun bind(item: Dice, adapter: ModelAdapter, position: Int, diceDBViewModel: GameDBViewModel)
         {
             val dice= itemView.findViewById<CardView>(R.id.dice_card_mini)
 

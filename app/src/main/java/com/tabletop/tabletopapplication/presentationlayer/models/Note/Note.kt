@@ -15,7 +15,8 @@ import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 class Note (
     @ColumnInfo var noteDescription :String="",
     @ColumnInfo(name = "gameId") val  gameId:Long,
-    @PrimaryKey var id:Long = (0..1000000).random().toLong()
-    ): Model
+    @PrimaryKey var id:Long = (0..1000000).random().toLong(),
+    @ColumnInfo override val positionAdd: Int
+): Model
 {
 }

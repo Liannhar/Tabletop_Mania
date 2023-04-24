@@ -2,22 +2,17 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DiceDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
 
 
 class ChooseMaterialActivity : AppCompatActivity() {
@@ -33,15 +28,9 @@ class ChooseMaterialActivity : AppCompatActivity() {
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[MaterialViewModel::class.java]
-        val noteViewModel = ViewModelProvider(this,
+        val gameDBViewModel = ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[NoteViewModel::class.java]
-        val diceViewModel = ViewModelProvider(this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[DiceDBViewModel::class.java]
-        val timerViewModel = ViewModelProvider(this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[TimerDBViewModel::class.java]
+        )[GameDBViewModel::class.java]
 
         val listOfMaterials= mutableListOf<Material>()
         val recyclerView: RecyclerView = findViewById(R.id.rv_choose_material)
@@ -50,7 +39,6 @@ class ChooseMaterialActivity : AppCompatActivity() {
 
         val installModules = SplitInstallManagerFactory.create(this).installedModules
         installModules.forEach {
-
             materialViewModel.getAllMaterials().observe(this){ data ->
                 when(it){
                     "dice"->listOfMaterials.add(data[0])
@@ -61,14 +49,19 @@ class ChooseMaterialActivity : AppCompatActivity() {
             }
 
         }
-        recyclerView.adapter = MaterialRecyclerAdapter(listOfMaterials,noteViewModel,diceViewModel,timerViewModel,true,gameId)
-
-
+        recyclerView.adapter = MaterialRecyclerAdapter(listOfMaterials, gameDBViewModel,gameId)
 
         back_button.setOnClickListener{
-            startActivity(Intent(applicationContext, GameEditActivity::class.java))
-            prefs.edit().putInt("idmaterial",-1).apply()
-            this.finish()
+            if (gameId == -1L){
+                startActivity(Intent(applicationContext, GameSelectionActivity::class.java))
+                prefs.edit().putInt("idmaterial", -1).apply()
+                this.finish()
+            }
+            else {
+                startActivity(Intent(applicationContext, GameEditActivity::class.java))
+                prefs.edit().putInt("idmaterial",-1).apply()
+                this.finish()
+            }
         }
         download_button.setOnClickListener {
             startActivity(Intent(applicationContext,InstallMaterialActivity::class.java))

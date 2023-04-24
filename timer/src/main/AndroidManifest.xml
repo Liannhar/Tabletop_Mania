@@ -4,7 +4,8 @@
 
     <dist:module
         dist:instant="false"
-        dist:title="@string/title_timer">
+        dist:title="@string/title_timer"
+        dist:OnDemand="true">
         <dist:delivery>
             <dist:on-demand />
         </dist:delivery>

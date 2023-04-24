@@ -1,21 +1,20 @@
 package com.tabletop.tabletopapplication.presentationlayer.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.play.core.splitcompat.SplitCompat
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DiceDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
 
 
 class InstallMaterialActivity : AppCompatActivity() {
@@ -31,25 +30,16 @@ class InstallMaterialActivity : AppCompatActivity() {
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[MaterialViewModel::class.java]
-        val noteViewModel = ViewModelProvider(
+        val gameDBViewModel =  ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[NoteViewModel::class.java]
-        val diceViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[DiceDBViewModel::class.java]
-        val timerViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[TimerDBViewModel::class.java]
+        )[GameDBViewModel::class.java]
 
 
         val recyclerView: RecyclerView = findViewById(R.id.rv_choose_material)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val materialsObserver = Observer<List<Material>> { data ->
-            recyclerView.adapter = MaterialRecyclerAdapter(data, noteViewModel, diceViewModel, timerViewModel, true, gameId
-            )
+            recyclerView.adapter = MaterialRecyclerAdapter(data, gameDBViewModel , gameId)
         }
 
         materialViewModel.getAllMaterials().observe(this, materialsObserver)
@@ -67,5 +57,10 @@ class InstallMaterialActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
     }
 }

@@ -15,23 +15,22 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.NoteActivit
 import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class NoteDelegate(val adapter: ModelAdapter, val noteViewModel: NoteViewModel):AdapterDelegate<ArrayList<Model>>() {
+class NoteDelegate(val adapter: ModelAdapter, val noteViewModel: GameDBViewModel):AdapterDelegate<ArrayList<Model>>() {
 
     class NoteViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.note_card,parent,false))
     {
-        fun bind(item: Note, adapter: ModelAdapter, position: Int, noteViewModel: NoteViewModel)
+        fun bind(item: Note, adapter: ModelAdapter, position: Int, noteViewModel: GameDBViewModel)
         {
             val note= itemView.findViewById<EditText>(R.id.editTextMini)
-
-
              when(itemView.context) {
                is GamePreviewActivity -> {
                    note.setText(item.noteDescription)
                    note.setOnClickListener {
                        val intent = Intent(parent.context, NoteActivity::class.java)
+                       intent.putExtra("idnote",item.id)
                        parent.context.startActivity(intent)
                    }
                }

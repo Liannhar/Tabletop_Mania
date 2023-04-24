@@ -9,21 +9,17 @@ import com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates.Dic
 import com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates.NoteDelegate
 import com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates.TimerDelegate
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DiceDBViewModel
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class ModelAdapter(val context:FragmentActivity,
-                   private val noteViewModel: NoteViewModel, private val diceDBViewModel: DiceDBViewModel, private val timerDBViewModel: TimerDBViewModel
-):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ModelAdapter(val context:FragmentActivity,gameDBViewModel: GameDBViewModel):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val adapterDelegateManager = AdapterDelegatesManager<ArrayList<Model>>()
     private val items = ArrayList<Model>()
 
     init{
-        adapterDelegateManager.addDelegate(DiceDelegate(this,diceDBViewModel))
-            .addDelegate(TimerDelegate(context,timerDBViewModel))
-            .addDelegate(NoteDelegate(this,noteViewModel))
+        adapterDelegateManager.addDelegate(DiceDelegate(this,gameDBViewModel))
+            .addDelegate(TimerDelegate(context,gameDBViewModel))
+            .addDelegate(NoteDelegate(this,gameDBViewModel))
     }
 
     fun setItems(mitems:List<Model>){

@@ -11,7 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.NoteViewModel
+import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
 
 class NoteActivity: AppCompatActivity() {
@@ -28,7 +29,7 @@ class NoteActivity: AppCompatActivity() {
         val viewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[NoteViewModel::class.java]
+        )[GameDBViewModel::class.java]
 
         val noteId = intent.getLongExtra("idnote",-1)
         val noteObserver = Observer<Note> { data ->
@@ -38,10 +39,15 @@ class NoteActivity: AppCompatActivity() {
 
 
         saveButton.setOnClickListener {
-            SaveNote(viewModel,noteEdit,noteId,gameId)
 
-            startActivity(Intent(applicationContext,GamePreviewActivity::class.java))
-            this.finish()
+            viewModel.getGame(gameId).observe(this){
+                SaveNote(viewModel,noteEdit,noteId,gameId,it)
+                Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
+                it.count = it.count+1
+                viewModel.updateGame(it)
+                startActivity(Intent(applicationContext,GamePreviewActivity::class.java))
+                this.finish()
+            }
         }
 
         backButton.setOnClickListener {
@@ -51,12 +57,16 @@ class NoteActivity: AppCompatActivity() {
                 AlertDialog.Builder(this).setMessage("Do you want save note?")
                 .setPositiveButton(
                     "Yes") { dialog, _ ->
-                    SaveNote(viewModel,noteEdit,noteId,gameId)
-                    Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
-                    dialog.cancel()
 
-                    startActivity(Intent(applicationContext, GameEditActivity::class.java))
-                    this.finish()
+                    viewModel.getGame(gameId).observe(this){
+                        SaveNote(viewModel,noteEdit,noteId,gameId,it)
+                        Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
+                        dialog.cancel()
+                        it.count = it.count+1
+                        viewModel.updateGame(it)
+                        startActivity(Intent(applicationContext, GameEditActivity::class.java))
+                        this.finish()
+                    }
                 }
                 .setNegativeButton(
                     "No") { dialog, _ ->
@@ -68,9 +78,9 @@ class NoteActivity: AppCompatActivity() {
         }
     }
 
-    fun SaveNote(viewModel: NoteViewModel, noteEdit:EditText, noteId:Long,gameId:Long){
+    fun SaveNote(viewModel: GameDBViewModel, noteEdit:EditText, noteId:Long,gameId:Long,game:Game){
         val noteDescription = noteEdit.text.toString()
-        val updatedNote = Note(noteDescription, gameId)
+        val updatedNote = Note(noteDescription, gameId, positionAdd = game.count)
         updatedNote.id = noteId
         viewModel.updateNote(updatedNote)
         Toast.makeText(this, "Note Updated..", Toast.LENGTH_LONG).show()

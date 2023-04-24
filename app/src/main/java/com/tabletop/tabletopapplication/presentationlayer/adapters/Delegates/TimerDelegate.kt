@@ -11,14 +11,14 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreview
 import com.tabletop.tabletopapplication.presentationlayer.fragments.TimerFragment
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
 import com.tabletop.tabletopapplication.presentationlayer.models.Timer.Timer
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.TimerDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class TimerDelegate(val contextt:FragmentActivity,val timerViewModel: TimerDBViewModel): AdapterDelegate<ArrayList<Model>>() {
+class TimerDelegate(val contextt:FragmentActivity,val timerViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
 
     class TimerViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.timer_host_layout,parent,false))
     {
-        fun bind(item: Timer, contextt: FragmentActivity, timerViewModel: TimerDBViewModel)
+        fun bind(item: Timer, contextt: FragmentActivity, timerViewModel: GameDBViewModel)
         {
             contextt.supportFragmentManager.let {
                 val transaction = it.beginTransaction()
