@@ -16,7 +16,7 @@
         <!-- Активити для песочных часов -->
         <activity
             android:name=".presentationlayer.activities.HourglassActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_activity_hourglass"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
