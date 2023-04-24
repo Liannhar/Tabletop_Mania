@@ -1,8 +1,9 @@
 package com.tabletop.tabletopapplication.presentationlayer.models.Material
 
 import androidx.lifecycle.LiveData
+import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDao
 
-class MaterialRepository(private val materialDao: MaterialDao) {
+class MaterialRepository(private val materialDao: GameDao) {
 
     val allMaterials: LiveData<List<Material>> = materialDao.getAllMaterials()
 
@@ -10,15 +11,15 @@ class MaterialRepository(private val materialDao: MaterialDao) {
         return materialDao.getOneMaterial(id)
     }
 
-    suspend fun insert(material: Material) {
+    fun insert(material: Material) {
         materialDao.insert(material)
     }
 
-    suspend fun delete(material: Material){
+    fun delete(material: Material){
         materialDao.delete(material)
     }
 
-    suspend fun update(material: Material){
+    fun update(material: Material){
         materialDao.update(material)
     }
 }

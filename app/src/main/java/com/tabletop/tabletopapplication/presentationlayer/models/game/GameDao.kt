@@ -3,6 +3,7 @@ package com.tabletop.tabletopapplication.presentationlayer.models.game
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
+import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
 import com.tabletop.tabletopapplication.presentationlayer.models.Timer.Timer
 
@@ -88,4 +89,19 @@ interface GameDao {
 
     @Query("Select * from timerTable Where id=:id")
     fun getOneTimer(id:Long): LiveData<Timer>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(material: Material)
+
+    @Delete
+    fun delete(material: Material)
+
+    @Update
+    fun update(material: Material)
+
+    @Query("Select * from materialsTable order by id ASC")
+    fun getAllMaterials(): LiveData<List<Material>>
+
+    @Query("Select * from materialsTable Where id=:id")
+    fun getOneMaterial(id:Long): Material
 }

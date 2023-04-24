@@ -15,3 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "TabletopApplication"
 include ':app'
 include ':note'
+include ':timer'
+include ':dice'

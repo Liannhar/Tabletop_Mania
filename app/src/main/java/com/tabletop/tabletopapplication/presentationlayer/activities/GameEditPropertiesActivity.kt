@@ -77,6 +77,10 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
         val selectImageIntent = registerForActivityResult(ActivityResultContracts.GetContent())
         { uri ->
             findViewById<ImageView>(R.id.activity_edit_properties_game__image).apply {setImageURI(uri) }
+            viewModel.getGame(gameId).observe(this) {game->
+                game.image=uri.toString()
+                viewModel.updateGame(game)
+            }
         }
         findViewById<CardView>(R.id.activity_edit_properties_game__select_file).setOnClickListener {
             selectImageIntent.launch("image/*")

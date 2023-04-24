@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.tabletop.tabletopapplication.businesslayer.managers.MaterialManager
 import com.tabletop.tabletopapplication.presentationlayer.models.LoadState
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
-import com.tabletop.tabletopapplication.presentationlayer.models.Material.MaterialDatabase
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.MaterialRepository
+import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -19,7 +19,7 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
     val state = MutableLiveData<LoadState>()
 
     init {
-        val dao = MaterialDatabase.getDatabase(application).getMaterialDao()
+        val dao = GameDatabase.getDatabase(application).getGameDao()
         repository = MaterialRepository(dao)
     }
 
@@ -46,7 +46,7 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
                 result, error ->
                 when{
                     result!= null -> {
-                        result.forEach { addMaterial(Material(it.name,it.description,it.image_url,it.id.toLong())) }
+                        //result.forEach { addMaterial(Material(it.name,it.description,it.image_url.,it.id.toLong())) }
                         //addMaterial(Material(result.name,result.description,result.image_url))
                     }
                     error!=null->null

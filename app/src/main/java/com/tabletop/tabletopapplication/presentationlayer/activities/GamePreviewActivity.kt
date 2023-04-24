@@ -42,7 +42,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         gameDBViewModel.getGame(gameId).observe(this){game ->
             previewGameTitle.text = game.name
             previewGameDescription.text = game.description
-            Glide.with(this).load(Uri.parse(game.image)).into(previewGameImage)
+            Glide.with(this).load(game.image).into(previewGameImage)
         }
 
 

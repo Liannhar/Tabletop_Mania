@@ -122,7 +122,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         val savedVersionCode = prefs.getInt("version_code", -1)
         if (savedVersionCode == -1) {
-            // This is a new install (or the user cleared the shared preferences)
+            // This is a new ins    tall (or the user cleared the shared preferences)
             fillRoom()
         } else if (currentVersionCode > savedVersionCode) {
             // This is an upgrade
@@ -131,7 +131,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         prefs.edit().putInt("version_code", currentVersionCode).apply()
     }
     private fun fillRoom() {
-        materialViewModel.getAllMaterialsFromApi()
+        //materialViewModel.getAllMaterialsFromApi()
         gameDBViewModel.getAllGameFromApi()
     }
 }

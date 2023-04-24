@@ -1,6 +1,7 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,42 +46,57 @@ class MaterialRecyclerAdapter(
             nameTextView.text = material.name
             descriptionTextView.text = material.description
 
+            val resourceId = itemView.context.resources.getIdentifier(material.image, "drawable", itemView.context.packageName)
+
+
             Glide.with(image)
-                .load(material.image)
+                .load(resourceId)
                 .error(R.drawable.black_rectangle)
                 .into(image)
 
             itemView.findViewById<LinearLayout>(R.id.card_material__material).setOnClickListener {
                 if (isChooseMaterial) {
-                    val intent = Intent(itemView.context, GameEditActivity::class.java)
-                    intent.putExtra("typeMaterial", material.id)
-                    intent.putExtra("gameId", gameId)
-                    sendID(material,noteViewModel,diceViewModel,timerViewModel,gameId,intent)
-                    itemView.context.startActivity(intent)
+                    sendID(material,noteViewModel,diceViewModel,timerViewModel,gameId)
+                    transition(material)
                 }
             }
 
             when(itemView.context) {
-                is GamePreviewActivity -> {
-                }
                 is InstallMaterialActivity -> {
                     val installButton=itemView.findViewById<CardView>(R.id.card_material__install_button)
                     installButton.isVisible = true
                     installButton.setOnClickListener {
                         val splitInstallManager = SplitInstallManagerFactory.create(itemView.context)
-                        val request =
-                            SplitInstallRequest
-                                .newBuilder()
-                                .addModule(":note")
-                                .build()
+                        val moduleName = when(material.id){
+                            1L-> ":dice"
+                            2L-> ":note"
+                            3L-> ":timer"
+                            //"sandTImer"->listOfMaterials.add(data[3])
+                            else -> "Error"
+                        }
+                        if (moduleName!="Error")
+                        {
+                            Log.i("AAAAA","AAAAA")
+                            val request = SplitInstallRequest.newBuilder().addModule(moduleName).build()
+                            splitInstallManager
+                                .startInstall(request)
+                                .addOnSuccessListener { sessionId -> transition(material) }
+                                .addOnFailureListener { exception ->  Log.i("ErrorMy",exception.toString())}
+                        }
 
-                        splitInstallManager
-                            .startInstall(request)
-                            .addOnSuccessListener { sessionId ->  }
-                            .addOnFailureListener { exception ->  }
+
+
+
                     }
                 }
             }
+        }
+
+        private fun transition(material: Material):Intent
+        {
+            val intent = Intent(itemView.context, GameEditActivity::class.java)
+            intent.putExtra("typeMaterial", material.id)
+            return intent
         }
 
         private fun sendID(
@@ -88,24 +104,20 @@ class MaterialRecyclerAdapter(
             noteViewModel: NoteViewModel,
             diceViewModel: DiceDBViewModel,
             timerViewModel: TimerDBViewModel,
-            gameId: Long,
-            intent:Intent
+            gameId: Long
         ) {
 
             when (material.id) {
-                4L -> {
+                1L -> {
                     val typeMaterial = Dice(gameId)
-                    intent.putExtra("idMaterial", typeMaterial.id)
                     diceViewModel.addDice(typeMaterial)
                 }
-                5L->{
+                2L->{
                     val typeMaterial = Note("", gameId)
-                    intent.putExtra("idMaterial", typeMaterial.id)
                     noteViewModel.addNote(typeMaterial)
                 }
-                6L->{
+                3L->{
                     val typeMaterial = Timer(gameId)
-                    intent.putExtra("idMaterial", typeMaterial.id)
                     timerViewModel.addTimer(typeMaterial)
                 }
                 else -> {}

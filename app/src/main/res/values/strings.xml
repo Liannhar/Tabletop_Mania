@@ -29,4 +29,6 @@
     <string name="dice_roll">Брось свои кубаны на встречу приключениям</string>
     <string name="title_note">note</string>
     <string name="install">Install</string>
+    <string name="title_timer">Timer</string>
+    <string name="title_dice">dice</string>
 </resources>

@@ -9,7 +9,7 @@ class Material (
     @ColumnInfo(name = "name") val name :String,
     @ColumnInfo(name = "description") val description :String,
     @ColumnInfo(name = "image") val image :String?,
-    @PrimaryKey val id:Long
+    @PrimaryKey val id:Long = (0..1000000).random().toLong()
     )
 {
 }
