@@ -29,6 +29,12 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
 
         timeButton.setOnClickListener {
             timer.cancel()
+            if (!flag) {
+                flag = !flag
+            }
+             minuets= arguments?.getString("minuets") ?: "00"
+             seconds = arguments?.getString("seconds") ?: "00"
+            timer=viewModel.timer(minuets,seconds,timeButton)
             timer.start()
         }
         stopButton.setOnClickListener {

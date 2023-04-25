@@ -22,6 +22,7 @@
         android:layout_width="80dp"
         android:layout_height="64dp"
         android:textSize="40sp"
+        android:backgroundTint="@color/white"
         android:id="@+id/minuets"
         android:layout_marginStart="24dp"
         app:layout_constraintStart_toStartOf="@+id/timer_back"
@@ -29,6 +30,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/timer_back" />
 
     <EditText
+        android:backgroundTint="@color/white"
         android:inputType="number"
         android:textColor="@color/white"
         android:layout_width="80dp"
@@ -57,6 +59,7 @@
 
     <Button
         android:text="OK"
+        android:background="@color/second_color_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/set_time_button"
