@@ -7,11 +7,12 @@ import android.widget.EditText
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
-import com.tabletop.tabletopapplication.presentationlayer.activities.NoteActivity
+
 import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
@@ -29,9 +30,18 @@ class NoteDelegate(val adapter: ModelAdapter, val noteViewModel: GameDBViewModel
                is GamePreviewActivity -> {
                    note.setText(item.noteDescription)
                    note.setOnClickListener {
-                       val intent = Intent(parent.context, NoteActivity::class.java)
-                       intent.putExtra("idnote",item.id)
-                       parent.context.startActivity(intent)
+
+                       val manager = SplitInstallManagerFactory.create(parent.context)
+                       if (manager.installedModules.contains("note")) {
+                           // загружаем класс из модуля
+                           val myClass = Class.forName("com.tabletop.note.NoteActivity")
+                           // создаем экземпляр класса
+                           val instance = myClass.newInstance()
+                           // вызываем метод класса
+                           val intent = Intent(parent.context, instance::class.java)
+                           intent.putExtra("idnote",item.id)
+                           parent.context.startActivity(intent)
+                       }
                    }
                }
                is GameEditActivity -> {

@@ -60,10 +60,7 @@
                 android:name=".presentationlayer.activities.ChooseMaterialActivity"
                >
         </activity>
-        <activity
-            android:name=".presentationlayer.activities.NoteActivity"
-            >
-        </activity>
+
         <activity
             android:name=".presentationlayer.activities.GamePreviewActivity"
             >
@@ -82,6 +79,8 @@
 
         <activity android:name=".presentationlayer.activities.GameEditPropertiesActivity" />
         <activity android:name=".presentationlayer.activities.GameEditActivity" />
+
+
     </application>
 
 </manifest>
