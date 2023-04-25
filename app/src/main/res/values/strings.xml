@@ -16,7 +16,7 @@
     <string name="remove">Remove</string>
     <string name="gameedit">GameEdit</string>
     <string name="add">Add</string>
-    <string name="select_file">Select File</string>
+    <string name="select_file">Select Photo</string>
     <string name="delete">Delete</string>
     <string name="title">Title</string>
     <string name="materials">Materials:</string>
@@ -29,6 +29,10 @@
     <string name="h3">H3</string>
     <string name="dice_roll">Брось свои кубаны на встречу приключениям</string>
     <string name="h_card">Эти песочные часы никогда не разобьются!</string>
-    <string name="title_note">Note Material</string>
+    <string name="title_note">note</string>
     <string name="install">Install</string>
+    <string name="title_timer">Timer</string>
+    <string name="title_dice">dice</string>
+    <string name="title_hourglass">hourglass</string>
+    <string name="timer_text">Поставь таймер для передышки</string>
 </resources>

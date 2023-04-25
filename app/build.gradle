@@ -6,28 +6,30 @@ plugins {
 }
 
 android {
-    namespace 'com.example.tabletopapplication'
+    namespace 'com.tabletop.tabletopapplication'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.tabletopapplication"
+        applicationId "com.tabletop.tabletopapplication"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 12
+        versionName "1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_9
+        targetCompatibility JavaVersion.VERSION_1_9
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -35,7 +37,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    dynamicFeatures = [':Note']
+    dynamicFeatures = [":note", ':timer', ':dice', ':hourglass']
 }
 
 dependencies {
@@ -77,4 +79,12 @@ dependencies {
 
     implementation("com.google.android.play:feature-delivery-ktx:2.0.1")
 
+
+    def arch_version = "2.1.0"
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-common-java8:$arch_version"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$arch_version"
+
+    // Flow components
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
 }

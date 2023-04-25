@@ -6,7 +6,7 @@
     >
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/dice_card_mini"
+        android:id="@+id/hourglass_card_mini"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,8 +21,9 @@
         app:layout_constraintTop_toTopOf="parent">
         <ImageView
             android:id="@+id/hourglass_pic"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="20dp"
             android:src="@drawable/hourglass1"
             />
         <TextView
@@ -37,13 +38,13 @@
 
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-        android:id="@+id/dice_card_delete"
+        android:id="@+id/hourglass_card_delete"
         android:visibility="invisible"
         android:layout_width="40dp"
         android:layout_height="40dp"
         app:cardCornerRadius="24dp"
         app:cardBackgroundColor="#FF0000"
-        app:layout_constraintEnd_toEndOf="@id/dice_card_mini"
+        app:layout_constraintEnd_toEndOf="@id/hourglass_card_mini"
         app:layout_constraintTop_toTopOf="parent"
         >
         <ImageView

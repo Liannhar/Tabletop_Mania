@@ -82,13 +82,10 @@
         <TextView
                 android:id="@+id/dice_setting_cv_3_text"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="Выберите тип кубика:"
+                android:layout_width="wrap_content"
+                android:text="Выберите тип кубика: "
                 android:textAlignment="center"
-                android:textSize="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                />
+                android:textSize="28dp"/>
     </androidx.cardview.widget.CardView>
 
     <Spinner

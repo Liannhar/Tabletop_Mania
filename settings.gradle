@@ -14,4 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "TabletopApplication"
 include ':app'
-include ':Note'
+include ':note'
+include ':timer'
+include ':dice'
+include ':hourglass'
