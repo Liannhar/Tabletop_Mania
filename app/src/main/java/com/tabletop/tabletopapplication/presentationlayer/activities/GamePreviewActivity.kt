@@ -19,6 +19,7 @@ import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUES
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -36,18 +37,20 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         super.onCreate(savedInstanceState)
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         val gameId = prefs.getLong("currentGameId", -1)
+        prefs.edit().putLong("currentGameId", gameId).apply()
         val differentMaterialsadapter by lazy{ ModelAdapter(this,gameDBViewModel) }
         val materials = arrayListOf<Model>()
         val previewGameTitle = findViewById<TextView>(R.id.activity_preview_game__title)
         val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
 
-        lifecycleScope.launch(){
+        val job = lifecycleScope.launch(){
                 gameDBViewModel.getGame(gameId).collect(){
-                    previewGameTitle.text = it.name
-                    previewGameDescription.text = it.description
-                    Glide.with(this@GamePreviewActivity).load(it.image).into(previewGameImage)
+                        previewGameTitle.text = it.name
+                        previewGameDescription.text = it.description
+                        Glide.with(this@GamePreviewActivity).load(it.image).into(previewGameImage)
                 }
+
         }
 
         /*gameDBViewModel.getGame(gameId).observe(this){game ->
@@ -65,25 +68,27 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
             layoutManager = LinearLayoutManager(context)
         }
         findViewById<ImageView>(R.id.activity_preview_game__back_button).setOnClickListener {
-            СheckMaterials(gameId)
+            СheckMaterials(gameId,job)
             val intent = Intent(this, GameSelectionActivity::class.java)
             startActivity(intent)
-            finish()
         }
         findViewById<ImageView>(R.id.activity_preview_game__edit_button).setOnClickListener {
             val intent = Intent(this, GameEditActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
     }
 
-    private fun СheckMaterials(gameId: Long){
+    private fun СheckMaterials(gameId: Long,job:Job){
         lifecycleScope.launch(){
+            job.cancel()
             val game = gameDBViewModel.getGame(gameId).first()
-            Log.i("AAAAAA",game.count.toString()+"AA")
             if (game.count==0)
+            {
+
                 gameDBViewModel.deleteGame(game)
+            }
+
         }
     }
 

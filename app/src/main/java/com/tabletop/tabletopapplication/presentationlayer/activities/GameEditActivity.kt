@@ -32,6 +32,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         val gameId = prefs.getLong("currentGameId", -1)
+        prefs.edit().putLong("currentGameId", gameId).apply()
         val gameCount = prefs.getInt("gameCount", -1)
         val editGameTitle = findViewById<TextView>(R.id.activity_edit_game__title)
         val editGameImage = findViewById<ImageView>(R.id.activity_edit_game__image)
@@ -39,11 +40,15 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
         val differentMaterialsadapter by lazy{ ModelAdapter(this,gameDBViewModel)}
         val materials = arrayListOf<Model>()
 
-        lifecycleScope.launch(){
+        val job = lifecycleScope.launch(){
             gameDBViewModel.getGame(gameId).collect(){
-                editGameTitle.text = it.name
-                editGameDescription.text = it.description
-                Glide.with(this@GameEditActivity).load(it.image).into(editGameImage)
+                if (it.id>0)
+                {
+                    editGameTitle.text = it.name
+                    editGameDescription.text = it.description
+                    Glide.with(this@GameEditActivity).load(it.image).into(editGameImage)
+                }
+
             }
         }
 
@@ -65,12 +70,14 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
             deleteMaterials(gameCount,gameId)
 
             val intent = Intent(this, GamePreviewActivity::class.java)
-            startActivity(intent)
             finish()
+            startActivity(intent)
+
         }
 
         findViewById<ImageView>(R.id.activity_edit_game__add_button).setOnClickListener {
             val intent = Intent(this, ChooseMaterialActivity::class.java)
+
             startActivity(intent)
             finish()
         }
@@ -106,10 +113,10 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
     private fun deleteMaterials(gameCount:Int,gameId: Long){
         lifecycleScope.launch(){
-            gameDBViewModel.getDeleteTimersOfGame(gameCount-1).first().forEach{gameDBViewModel.deleteTimer(it)}
-            gameDBViewModel.getDeleteNotesOfGame(gameCount-1).first().forEach{gameDBViewModel.deleteNote(it)}
-            gameDBViewModel.getDeleteDicesOfGame(gameCount-1).first().forEach{gameDBViewModel.deleteDice(it)}
-            gameDBViewModel.getDeleteHourglassesOfGame(gameCount-1).first().forEach{gameDBViewModel.deleteHourglass(it)}
+            gameDBViewModel.getDeleteTimersOfGame(gameCount).first().forEach{gameDBViewModel.deleteTimer(it)}
+            gameDBViewModel.getDeleteNotesOfGame(gameCount).first().forEach{gameDBViewModel.deleteNote(it)}
+            gameDBViewModel.getDeleteDicesOfGame(gameCount).first().forEach{gameDBViewModel.deleteDice(it)}
+            gameDBViewModel.getDeleteHourglassesOfGame(gameCount).first().forEach{gameDBViewModel.deleteHourglass(it)}
             val game = gameDBViewModel.getGame(gameId).first()
             Log.i("AAAAAA",game.count.toString())
             game.count=gameCount

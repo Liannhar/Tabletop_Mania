@@ -1,9 +1,12 @@
 package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
@@ -14,11 +17,10 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
-import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+
 
 class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_properties_game) {
 
@@ -26,7 +28,7 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        var us=""
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         val gameId = prefs.getLong("currentGameId", -1)
         // Initialize
@@ -50,9 +52,8 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
             lifecycle.coroutineScope.launch() {
                 val game = viewModel.getGame(gameId).first()
                 game.name= findViewById<EditText>(R.id.activity_edit_properties_game__name).text.toString()
-                Log.i("AAAAAA",game.name+"AAA")
                 game.description= findViewById<EditText>(R.id.activity_edit_properties_game__description).text.toString()
-                //game.image= findViewById<ImageView>(R.id.activity_edit_properties_game__image)
+                game.image = us
                 viewModel.updateGame(game)
             }
             val intent = Intent(this, GameEditActivity::class.java)
@@ -89,16 +90,24 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
         val selectImageIntent = registerForActivityResult(ActivityResultContracts.GetContent())
         { uri ->
             findViewById<ImageView>(R.id.activity_edit_properties_game__image).apply {setImageURI(uri) }
+            us = uri.toString()
 
-            lifecycle.coroutineScope.launch(){
-                val game = viewModel.getGame(gameId).first()
-                game.image=uri.toString()
-                viewModel.updateGame(game)
-            }
         }
         findViewById<CardView>(R.id.activity_edit_properties_game__select_file).setOnClickListener {
             selectImageIntent.launch("image/*")
         }
 
+    }
+    fun getRealPathFromURI(context: Context, contentUri: Uri?): String? {
+        var cursor: Cursor? = null
+        return try {
+            val proj = arrayOf(MediaStore.Images.Media.DATA)
+            cursor = context.contentResolver.query(contentUri!!, proj, null, null, null)
+            val column_index = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            cursor.getString(column_index)
+        } finally {
+            cursor?.close()
+        }
     }
 }

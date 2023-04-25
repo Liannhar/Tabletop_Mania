@@ -4,24 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.BuildConfig
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.GameDbAdapter
-import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
 import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameListViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
@@ -35,11 +32,11 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
     )[GameDBViewModel::class.java]
     }
     private val viewModel: GameListViewModel = GameListViewModel()
-    private val gameAdapter = GameDbAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i("AAAAAA","Start")
+        val gameAdapter = GameDbAdapter(contextt = this)
         findViewById<RecyclerView>(R.id.game_recycler).apply {
             adapter = gameAdapter
             layoutManager = GridLayoutManager(context, 2)
@@ -74,7 +71,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
         viewModel.load()*/
         DBCheck()
-        fillRecycler()
+        fillRecycler(gameAdapter)
 
     }
 
@@ -111,7 +108,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         }*/
     }
 
-    private fun fillRecycler() {
+    private fun fillRecycler(gameAdapter:GameDbAdapter) {
 
         /*lifecycleScope.launch(){
             val game = gameDBViewModel.getAllGame().first()

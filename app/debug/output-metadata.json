@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.tabletopapplication",
+  "applicationId": "com.tabletop.tabletopapplication",
   "variantName": "debug",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 1,
-      "versionName": "1.0",
+      "versionCode": 13,
+      "versionName": "1.5",
       "outputFile": "app-debug.apk"
     }
   ],
