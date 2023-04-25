@@ -16,7 +16,7 @@ import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class DiceDelegate(val adapter: ModelAdapter, val diceDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
+class DiceDelegate(val adapter: ModelAdapter, private val diceDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
     class DiceViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dice_card,parent,false))
     {

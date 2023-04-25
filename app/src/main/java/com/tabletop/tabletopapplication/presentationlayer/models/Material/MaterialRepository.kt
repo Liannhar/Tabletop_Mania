@@ -2,10 +2,11 @@ package com.tabletop.tabletopapplication.presentationlayer.models.Material
 
 import androidx.lifecycle.LiveData
 import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDao
+import kotlinx.coroutines.flow.Flow
 
 class MaterialRepository(private val materialDao: GameDao) {
 
-    val allMaterials: LiveData<List<Material>> = materialDao.getAllMaterials()
+    val allMaterials: Flow<List<Material>> = materialDao.getAllMaterials()
 
     fun getOneMaterial(id: Long): Material {
         return materialDao.getOneMaterial(id)

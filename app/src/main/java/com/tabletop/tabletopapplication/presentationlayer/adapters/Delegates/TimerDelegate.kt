@@ -1,5 +1,6 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
@@ -13,24 +14,23 @@ import com.tabletop.tabletopapplication.presentationlayer.models.Model
 import com.tabletop.tabletopapplication.presentationlayer.models.Timer.Timer
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class TimerDelegate(val contextt:FragmentActivity,val timerViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
+class TimerDelegate(private val contextt:FragmentActivity, private val timerViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
 
     class TimerViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.timer_host_layout,parent,false))
     {
         fun bind(item: Timer, contextt: FragmentActivity, timerViewModel: GameDBViewModel)
         {
+            Log.i("AAAAAA",item.id.toString())
             contextt.supportFragmentManager.let {
                 val transaction = it.beginTransaction()
                 transaction.add(R.id.timer_host, TimerFragment.newInstance(), TimerFragment.TAG)
                 transaction.commit()
             }
 
-
              when(itemView.context) {
                is GamePreviewActivity -> {
-                   itemView.setOnClickListener {
-                   }
+
                }
                is GameEditActivity -> {
 

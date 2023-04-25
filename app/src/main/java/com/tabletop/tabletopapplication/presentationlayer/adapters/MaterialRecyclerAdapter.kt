@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
@@ -32,9 +33,12 @@ import com.tabletop.tabletopapplication.presentationlayer.models.Timer.Timer
 import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class MaterialRecyclerAdapter(
-    private val materials: List<Material>,
+    private val materials: MutableList<Material>,
     private val gameDBViewModel: GameDBViewModel,
     private val gameId:Long,
 ) : RecyclerView.Adapter<MaterialRecyclerAdapter.ViewHolder>() {
@@ -95,21 +99,22 @@ class MaterialRecyclerAdapter(
                 }
                 is ChooseMaterialActivity->{
                     itemView.findViewById<LinearLayout>(R.id.card_material__material).setOnClickListener {
-
-                        gameDBViewModel.getGame(gameId).observe(itemView.context as ChooseMaterialActivity){
-                            sendID(material,gameDBViewModel, gameId,it)
-                            it.count=it.count+1
-                            val intent = Intent(itemView.context,GameEditActivity::class.java)
-                            startActivity(itemView.context,intent,null)
-                            Log.i("AAAAAA","456")
-                            gameDBViewModel.updateGame(it)
+                        (itemView.context as ChooseMaterialActivity).lifecycleScope.launch() {
+                            val game = gameDBViewModel.getGame(gameId).first()
+                            sendID(material, gameDBViewModel, gameId, game)
+                            game.count = game.count + 1
+                            gameDBViewModel.updateGame(game)
                         }
+                        val intent = Intent(itemView.context,GameEditActivity::class.java)
+                        startActivity(itemView.context,intent,null)
                     }
+
                 }
+
             }
         }
 
-        private fun onStateUpdate(state : SplitInstallSessionState, mySessionId:Int,view:View) {
+        fun onStateUpdate(state : SplitInstallSessionState, mySessionId:Int,view:View) {
             val progressBar = view.findViewById<ProgressBar>(R.id.pb_horizontal)
 
             val installButton=itemView.findViewById<CardView>(R.id.card_material__install_button)
@@ -140,7 +145,7 @@ class MaterialRecyclerAdapter(
         }
 
 
-        private fun sendID(
+        fun sendID(
             material: Material,
             gameDBViewModel: GameDBViewModel,
             gameId: Long,
@@ -154,6 +159,7 @@ class MaterialRecyclerAdapter(
                 }
                 2L->{
                     val typeMaterial = Note("", gameId, positionAdd = game.count)
+                    Log.i("AAAAA",typeMaterial.positionAdd.toString()+"Note")
                     gameDBViewModel.addNote(typeMaterial)
                 }
                 3L->{
@@ -164,6 +170,12 @@ class MaterialRecyclerAdapter(
             }
 
         }
+    }
+
+    fun updateData(newListOfMaterials: List<Material>) {
+        materials.clear()
+        materials.addAll(newListOfMaterials)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

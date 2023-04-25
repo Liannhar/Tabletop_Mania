@@ -32,22 +32,22 @@ class NoteActivity: AppCompatActivity() {
         )[GameDBViewModel::class.java]
 
         val noteId = intent.getLongExtra("idnote",-1)
-        val noteObserver = Observer<Note> { data ->
+        /*val noteObserver = Observer<Note> { data ->
             noteEdit.setText(data.noteDescription)
         }
-        viewModel.getNote(noteId).observe(this,noteObserver)
+        viewModel.getNote(noteId).observe(this,noteObserver)*/
 
 
         saveButton.setOnClickListener {
 
-            viewModel.getGame(gameId).observe(this){
+            /*viewModel.getGame(gameId).observe(this){
                 SaveNote(viewModel,noteEdit,noteId,gameId,it)
                 Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
                 it.count = it.count+1
                 viewModel.updateGame(it)
                 startActivity(Intent(applicationContext,GamePreviewActivity::class.java))
                 this.finish()
-            }
+            }*/
         }
 
         backButton.setOnClickListener {
@@ -58,7 +58,7 @@ class NoteActivity: AppCompatActivity() {
                 .setPositiveButton(
                     "Yes") { dialog, _ ->
 
-                    viewModel.getGame(gameId).observe(this){
+                   /* viewModel.getGame(gameId).observe(this){
                         SaveNote(viewModel,noteEdit,noteId,gameId,it)
                         Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
                         dialog.cancel()
@@ -66,7 +66,7 @@ class NoteActivity: AppCompatActivity() {
                         viewModel.updateGame(it)
                         startActivity(Intent(applicationContext, GameEditActivity::class.java))
                         this.finish()
-                    }
+                    }*/
                 }
                 .setNegativeButton(
                     "No") { dialog, _ ->

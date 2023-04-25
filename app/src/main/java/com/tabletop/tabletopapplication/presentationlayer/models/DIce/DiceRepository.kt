@@ -3,13 +3,14 @@ package com.tabletop.tabletopapplication.presentationlayer.models.DIce
 import androidx.lifecycle.LiveData
 
 import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDao
+import kotlinx.coroutines.flow.Flow
 
 
 class DiceRepository(private val diceDao: GameDao) {
 
-    val allDice: LiveData<List<Dice>> = diceDao.getAllDice()
+    val allDice: Flow<List<Dice>> = diceDao.getAllDice()
 
-    fun getOneDice(id: Long): LiveData<Dice> {
+    fun getOneDice(id: Long): Flow<Dice> {
         return diceDao.getOneDice(id)
     }
 

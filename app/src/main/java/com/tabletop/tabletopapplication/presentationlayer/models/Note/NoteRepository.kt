@@ -2,12 +2,13 @@ package com.tabletop.tabletopapplication.presentationlayer.models.Note
 
 import androidx.lifecycle.LiveData
 import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDao
+import kotlinx.coroutines.flow.Flow
 
 class NoteRepository(private val notesDao: GameDao) {
 
-    val allNotes: LiveData<List<Note>> = notesDao.getAllNotes()
+    val allNotes: Flow<List<Note>> = notesDao.getAllNotes()
 
-    fun getOneNote(id: Long): LiveData<Note> {
+    fun getOneNote(id: Long): Flow<Note> {
         return notesDao.getOneNote(id)
     }
 

@@ -11,9 +11,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.coroutineScope
 import com.tabletop.tabletopapplication.R
+import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_properties_game) {
 
@@ -50,10 +54,18 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
                 game.description= findViewById<EditText>(R.id.activity_edit_properties_game__description).text.toString()
                 viewModel.updateGame(game)
             }*/
-            viewModel.getGame(gameId).observe(this) {game->
+            /*viewModel.getGame(gameId).observe(this) {game->
                 game.name= findViewById<EditText>(R.id.activity_edit_properties_game__name).text.toString()
                 game.description= findViewById<EditText>(R.id.activity_edit_properties_game__description).text.toString()
                 game.image= findViewById<ImageView>(R.id.activity_edit_properties_game__image).drawable.toString()
+                viewModel.updateGame(game)
+            }*/
+
+            lifecycle.coroutineScope.launch() {
+                val game = viewModel.getGame(gameId).first()
+                game.name= findViewById<EditText>(R.id.activity_edit_properties_game__name).text.toString()
+                game.description= findViewById<EditText>(R.id.activity_edit_properties_game__description).text.toString()
+                //game.image= findViewById<ImageView>(R.id.activity_edit_properties_game__image)
                 viewModel.updateGame(game)
             }
             val intent = Intent(this, GameEditActivity::class.java)
@@ -62,7 +74,20 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
         }
 
         // Observers
-        viewModel.getGame(gameId).observe(this) { game ->
+        /*viewModel.getGame(gameId).observe(this) { game ->
+            findViewById<TextView>(R.id.activity_edit_properties_game__name).apply {
+                text = game.name
+            }
+            findViewById<TextView>(R.id.activity_edit_properties_game__description).apply {
+                text = game.description
+            }
+            findViewById<ImageView>(R.id.activity_edit_properties_game__image).apply {
+                setImageURI(Uri.parse(game.image))
+            }
+        }*/
+
+        lifecycle.coroutineScope.launch() {
+            val game = viewModel.getGame(gameId).first()
             findViewById<TextView>(R.id.activity_edit_properties_game__name).apply {
                 text = game.name
             }
@@ -77,7 +102,13 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
         val selectImageIntent = registerForActivityResult(ActivityResultContracts.GetContent())
         { uri ->
             findViewById<ImageView>(R.id.activity_edit_properties_game__image).apply {setImageURI(uri) }
-            viewModel.getGame(gameId).observe(this) {game->
+            /*viewModel.getGame(gameId).observe(this) {game->
+                game.image=uri.toString()
+                viewModel.updateGame(game)
+            }*/
+
+            lifecycle.coroutineScope.launch(){
+                val game = viewModel.getGame(gameId).first()
                 game.image=uri.toString()
                 viewModel.updateGame(game)
             }

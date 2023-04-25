@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,6 +18,9 @@ import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUES
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
@@ -34,11 +39,18 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
 
-        gameDBViewModel.getGame(gameId).observe(this){game ->
+        lifecycleScope.launch(){
+            val game = gameDBViewModel.getGame(gameId).first()
+            previewGameTitle.text = game.name
+            previewGameDescription.text = game.description
+            Glide.with(this@GamePreviewActivity).load(game.image).into(previewGameImage)
+        }
+
+        /*gameDBViewModel.getGame(gameId).observe(this){game ->
             previewGameTitle.text = game.name
             previewGameDescription.text = game.description
             Glide.with(this).load(game.image).into(previewGameImage)
-        }
+        }*/
 
 
 
@@ -70,7 +82,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
     private fun fillRecycler(gameId:Long,differentMaterialsadapter:ModelAdapter,materials:ArrayList<Model>) {
 
 
-        gameDBViewModel.getAllNoteOfGame(gameId).observe(this) {note ->
+        /*gameDBViewModel.getAllNoteOfGame(gameId).observe(this) {note ->
             note.forEach {materials.add(it) }
             //differentMaterialsadapter.setItems(note)
             gameDBViewModel.getAllNoteOfGame(gameId).removeObservers(this)
@@ -84,9 +96,18 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
             timer.forEach { materials.add(it) }
             //differentMaterialsadapter.setItems(timer)
             gameDBViewModel.getAllTimerOfGame(gameId).removeObservers(this)
-        }
+        }*/
+        lifecycleScope.launch(){
+            var m:List<Model> =   gameDBViewModel.getAllTimerOfGame(gameId).first()
+            materials.addAll(m)
+            m =   gameDBViewModel.getAllDiceOfGame(gameId).first()
+            materials.addAll(m)
+            m =   gameDBViewModel.getAllNoteOfGame(gameId).first()
+            materials.addAll(m)
 
-        differentMaterialsadapter.setItems(materials)
+            materials.sortByDescending { it.positionAdd }
+            differentMaterialsadapter.setItems(materials)
+        }
     }
 }
 

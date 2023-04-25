@@ -15,6 +15,7 @@ import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDatabase
 import com.tabletop.tabletopapplication.presentationlayer.models.game.GameRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class GameDBViewModel(application: Application) : AndroidViewModel(application)  {
@@ -106,11 +107,11 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getAllNotes() = noteRepository.allNotes
 
-    fun getAllNoteOfGame(id:Long) = gameRepository.getAllNoteOfGame(id)
+    fun getAllNoteOfGame(id:Long) = gameRepository.getAllNoteOfGame(id).distinctUntilChanged()
 
-    fun getAllDiceOfGame(id:Long) = gameRepository.getAllDiceOfGame(id)
+    fun getAllDiceOfGame(id:Long) = gameRepository.getAllDiceOfGame(id).distinctUntilChanged()
 
-    fun getAllTimerOfGame(id:Long) = gameRepository.getAllTimerOfGame(id)
+    fun getAllTimerOfGame(id:Long) = gameRepository.getAllTimerOfGame(id).distinctUntilChanged()
 
     fun getOneNoteOfGame(gameid:Long,materialid:Long)  = gameRepository.getOneNoteOfGame(gameid,materialid)
 

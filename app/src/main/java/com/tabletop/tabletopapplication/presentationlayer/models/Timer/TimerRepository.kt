@@ -2,13 +2,14 @@ package com.tabletop.tabletopapplication.presentationlayer.models.Timer
 
 import androidx.lifecycle.LiveData
 import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDao
+import kotlinx.coroutines.flow.Flow
 
 
 class TimerRepository(private val timerDao: GameDao) {
 
-    val allTimer: LiveData<List<Timer>> = timerDao.getAllTimer()
+    val allTimer: Flow<List<Timer>> = timerDao.getAllTimer()
 
-    fun getOneTimer(id: Long): LiveData<Timer> {
+    fun getOneTimer(id: Long): Flow<Timer> {
         return timerDao.getOneTimer(id)
     }
 

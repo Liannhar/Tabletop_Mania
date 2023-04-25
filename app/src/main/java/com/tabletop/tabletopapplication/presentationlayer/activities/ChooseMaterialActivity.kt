@@ -2,17 +2,24 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ChooseMaterialActivity : AppCompatActivity() {
@@ -35,21 +42,25 @@ class ChooseMaterialActivity : AppCompatActivity() {
         val listOfMaterials= mutableListOf<Material>()
         val recyclerView: RecyclerView = findViewById(R.id.rv_choose_material)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
+        val materialAdapter = MaterialRecyclerAdapter(mutableListOf(), gameDBViewModel,gameId)
+        recyclerView.adapter = materialAdapter
 
         val installModules = SplitInstallManagerFactory.create(this).installedModules
-        installModules.forEach {
-            materialViewModel.getAllMaterials().observe(this){ data ->
-                when(it){
-                    "dice"->listOfMaterials.add(data[0])
-                    "note"->listOfMaterials.add(data[1])
-                    "timer"->listOfMaterials.add(data[2])
-                    "sandTImer"->listOfMaterials.add(data[3])
-                }
-            }
 
+
+        lifecycleScope.launch(){
+            val materials =  materialViewModel.getAllMaterials().first()
+            installModules.forEach {
+                when(it){
+                    "dice"->listOfMaterials.add(materials[0])
+                    "note"->listOfMaterials.add(materials[1])
+                    "timer"->listOfMaterials.add(materials[2])
+                    "sandTImer"->listOfMaterials.add(materials[3])
+                }
+
+            }
+            materialAdapter.updateData(listOfMaterials)
         }
-        recyclerView.adapter = MaterialRecyclerAdapter(listOfMaterials, gameDBViewModel,gameId)
 
         back_button.setOnClickListener{
             if (gameId == -1L){

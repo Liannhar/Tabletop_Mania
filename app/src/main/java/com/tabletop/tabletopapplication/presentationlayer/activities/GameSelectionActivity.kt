@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.BuildConfig
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.GameDbAdapter
@@ -15,6 +17,8 @@ import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameListViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
@@ -111,8 +115,12 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
     }
 
     private fun fillRecycler() {
-        gameDBViewModel.getAllGame().observe(this){
+        /*gameDBViewModel.getAllGame().observe(this){
             game-> gameAdapter.addListGames(game)
+        }*/
+        lifecycleScope.launch(){
+            val game = gameDBViewModel.getAllGame().first()
+            gameAdapter.addListGames(game)
         }
     }
 
