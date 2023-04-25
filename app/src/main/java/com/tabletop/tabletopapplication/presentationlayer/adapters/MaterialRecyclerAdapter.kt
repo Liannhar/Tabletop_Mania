@@ -79,7 +79,7 @@ class MaterialRecyclerAdapter(
                         {
                             var mySessionId = 0
                             val listener = SplitInstallStateUpdatedListener { state ->
-
+                                Log.i("AAAAAA","123")
                                 onStateUpdate(state,mySessionId,itemView)
                             }
                             splitInstallManager.registerListener(listener)
@@ -124,6 +124,7 @@ class MaterialRecyclerAdapter(
                 // Retry the request.
                 return
             }
+
             if (state.sessionId() == mySessionId) {
                 when (state.status()) {
                     SplitInstallSessionStatus.DOWNLOADING -> {
@@ -146,7 +147,7 @@ class MaterialRecyclerAdapter(
         }
 
 
-        fun sendID(
+        private fun sendID(
             material: Material,
             gameDBViewModel: GameDBViewModel,
             gameId: Long,

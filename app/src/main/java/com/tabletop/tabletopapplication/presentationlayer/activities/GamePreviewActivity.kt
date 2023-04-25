@@ -42,13 +42,13 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
 
-        /*lifecycleScope.launch(){
+        lifecycleScope.launch(){
                 gameDBViewModel.getGame(gameId).collect(){
                     previewGameTitle.text = it.name
                     previewGameDescription.text = it.description
                     Glide.with(this@GamePreviewActivity).load(it.image).into(previewGameImage)
                 }
-        }*/
+        }
 
         /*gameDBViewModel.getGame(gameId).observe(this){game ->
             previewGameTitle.text = game.name
@@ -94,7 +94,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
 
     private fun fillRecycler(gameId:Long,differentMaterialsadapter:ModelAdapter,materials:ArrayList<Model>) {
-        /*lifecycleScope.launch(){
+        lifecycleScope.launch(){
             var m:List<Model> =   gameDBViewModel.getAllTimerOfGame(gameId).first()
             materials.addAll(m)
             m =   gameDBViewModel.getAllDiceOfGame(gameId).first()
@@ -106,9 +106,8 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
             materials.sortByDescending { it.positionAdd }
             differentMaterialsadapter.updateItems(materials)
-        }*/
-
-        gameDBViewModel.getAllTimerOfGame(gameId).onEach { newList ->
+        }
+        /*gameDBViewModel.getAllTimerOfGame(gameId).onEach { newList ->
             materials.addAll(newList)
         }.launchIn(lifecycleScope)
         gameDBViewModel.getAllNoteOfGame(gameId).onEach { newList ->
@@ -119,10 +118,9 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         }.launchIn(lifecycleScope)
         gameDBViewModel.getAllDiceOfGame(gameId).onEach { newList ->
             materials.addAll(newList)
-
         }.launchIn(lifecycleScope)
         materials.sortByDescending { it.positionAdd }
-        differentMaterialsadapter.updateItems(materials)
+        differentMaterialsadapter.updateItems(materials)*/
     }
 }
 

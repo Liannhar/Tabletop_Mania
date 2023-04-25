@@ -39,13 +39,13 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
         val differentMaterialsadapter by lazy{ ModelAdapter(this,gameDBViewModel)}
         val materials = arrayListOf<Model>()
 
-        /*lifecycleScope.launch(){
+        lifecycleScope.launch(){
             gameDBViewModel.getGame(gameId).collect(){
                 editGameTitle.text = it.name
                 editGameDescription.text = it.description
                 Glide.with(this@GameEditActivity).load(it.image).into(editGameImage)
             }
-        }*/
+        }
 
 
         fillRecycler(gameId,materials,differentMaterialsadapter)
@@ -111,6 +111,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
             gameDBViewModel.getDeleteDicesOfGame(gameCount-1).first().forEach{gameDBViewModel.deleteDice(it)}
             gameDBViewModel.getDeleteHourglassesOfGame(gameCount-1).first().forEach{gameDBViewModel.deleteHourglass(it)}
             val game = gameDBViewModel.getGame(gameId).first()
+            Log.i("AAAAAA",game.count.toString())
             game.count=gameCount
             gameDBViewModel.updateGame(game)
         }
