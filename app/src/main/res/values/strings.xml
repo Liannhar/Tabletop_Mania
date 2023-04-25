@@ -22,11 +22,13 @@
     <string name="materials">Materials:</string>
     <string name="title_activity_dice_result">DiceResultActivity</string>
     <string name="title_activity_dice_settings">DiceSettingsActivity</string>
+    <string name="title_activity_hourglass">HourglassActivity</string>
     <string name="your_note">Your Note</string>
     <string name="h1">H1</string>
     <string name="h2">H2</string>
     <string name="h3">H3</string>
     <string name="dice_roll">Брось свои кубаны на встречу приключениям</string>
+    <string name="h_card">Эти песочные часы никогда не разобьются!</string>
     <string name="title_note">Note Material</string>
     <string name="install">Install</string>
 </resources>

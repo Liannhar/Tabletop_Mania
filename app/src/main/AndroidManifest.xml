@@ -13,12 +13,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="31">
+        <!-- Активити для песочных часов -->
+        <activity
+            android:name=".presentationlayer.activities.HourglassActivity"
+            android:exported="false"
+            android:label="@string/title_activity_hourglass"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <!-- Активити реализующее настройку броска кубиков -->
         <activity
             android:name=".presentationlayer.activities.DiceSettingsActivity"
-            android:screenOrientation="portrait"
             android:exported="false"
             android:label="@string/title_activity_dice_settings"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
@@ -27,9 +38,9 @@
         <!-- Активити реализующее результат броска кубиков -->
         <activity
             android:name=".presentationlayer.activities.DiceResultActivity"
-            android:screenOrientation="portrait"
             android:exported="false"
             android:label="@string/title_activity_dice_result"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
@@ -41,6 +52,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -62,9 +74,10 @@
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
-            tools:replace="android:authorities"
             android:authorities="${applicationId}.provider"
-            tools:node="remove"/>
+            tools:node="remove"
+            tools:replace="android:authorities" />
+
         <activity android:name=".presentationlayer.activities.GameEditPropertiesActivity" />
         <activity android:name=".presentationlayer.activities.GameEditActivity" />
     </application>
