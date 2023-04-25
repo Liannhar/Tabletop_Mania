@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.tabletop.tabletopapplication.businesslayer.managers.GameManager
 import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
 import com.tabletop.tabletopapplication.presentationlayer.models.DIce.DiceRepository
+import com.tabletop.tabletopapplication.presentationlayer.models.Hourglass.Hourglass
+import com.tabletop.tabletopapplication.presentationlayer.models.Hourglass.HourglassRepository
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.NoteRepository
 import com.tabletop.tabletopapplication.presentationlayer.models.Timer.Timer
@@ -15,6 +17,7 @@ import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDatabase
 import com.tabletop.tabletopapplication.presentationlayer.models.game.GameRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
@@ -23,6 +26,7 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
     val noteRepository : NoteRepository
     val timerRepository : TimerRepository
     val diceRepository : DiceRepository
+    val hourglassRepository : HourglassRepository
     val materialManager by lazy{ GameManager() }
 
     init {
@@ -31,6 +35,7 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
         noteRepository = NoteRepository(dao)
         timerRepository = TimerRepository(dao)
         diceRepository = DiceRepository(dao)
+        hourglassRepository= HourglassRepository(dao)
     }
 
     fun deleteGame (game: Game) = viewModelScope.launch(Dispatchers.IO) {
@@ -39,6 +44,9 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
 
     fun deleteDice (dice: Dice) = viewModelScope.launch(Dispatchers.IO) {
         diceRepository.delete(dice)
+    }
+    fun deleteHourglass (hourglass: Hourglass) = viewModelScope.launch(Dispatchers.IO) {
+        hourglassRepository.delete(hourglass)
     }
 
     fun deleteTimer (timer: Timer) = viewModelScope.launch(Dispatchers.IO) {
@@ -65,17 +73,16 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
         noteRepository.update(note)
     }
 
-    fun addGame(game: Game):MutableLiveData<Long>{
-        val res = MutableLiveData<Long>()
-        viewModelScope.launch(Dispatchers.IO) {
-            val result =  gameRepository.insert(game)
-            res.postValue(result)
-        }
-        return res
+    fun addGame(game: Game) = viewModelScope.launch(Dispatchers.IO) {
+        gameRepository.insert(game)
     }
 
     fun addDice(dice:Dice) = viewModelScope.launch(Dispatchers.IO) {
         diceRepository.insert(dice)
+    }
+
+    fun addHourglass(hourglass: Hourglass) = viewModelScope.launch(Dispatchers.IO) {
+        hourglassRepository.insert(hourglass)
     }
 
 
@@ -111,7 +118,14 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getAllDiceOfGame(id:Long) = gameRepository.getAllDiceOfGame(id).distinctUntilChanged()
 
+    fun getAllHourglassOfGame(id:Long) = gameRepository.getAllHourglassOfGame(id).distinctUntilChanged()
+
     fun getAllTimerOfGame(id:Long) = gameRepository.getAllTimerOfGame(id).distinctUntilChanged()
+
+    fun getDeleteTimersOfGame(count:Int) = gameRepository.getDeleteTimersOfGame(count)
+    fun getDeleteNotesOfGame(count:Int) = gameRepository.getDeleteNotesOfGame(count)
+    fun getDeleteDicesOfGame(count:Int) = gameRepository.getDeleteDicesOfGame(count)
+    fun getDeleteHourglassesOfGame(count:Int) = gameRepository.getDeleteHourglassesOfGame(count)
 
     fun getOneNoteOfGame(gameid:Long,materialid:Long)  = gameRepository.getOneNoteOfGame(gameid,materialid)
 

@@ -2,24 +2,20 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class ChooseMaterialActivity : AppCompatActivity() {
@@ -55,7 +51,7 @@ class ChooseMaterialActivity : AppCompatActivity() {
                     "dice"->listOfMaterials.add(materials[0])
                     "note"->listOfMaterials.add(materials[1])
                     "timer"->listOfMaterials.add(materials[2])
-                    "sandTImer"->listOfMaterials.add(materials[3])
+                    "hourglass"->listOfMaterials.add(materials[3])
                 }
 
             }

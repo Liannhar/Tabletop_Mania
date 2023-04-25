@@ -30,7 +30,7 @@ class SetTimeFragment : Fragment(R.layout.set_time_fragment) {
                     arguments = extras
                 }
                 val transaction = it.beginTransaction()
-                transaction.replace(R.id.timer_host, frag, TimerFragment.TAG)
+                transaction.replace(R.id.timer_card_mini, frag, TimerFragment.TAG)
                 transaction.commit()
             }
 

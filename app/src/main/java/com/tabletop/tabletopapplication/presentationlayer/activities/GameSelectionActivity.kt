@@ -2,6 +2,7 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +19,8 @@ import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewM
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameListViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
@@ -30,17 +33,13 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         this,
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     )[GameDBViewModel::class.java]
-
     }
-
-
     private val viewModel: GameListViewModel = GameListViewModel()
     private val gameAdapter = GameDbAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getSharedPreferences("MyPrefsFile", MODE_PRIVATE).getLong("currentGameId", -1)
-
+        Log.i("AAAAAA","Start")
         findViewById<RecyclerView>(R.id.game_recycler).apply {
             adapter = gameAdapter
             layoutManager = GridLayoutManager(context, 2)
@@ -48,17 +47,15 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         findViewById<ImageView>(R.id.downloaded_materials_button).setOnClickListener{
             getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit().putLong("currentGameId", -1).apply()
             startActivity(Intent(applicationContext, InstallMaterialActivity::class.java))
-
+            finish()
         }
         // Clicks
         findViewById<ImageView>(R.id.add_game_button).setOnClickListener {
-            val gameId = gameDBViewModel.addGame(Game("Set Title","Set Description","", count = 0))
-            getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit().putLong("currentGameId", -1).apply()
-            gameId.observe(this){id->
-                val intent = Intent(this, GameEditActivity::class.java)
-                getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit().putLong("currentGameId", id).apply()
-                startActivityForResult(intent, ACTIVITY_REQUEST_CODE.EDIT.value)
-            }
+            val game = Game("Set Title","Set Description","", count = 0)
+            gameDBViewModel.addGame(game)
+            getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit().putLong("currentGameId", game.id).putInt("gameCount",game.count).apply()
+            startActivity(Intent(applicationContext, GameEditActivity::class.java))
+            finish()
         }
 
         // Observes
@@ -115,13 +112,15 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
     }
 
     private fun fillRecycler() {
-        /*gameDBViewModel.getAllGame().observe(this){
-            game-> gameAdapter.addListGames(game)
-        }*/
-        lifecycleScope.launch(){
+
+        /*lifecycleScope.launch(){
             val game = gameDBViewModel.getAllGame().first()
             gameAdapter.addListGames(game)
-        }
+        }*/
+
+        gameDBViewModel.getAllGame().onEach { newList ->
+            gameAdapter.updateItems(newList)
+        }.launchIn(lifecycleScope)
     }
 
     private fun DBCheck(){

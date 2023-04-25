@@ -27,6 +27,7 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.ChooseMater
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.InstallMaterialActivity
 import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
+import com.tabletop.tabletopapplication.presentationlayer.models.Hourglass.Hourglass
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
 import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
 import com.tabletop.tabletopapplication.presentationlayer.models.Timer.Timer
@@ -71,7 +72,7 @@ class MaterialRecyclerAdapter(
                             1L-> "dice"
                             2L-> "note"
                             3L-> "timer"
-                            //"sandTImer"->listOfMaterials.add(data[3])
+                            4L-> "hourglass"
                             else -> "Error"
                         }
                         if (moduleName!="Error")
@@ -159,12 +160,15 @@ class MaterialRecyclerAdapter(
                 }
                 2L->{
                     val typeMaterial = Note("", gameId, positionAdd = game.count)
-                    Log.i("AAAAA",typeMaterial.positionAdd.toString()+"Note")
                     gameDBViewModel.addNote(typeMaterial)
                 }
                 3L->{
                     val typeMaterial = Timer(gameId, positionAdd = game.count)
                     gameDBViewModel.addTimer(typeMaterial)
+                }
+                4L->{
+                    val typeMaterial =Hourglass(gameId, positionAdd = game.count)
+                    gameDBViewModel.addHourglass(typeMaterial)
                 }
                 else -> {}
             }

@@ -2,6 +2,7 @@ package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
@@ -36,14 +38,16 @@ class GameDbAdapter(
                 .load(item.image)
                 .error(R.drawable.baseline_error_outline_24)
                 .into(image)
-
             element.setOnClickListener {
                 when(context) {
                     is GameSelectionActivity -> {
                         val intent = Intent(context, GamePreviewActivity::class.java).apply {
-                            context.getSharedPreferences("MyPrefsFile", AppCompatActivity.MODE_PRIVATE).edit().putLong("currentGameId",item.id).apply()
+                            context.getSharedPreferences("MyPrefsFile", AppCompatActivity.MODE_PRIVATE).edit().putLong("currentGameId",item.id).putInt("gameCount",item.count).apply()
+
                         }
+
                         startActivityForResult(context, intent, ACTIVITY_REQUEST_CODE.PREVIEW.value, Bundle())
+                        context.finish()
                     }
                 }
             }
@@ -91,5 +95,13 @@ class GameDbAdapter(
 
         games[position] = game
         notifyItemChanged(position)
+    }
+
+    fun updateItems(newItems: List<Game>) {
+        // update items and notify adapter of changes
+        val diffResult = DiffUtil.calculateDiff(GameDiffCallback(games, newItems))
+        games.clear()
+        games.addAll(newItems)
+        diffResult.dispatchUpdatesTo(this)
     }
 }

@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class MaterialViewModel(application: Application) : AndroidViewModel(application) {
 
-    val repository : MaterialRepository
-    val materialManager by lazy{ MaterialManager() }
+    private val repository : MaterialRepository
+    private val materialManager by lazy{ MaterialManager() }
     val state = MutableLiveData<LoadState>()
 
     init {
@@ -37,7 +37,7 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
 
     fun getMaterial(id:Long) = repository.getOneMaterial(id)
 
-    fun getAllMaterials() = repository.allMaterials
+    suspend fun getAllMaterials() = repository.allMaterials
 
     fun getAllMaterialsFromApi(){
         viewModelScope.launch{

@@ -62,7 +62,7 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
 
 
             val transaction = it.beginTransaction()
-            transaction.replace(R.id.timer_host, SetTimeFragment.newInstance(), SetTimeFragment.TAG)
+            transaction.replace(R.id.timer_card_mini, SetTimeFragment.newInstance(), SetTimeFragment.TAG)
             transaction.commit()
         }
 

@@ -56,10 +56,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentationlayer.activities.ChooseMaterialActivity"></activity>
-        <activity android:name=".presentationlayer.activities.NoteActivity"></activity>
-        <activity android:name=".presentationlayer.activities.GamePreviewActivity"></activity>
-
         <activity
                 android:name=".presentationlayer.activities.ChooseMaterialActivity"
                >

@@ -33,4 +33,6 @@
     <string name="install">Install</string>
     <string name="title_timer">Timer</string>
     <string name="title_dice">dice</string>
+    <string name="title_hourglass">hourglass</string>
+    <string name="timer_text">Поставь таймер для передышки</string>
 </resources>

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -46,24 +47,10 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
 
         findViewById<ImageView>(R.id.activity_edit_properties_game__save_button).setOnClickListener {
             setResult(RESULT_OK, Intent().apply {})
-            /*viewModel.getGame(gameId).observe(this) {game->
-                game.name= findViewById<EditText>(R.id.activity_edit_properties_game__name).text.toString()
-                viewModel.updateGame(game)
-            }
-            viewModel.getGame(gameId).observe(this) {game->
-                game.description= findViewById<EditText>(R.id.activity_edit_properties_game__description).text.toString()
-                viewModel.updateGame(game)
-            }*/
-            /*viewModel.getGame(gameId).observe(this) {game->
-                game.name= findViewById<EditText>(R.id.activity_edit_properties_game__name).text.toString()
-                game.description= findViewById<EditText>(R.id.activity_edit_properties_game__description).text.toString()
-                game.image= findViewById<ImageView>(R.id.activity_edit_properties_game__image).drawable.toString()
-                viewModel.updateGame(game)
-            }*/
-
             lifecycle.coroutineScope.launch() {
                 val game = viewModel.getGame(gameId).first()
                 game.name= findViewById<EditText>(R.id.activity_edit_properties_game__name).text.toString()
+                Log.i("AAAAAA",game.name+"AAA")
                 game.description= findViewById<EditText>(R.id.activity_edit_properties_game__description).text.toString()
                 //game.image= findViewById<ImageView>(R.id.activity_edit_properties_game__image)
                 viewModel.updateGame(game)
@@ -102,10 +89,6 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
         val selectImageIntent = registerForActivityResult(ActivityResultContracts.GetContent())
         { uri ->
             findViewById<ImageView>(R.id.activity_edit_properties_game__image).apply {setImageURI(uri) }
-            /*viewModel.getGame(gameId).observe(this) {game->
-                game.image=uri.toString()
-                viewModel.updateGame(game)
-            }*/
 
             lifecycle.coroutineScope.launch(){
                 val game = viewModel.getGame(gameId).first()

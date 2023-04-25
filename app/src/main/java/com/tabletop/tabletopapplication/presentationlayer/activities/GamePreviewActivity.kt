@@ -2,6 +2,7 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,8 @@ import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
@@ -39,12 +42,13 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
 
-        lifecycleScope.launch(){
-            val game = gameDBViewModel.getGame(gameId).first()
-            previewGameTitle.text = game.name
-            previewGameDescription.text = game.description
-            Glide.with(this@GamePreviewActivity).load(game.image).into(previewGameImage)
-        }
+        /*lifecycleScope.launch(){
+                gameDBViewModel.getGame(gameId).collect(){
+                    previewGameTitle.text = it.name
+                    previewGameDescription.text = it.description
+                    Glide.with(this@GamePreviewActivity).load(it.image).into(previewGameImage)
+                }
+        }*/
 
         /*gameDBViewModel.getGame(gameId).observe(this){game ->
             previewGameTitle.text = game.name
@@ -61,6 +65,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
             layoutManager = LinearLayoutManager(context)
         }
         findViewById<ImageView>(R.id.activity_preview_game__back_button).setOnClickListener {
+            СheckMaterials(gameId)
             val intent = Intent(this, GameSelectionActivity::class.java)
             startActivity(intent)
             finish()
@@ -73,6 +78,15 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
     }
 
+    private fun СheckMaterials(gameId: Long){
+        lifecycleScope.launch(){
+            val game = gameDBViewModel.getGame(gameId).first()
+            Log.i("AAAAAA",game.count.toString()+"AA")
+            if (game.count==0)
+                gameDBViewModel.deleteGame(game)
+        }
+    }
+
     /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         fillRecycler()
@@ -80,34 +94,35 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
 
     private fun fillRecycler(gameId:Long,differentMaterialsadapter:ModelAdapter,materials:ArrayList<Model>) {
-
-
-        /*gameDBViewModel.getAllNoteOfGame(gameId).observe(this) {note ->
-            note.forEach {materials.add(it) }
-            //differentMaterialsadapter.setItems(note)
-            gameDBViewModel.getAllNoteOfGame(gameId).removeObservers(this)
-        }
-        gameDBViewModel.getAllDiceOfGame(gameId).observe(this) {dice ->
-            dice.forEach {materials.add(it) }
-            //differentMaterialsadapter.setItems(dice)
-            gameDBViewModel.getAllDiceOfGame(gameId).removeObservers(this)
-        }
-        gameDBViewModel.getAllTimerOfGame(gameId).observe(this) {timer ->
-            timer.forEach { materials.add(it) }
-            //differentMaterialsadapter.setItems(timer)
-            gameDBViewModel.getAllTimerOfGame(gameId).removeObservers(this)
-        }*/
-        lifecycleScope.launch(){
+        /*lifecycleScope.launch(){
             var m:List<Model> =   gameDBViewModel.getAllTimerOfGame(gameId).first()
             materials.addAll(m)
             m =   gameDBViewModel.getAllDiceOfGame(gameId).first()
             materials.addAll(m)
             m =   gameDBViewModel.getAllNoteOfGame(gameId).first()
             materials.addAll(m)
+            m =   gameDBViewModel.getAllHourglassOfGame(gameId).first()
+            materials.addAll(m)
 
             materials.sortByDescending { it.positionAdd }
-            differentMaterialsadapter.setItems(materials)
-        }
+            differentMaterialsadapter.updateItems(materials)
+        }*/
+
+        gameDBViewModel.getAllTimerOfGame(gameId).onEach { newList ->
+            materials.addAll(newList)
+        }.launchIn(lifecycleScope)
+        gameDBViewModel.getAllNoteOfGame(gameId).onEach { newList ->
+            materials.addAll(newList)
+        }.launchIn(lifecycleScope)
+        gameDBViewModel.getAllHourglassOfGame(gameId).onEach { newList ->
+            materials.addAll(newList)
+        }.launchIn(lifecycleScope)
+        gameDBViewModel.getAllDiceOfGame(gameId).onEach { newList ->
+            materials.addAll(newList)
+
+        }.launchIn(lifecycleScope)
+        materials.sortByDescending { it.positionAdd }
+        differentMaterialsadapter.updateItems(materials)
     }
 }
 

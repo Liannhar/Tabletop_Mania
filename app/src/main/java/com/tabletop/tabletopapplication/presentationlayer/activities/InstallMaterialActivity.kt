@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,6 +18,7 @@ import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyc
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
@@ -41,11 +43,6 @@ class InstallMaterialActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.rv_download_material)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        /*val materialsObserver = Observer<List<Material>> { data ->
-            recyclerView.adapter = MaterialRecyclerAdapter(data, gameDBViewModel , gameId)
-        }*/
-
-        //materialViewModel.getAllMaterials().observe(this, materialsObserver)
 
         lifecycle.coroutineScope.launch(){
             materialViewModel.getAllMaterials().collect { data ->
@@ -53,6 +50,13 @@ class InstallMaterialActivity : AppCompatActivity() {
                 m.addAll(data)
                 recyclerView.adapter = MaterialRecyclerAdapter(m, gameDBViewModel , gameId)
             }
+        }
+
+        lifecycleScope.launch(){
+            val material =materialViewModel.getAllMaterials().first()
+            val m = mutableListOf<Material>()
+            m.addAll(material)
+            recyclerView.adapter = MaterialRecyclerAdapter(m, gameDBViewModel , gameId)
         }
 
         backButton.setOnClickListener {

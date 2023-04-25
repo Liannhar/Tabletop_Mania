@@ -1,14 +1,18 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
-//import com.example.tabletopapplication.presentationlayer.models.Materialofgame.MaterialOfGame
+
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegatesManager
 import com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates.DiceDelegate
+import com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates.HourglassDelegate
 import com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates.NoteDelegate
 import com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates.TimerDelegate
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DiffCallbacks.ModelDiffCallback
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
+import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
 class ModelAdapter(val context:FragmentActivity,gameDBViewModel: GameDBViewModel):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -18,13 +22,14 @@ class ModelAdapter(val context:FragmentActivity,gameDBViewModel: GameDBViewModel
 
     init{
         adapterDelegateManager.addDelegate(DiceDelegate(this,gameDBViewModel))
-            .addDelegate(TimerDelegate(context,gameDBViewModel))
+            .addDelegate(HourglassDelegate(this,gameDBViewModel))
+            .addDelegate(TimerDelegate(this,context,gameDBViewModel))
             .addDelegate(NoteDelegate(this,gameDBViewModel))
     }
 
     fun setItems(mitems:List<Model>){
         items.addAll(mitems)
-        notifyItemRangeInserted(this.items.size - items.size, mitems.size)
+        notifyDataSetChanged()
     }
 
     fun removeItem(position: Int){
@@ -35,6 +40,13 @@ class ModelAdapter(val context:FragmentActivity,gameDBViewModel: GameDBViewModel
     fun setItem(item:Model){
         items.add(item)
         notifyItemRangeInserted(this.items.size - items.size, 1)
+    }
+
+    fun updateItems(newItems: List<Model>) {
+        val diffResult = DiffUtil.calculateDiff(ModelDiffCallback(items, newItems))
+        items.clear()
+        items.addAll(newItems)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

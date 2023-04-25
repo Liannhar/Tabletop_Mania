@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:text="@string/dice_roll"
             android:textAlignment="center"
             android:textColor="@color/white"
