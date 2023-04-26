@@ -60,7 +60,7 @@ class HourglassActivity : AppCompatActivity() {
         sensManager.registerListener(sensListener, sens, SensorManager.SENSOR_DELAY_NORMAL)
 
         findViewById<ImageView>(R.id.hourglass_goback).setOnClickListener {
-            val intent = Intent(this, GamePreviewActivity::class.java)
+            val intent = Intent(this, GameEditActivity::class.java)
             val gameId = intent.getLongExtra("gameId", -1)
             intent.putExtra("gameId", gameId)
             startActivity(intent)

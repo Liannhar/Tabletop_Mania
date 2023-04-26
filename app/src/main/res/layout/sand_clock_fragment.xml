@@ -30,6 +30,7 @@
         app:layout_constraintStart_toStartOf="@+id/timer_back" />
 
     <Button
+        android:background="@color/second_color_app"
         android:id="@+id/stop_button"
         android:layout_width="120dp"
         android:layout_height="64dp"
@@ -40,6 +41,7 @@
         android:layout_marginBottom="24dp"/>
 
     <Button
+        android:background="@color/second_color_app"
         android:id="@+id/set_button"
         android:layout_width="120dp"
         android:layout_height="64dp"

@@ -1,8 +1,9 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +20,12 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreview
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameSelectionActivity
 import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
 import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
+import java.io.InputStream
+
 
 class GameDbAdapter(
-    private var games: ArrayList<Game> = arrayListOf()
+    private var games: ArrayList<Game> = arrayListOf(),
+    val contextt:GameSelectionActivity
 ) : RecyclerView.Adapter<GameDbAdapter.Holder>() {
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
@@ -31,10 +35,10 @@ class GameDbAdapter(
         private val name = view.findViewById<TextView>(R.id.game_name)
         private val image = view.findViewById<ImageView>(R.id.game_img)
 
-        fun bind(item: Game) {
+        fun bind(item: Game,contextt:GameSelectionActivity) {
             name.text = item.name
 
-            Glide.with(image)
+            Glide.with(contextt)
                 .load(item.image)
                 .error(R.drawable.baseline_error_outline_24)
                 .into(image)
@@ -61,7 +65,7 @@ class GameDbAdapter(
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) =
-        holder.bind(games[position])
+        holder.bind(games[position],contextt)
 
     override fun getItemCount(): Int = games.size
 

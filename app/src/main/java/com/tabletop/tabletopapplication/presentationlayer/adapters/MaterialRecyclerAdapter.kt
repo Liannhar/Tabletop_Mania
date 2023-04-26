@@ -26,6 +26,7 @@ import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.ChooseMaterialActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.InstallMaterialActivity
+import com.tabletop.tabletopapplication.presentationlayer.activities.MySplitInstallStateUpdatedListener
 import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
 import com.tabletop.tabletopapplication.presentationlayer.models.Hourglass.Hourglass
 import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
@@ -37,6 +38,7 @@ import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewM
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlin.concurrent.timer
 
 class MaterialRecyclerAdapter(
     private val materials: MutableList<Material>,
@@ -78,10 +80,7 @@ class MaterialRecyclerAdapter(
                         if (moduleName!="Error")
                         {
                             var mySessionId = 0
-                            val listener = SplitInstallStateUpdatedListener { state ->
-
-                                onStateUpdate(state,mySessionId,itemView)
-                            }
+                            val listener = MySplitInstallStateUpdatedListener(itemView)
                             splitInstallManager.registerListener(listener)
 
                             val request = SplitInstallRequest.newBuilder().addModule(moduleName).build()
@@ -90,7 +89,8 @@ class MaterialRecyclerAdapter(
                                 .addOnSuccessListener { sessionId -> mySessionId=sessionId
                                     Toast.makeText(itemView.context,
                                     "Module installation started",
-                                    Toast.LENGTH_SHORT).show() }
+                                    Toast.LENGTH_SHORT).show()
+                                    }
                                 .addOnFailureListener { exception ->  Toast.makeText(itemView.context,
                                     "Module installation failed: $exception",
                                     Toast.LENGTH_SHORT).show()}
@@ -109,44 +109,14 @@ class MaterialRecyclerAdapter(
                         val intent = Intent(itemView.context,GameEditActivity::class.java)
                         startActivity(itemView.context,intent,null)
                     }
-
                 }
 
             }
         }
 
-        fun onStateUpdate(state : SplitInstallSessionState, mySessionId:Int,view:View) {
-            val progressBar = view.findViewById<ProgressBar>(R.id.pb_horizontal)
-
-            val installButton=itemView.findViewById<CardView>(R.id.card_material__install_button)
-            if (state.status() == SplitInstallSessionStatus.FAILED
-                && state.errorCode() == SplitInstallErrorCode.SERVICE_DIED) {
-                // Retry the request.
-                return
-            }
-            if (state.sessionId() == mySessionId) {
-                when (state.status()) {
-                    SplitInstallSessionStatus.DOWNLOADING -> {
-                        progressBar.isVisible=true
-                        val totalBytes = state.totalBytesToDownload()
-                        progressBar.max=totalBytes.toInt()
-                        val progress = state.bytesDownloaded()
-                        progressBar.progress = progress.toInt()
-                    }
-                    SplitInstallSessionStatus.INSTALLED -> {
-                        progressBar.isVisible=false
-                        installButton.setBackgroundResource(R.drawable.baseline_check_24)
-                        //installButton.setCardBackgroundColor(R.color.green)
-                        Toast.makeText(itemView.context,
-                            "Module installation finished",
-                            Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
 
 
-        fun sendID(
+        private fun sendID(
             material: Material,
             gameDBViewModel: GameDBViewModel,
             gameId: Long,
