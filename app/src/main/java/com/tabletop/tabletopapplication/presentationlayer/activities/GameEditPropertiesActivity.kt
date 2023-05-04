@@ -30,7 +30,7 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
         super.onCreate(savedInstanceState)
         var us=""
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
-        val gameId = prefs.getLong("currentGameId", -1)
+        val gameId = prefs.getInt("currentGameId", -1)
         // Initialize
        /* val arguments = intent.extras
         if (arguments != null)

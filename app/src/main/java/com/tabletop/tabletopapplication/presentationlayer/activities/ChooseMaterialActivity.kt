@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
-import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
 import kotlinx.coroutines.flow.first
@@ -24,7 +24,7 @@ class ChooseMaterialActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_material)
         val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
-        val gameId = prefs.getLong("currentGameId", -1)
+        val gameId = prefs.getInt("currentGameId", -1)
         val back_button = findViewById<ImageView>(R.id.arrow_back)
         val download_button = findViewById<ImageView>(R.id.download)
         val materialViewModel = ViewModelProvider(
@@ -35,7 +35,7 @@ class ChooseMaterialActivity : AppCompatActivity() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[GameDBViewModel::class.java]
 
-        val listOfMaterials= mutableListOf<Material>()
+        val listOfMaterialROOMS= mutableListOf<MaterialROOM>()
         val recyclerView: RecyclerView = findViewById(R.id.rv_choose_material)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val materialAdapter = MaterialRecyclerAdapter(mutableListOf(), gameDBViewModel,gameId)
@@ -48,18 +48,18 @@ class ChooseMaterialActivity : AppCompatActivity() {
             val materials =  materialViewModel.getAllMaterials().first()
             installModules.forEach {
                 when(it){
-                    "dice"->listOfMaterials.add(materials[0])
-                    "note"->listOfMaterials.add(materials[1])
-                    "timer"->listOfMaterials.add(materials[2])
-                    "hourglass"->listOfMaterials.add(materials[3])
+                    "dice"->listOfMaterialROOMS.add(materials[0])
+                    "note"->listOfMaterialROOMS.add(materials[1])
+                    "timer"->listOfMaterialROOMS.add(materials[2])
+                    "hourglass"->listOfMaterialROOMS.add(materials[3])
                 }
 
             }
-            materialAdapter.updateData(listOfMaterials)
+            materialAdapter.updateData(listOfMaterialROOMS)
         }
 
         back_button.setOnClickListener{
-            if (gameId == -1L){
+            if (gameId == -1){
                 startActivity(Intent(applicationContext, GameSelectionActivity::class.java))
                 prefs.edit().putInt("idmaterial", -1).apply()
                 this.finish()

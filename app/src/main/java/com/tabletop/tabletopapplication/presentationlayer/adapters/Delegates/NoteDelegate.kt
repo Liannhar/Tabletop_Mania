@@ -13,17 +13,17 @@ import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 
-import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
-import com.tabletop.tabletopapplication.presentationlayer.models.Model
-import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
+import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.NoteROOM
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class NoteDelegate(val adapter: ModelAdapter, val noteViewModel: GameDBViewModel):AdapterDelegate<ArrayList<Model>>() {
+class NoteDelegate(val adapter: MaterialsAdapter, val noteViewModel: GameDBViewModel):AdapterDelegate<ArrayList<EntityROOM>>() {
 
     class NoteViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.note_card,parent,false))
     {
-        fun bind(item: Note, adapter: ModelAdapter, position: Int, noteViewModel: GameDBViewModel)
+        fun bind(item: NoteROOM, adapter: MaterialsAdapter, position: Int, noteViewModel: GameDBViewModel)
         {
             val note= itemView.findViewById<EditText>(R.id.editTextMini)
              when(itemView.context) {
@@ -58,8 +58,8 @@ class NoteDelegate(val adapter: ModelAdapter, val noteViewModel: GameDBViewModel
         }
     }
 
-    override fun isForViewType(items: ArrayList<Model>, position: Int): Boolean {
-        return items[position] is Note
+    override fun isForViewType(items: ArrayList<EntityROOM>, position: Int): Boolean {
+        return items[position] is NoteROOM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -67,11 +67,11 @@ class NoteDelegate(val adapter: ModelAdapter, val noteViewModel: GameDBViewModel
     }
 
     override fun onBindViewHolder(
-        items: ArrayList<Model>,
+        items: ArrayList<EntityROOM>,
         position: Int,
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as NoteViewHolder).bind(items[position] as Note,adapter,position,noteViewModel)
+        (holder as NoteViewHolder).bind(items[position] as NoteROOM,adapter,position,noteViewModel)
     }
 }

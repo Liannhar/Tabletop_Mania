@@ -1,7 +1,7 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
+import com.tabletop.tabletopapplication.presentationlayer.models.Game
 
 class GameDiffCallback(private val oldList: List<Game>, private val newList: List<Game>) : DiffUtil.Callback() {
 

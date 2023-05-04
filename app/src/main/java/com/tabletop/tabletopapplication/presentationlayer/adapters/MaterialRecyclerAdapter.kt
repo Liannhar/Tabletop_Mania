@@ -1,13 +1,11 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -18,67 +16,66 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
-import com.google.android.play.core.splitinstall.SplitInstallSessionState
-import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
-import com.google.android.play.core.splitinstall.model.SplitInstallErrorCode
-import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.ChooseMaterialActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.InstallMaterialActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.MySplitInstallStateUpdatedListener
-import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
-import com.tabletop.tabletopapplication.presentationlayer.models.Hourglass.Hourglass
-import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
-import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
-import com.tabletop.tabletopapplication.presentationlayer.models.Timer.Timer
-import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.NoteROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameROOM
 
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlin.concurrent.timer
 
 class MaterialRecyclerAdapter(
-    private val materials: MutableList<Material>,
+    private val materialROOMS: MutableList<MaterialROOM>,
     private val gameDBViewModel: GameDBViewModel,
-    private val gameId:Long,
+    private val gameId: Int,
 ) : RecyclerView.Adapter<MaterialRecyclerAdapter.ViewHolder>() {
 
-    class ViewHolder(
-        itemView: View,
-    ) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         private val nameTextView: TextView = itemView.findViewById(R.id.card_material__name)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.card_material__description)
         private val image: ImageView = itemView.findViewById(R.id.card_material__image)
 
-        fun bind(material: Material,gameDBViewModel: GameDBViewModel,gameId: Long){
-            nameTextView.text = material.name
-            descriptionTextView.text = material.description
+        fun bind(materialROOM: MaterialROOM, gameDBViewModel: GameDBViewModel, gameId: Int) {
+            nameTextView.text = materialROOM.name
+            descriptionTextView.text = materialROOM.description
 
-            val resourceId = itemView.context.resources.getIdentifier(material.image, "drawable", itemView.context.packageName)
+            val resourceId = itemView.context.resources.getIdentifier(
+                materialROOM.image,
+                "drawable",
+                itemView.context.packageName
+            )
 
             Glide.with(image)
                 .load(resourceId)
                 .error(R.drawable.black_rectangle)
                 .into(image)
 
-            when(itemView.context) {
+            when (itemView.context) {
                 is InstallMaterialActivity -> {
-                    val installButton=itemView.findViewById<CardView>(R.id.card_material__install_button)
+                    val installButton = itemView.findViewById<CardView>(R.id.card_material__install_button)
                     installButton.isVisible = true
+
                     installButton.setOnClickListener {
                         val splitInstallManager = SplitInstallManagerFactory.create(itemView.context)
-                        val moduleName = when(material.id){
-                            1L-> "dice"
-                            2L-> "note"
-                            3L-> "timer"
-                            4L-> "hourglass"
+
+                        val moduleName = when (materialROOM.id) {
+                            1 -> "dice"
+                            2 -> "note"
+                            3 -> "timer"
+                            4 -> "hourglass"
                             else -> "Error"
                         }
-                        if (moduleName!="Error")
-                        {
+
+                        if (moduleName != "Error") {
                             var mySessionId = 0
                             val listener = MySplitInstallStateUpdatedListener(itemView)
                             splitInstallManager.registerListener(listener)
@@ -86,69 +83,75 @@ class MaterialRecyclerAdapter(
                             val request = SplitInstallRequest.newBuilder().addModule(moduleName).build()
                             splitInstallManager
                                 .startInstall(request)
-                                .addOnSuccessListener { sessionId -> mySessionId=sessionId
-                                    Toast.makeText(itemView.context,
-                                    "Module installation started",
-                                    Toast.LENGTH_SHORT).show()
-                                    }
-                                .addOnFailureListener { exception ->  Toast.makeText(itemView.context,
-                                    "Module installation failed: $exception",
-                                    Toast.LENGTH_SHORT).show()}
+                                .addOnSuccessListener { sessionId ->
+                                    mySessionId = sessionId
+                                    Toast.makeText(
+                                        itemView.context,
+                                        "Module installation started",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                .addOnFailureListener { exception ->
+                                    Toast.makeText(
+                                        itemView.context,
+                                        "Module installation failed: $exception",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             splitInstallManager.unregisterListener(listener)
                         }
                     }
                 }
-                is ChooseMaterialActivity->{
-                    itemView.findViewById<LinearLayout>(R.id.card_material__material).setOnClickListener {
-                        (itemView.context as ChooseMaterialActivity).lifecycleScope.launch() {
-                            val game = gameDBViewModel.getGame(gameId).first()
-                            sendID(material, gameDBViewModel, gameId, game)
-                            game.count = game.count + 1
-                            gameDBViewModel.updateGame(game)
+                is ChooseMaterialActivity -> {
+                    itemView.findViewById<LinearLayout>(R.id.card_material__material)
+                        .setOnClickListener {
+                            (itemView.context as ChooseMaterialActivity).lifecycleScope.launch() {
+                                val game = gameDBViewModel.getGame(gameId).first()
+                                sendID(materialROOM, gameDBViewModel, gameId, game)
+                                gameDBViewModel.updateGame(game)
+                            }
+                            val intent = Intent(itemView.context, GameEditActivity::class.java)
+                            startActivity(itemView.context, intent, null)
                         }
-                        val intent = Intent(itemView.context,GameEditActivity::class.java)
-                        startActivity(itemView.context,intent,null)
-                    }
                 }
 
             }
         }
 
 
-
         private fun sendID(
-            material: Material,
+            materialROOM: MaterialROOM,
             gameDBViewModel: GameDBViewModel,
-            gameId: Long,
-            game: Game
+            gameId: Int,
+            gameROOM: GameROOM
         ) {
 
-            when (material.id) {
-                1L -> {
-                    val typeMaterial = Dice(gameId, positionAdd = game.count)
-                    gameDBViewModel.addDice(typeMaterial)
-                }
-                2L->{
-                    val typeMaterial = Note("", gameId, positionAdd = game.count)
-                    gameDBViewModel.addNote(typeMaterial)
-                }
-                3L->{
-                    val typeMaterial = Timer(gameId, positionAdd = game.count)
-                    gameDBViewModel.addTimer(typeMaterial)
-                }
-                4L->{
-                    val typeMaterial =Hourglass(gameId, positionAdd = game.count)
-                    gameDBViewModel.addHourglass(typeMaterial)
-                }
-                else -> {}
-            }
+//            when (materialROOM.id) {
+//                1L -> {
+//                    val typeMaterial = DiceROOM(gameId, positionAdd = gameROOM.count)
+//                    gameDBViewModel.addDice(typeMaterial)
+//                }
+//                2L -> {
+//                    val typeMaterial = NoteROOM("", gameId, positionAdd = gameROOM.count)
+//                    gameDBViewModel.addNote(typeMaterial)
+//                }
+//                3L -> {
+//                    val typeMaterial = TimerROOM(gameId, positionAdd = gameROOM.count)
+//                    gameDBViewModel.addTimer(typeMaterial)
+//                }
+//                4L -> {
+//                    val typeMaterial = HourglassROOM(gameId, positionAdd = gameROOM.count)
+//                    gameDBViewModel.addHourglass(typeMaterial)
+//                }
+//                else -> {}
+//            }
 
         }
     }
 
-    fun updateData(newListOfMaterials: List<Material>) {
-        materials.clear()
-        materials.addAll(newListOfMaterials)
+    fun updateData(newListOfMaterialROOMS: List<MaterialROOM>) {
+        materialROOMS.clear()
+        materialROOMS.addAll(newListOfMaterialROOMS)
         notifyDataSetChanged()
     }
 
@@ -159,10 +162,10 @@ class MaterialRecyclerAdapter(
     }
 
     override fun getItemCount(): Int {
-        return materials.size
+        return materialROOMS.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(materials[position],gameDBViewModel,gameId)
+        holder.bind(materialROOMS[position], gameDBViewModel, gameId)
     }
 }

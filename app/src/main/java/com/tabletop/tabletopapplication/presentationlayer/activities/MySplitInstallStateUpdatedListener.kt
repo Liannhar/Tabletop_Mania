@@ -12,7 +12,7 @@ import com.google.android.play.core.splitinstall.model.SplitInstallErrorCode
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.tabletop.tabletopapplication.R
 
-class MySplitInstallStateUpdatedListener(val view:View) : SplitInstallStateUpdatedListener {
+class MySplitInstallStateUpdatedListener(val view: View) : SplitInstallStateUpdatedListener {
     override fun onStateUpdate(state: SplitInstallSessionState) {
 
         val progressBar = view.findViewById<ProgressBar>(R.id.pb_horizontal)

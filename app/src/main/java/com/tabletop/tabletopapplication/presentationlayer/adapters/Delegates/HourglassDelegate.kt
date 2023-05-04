@@ -8,21 +8,19 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.HourglassActivity
-import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
-import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
-import com.tabletop.tabletopapplication.presentationlayer.models.Hourglass.Hourglass
-import com.tabletop.tabletopapplication.presentationlayer.models.Model
+import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class HourglassDelegate(val adapter: ModelAdapter, private val hourglassDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
+class HourglassDelegate(val adapter: MaterialsAdapter, private val hourglassDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
     class HourglassViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.hourglass_card,parent,false))
     {
-        fun bind(item: Hourglass, adapter: ModelAdapter, position: Int,hourglassDBViewModel: GameDBViewModel)
+        fun bind(item: HourglassROOM, adapter: MaterialsAdapter, position: Int, hourglassDBViewModel: GameDBViewModel)
         {
             val hourglass= itemView.findViewById<CardView>(R.id.hourglass_card_mini)
 
@@ -49,8 +47,8 @@ class HourglassDelegate(val adapter: ModelAdapter, private val hourglassDBViewMo
         }
     }
 
-    override fun isForViewType(items: ArrayList<Model>, position: Int): Boolean {
-        return items[position] is Hourglass
+    override fun isForViewType(items: ArrayList<EntityROOM>, position: Int): Boolean {
+        return items[position] is HourglassROOM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -58,11 +56,11 @@ class HourglassDelegate(val adapter: ModelAdapter, private val hourglassDBViewMo
     }
 
     override fun onBindViewHolder(
-        items: ArrayList<Model>,
+        items: ArrayList<EntityROOM>,
         position: Int,
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as HourglassViewHolder).bind(items[position] as Hourglass,adapter,position,hourglassDBViewModel)
+        (holder as HourglassViewHolder).bind(items[position] as HourglassROOM,adapter,position,hourglassDBViewModel)
     }
 }

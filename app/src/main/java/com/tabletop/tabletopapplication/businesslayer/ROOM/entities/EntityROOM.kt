@@ -1,0 +1,3 @@
+package com.tabletop.tabletopapplication.businesslayer.ROOM.entities
+
+interface EntityROOM

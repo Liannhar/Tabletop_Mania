@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tabletop.tabletopapplication.businesslayer.managers.GameManager
-import com.tabletop.tabletopapplication.presentationlayer.models.LoadState
+import com.tabletop.tabletopapplication.businesslayer.API.managers.GameManager
+import com.tabletop.tabletopapplication.businesslayer.API.common.LoadState
 import kotlinx.coroutines.launch
 
 class GameListViewModel: ViewModel() {

@@ -2,32 +2,31 @@ package com.tabletop.tabletopapplication.presentationlayer.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.tabletop.tabletopapplication.businesslayer.managers.GameManager
-import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
-import com.tabletop.tabletopapplication.presentationlayer.models.DIce.DiceRepository
-import com.tabletop.tabletopapplication.presentationlayer.models.Hourglass.Hourglass
-import com.tabletop.tabletopapplication.presentationlayer.models.Hourglass.HourglassRepository
-import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
-import com.tabletop.tabletopapplication.presentationlayer.models.Note.NoteRepository
-import com.tabletop.tabletopapplication.presentationlayer.models.Timer.Timer
-import com.tabletop.tabletopapplication.presentationlayer.models.Timer.TimerRepository
-import com.tabletop.tabletopapplication.presentationlayer.models.game.Game
-import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDatabase
-import com.tabletop.tabletopapplication.presentationlayer.models.game.GameRepository
+import com.tabletop.tabletopapplication.businesslayer.API.managers.GameManager
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.DiceRepository
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.HourglassRepository
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.NoteROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.NoteRepository
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.TimerRepository
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.GameDatabase
+import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.GameRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
-class GameDBViewModel(application: Application) : AndroidViewModel(application)  {
-    val gameRepository : GameRepository
-    val noteRepository : NoteRepository
-    val timerRepository : TimerRepository
-    val diceRepository : DiceRepository
-    val hourglassRepository : HourglassRepository
-    val materialManager by lazy{ GameManager() }
+class GameDBViewModel(application: Application) : AndroidViewModel(application) {
+
+    val gameRepository: GameRepository
+    val noteRepository: NoteRepository
+    val timerRepository: TimerRepository
+    val diceRepository: DiceRepository
+    val hourglassRepository: HourglassRepository
+    val materialManager by lazy { GameManager() }
 
     init {
         val dao = GameDatabase.getDatabase(application).getGameDao()
@@ -35,118 +34,109 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
         noteRepository = NoteRepository(dao)
         timerRepository = TimerRepository(dao)
         diceRepository = DiceRepository(dao)
-        hourglassRepository= HourglassRepository(dao)
+        hourglassRepository = HourglassRepository(dao)
     }
 
-    fun deleteGame (game: Game) = viewModelScope.launch(Dispatchers.IO) {
-        gameRepository.delete(game)
+    fun deleteGame(gameROOM: GameROOM) = viewModelScope.launch(Dispatchers.IO) {
+        gameRepository.delete(gameROOM)
     }
 
-    fun deleteDice (dice: Dice) = viewModelScope.launch(Dispatchers.IO) {
-        diceRepository.delete(dice)
-    }
-    fun deleteHourglass (hourglass: Hourglass) = viewModelScope.launch(Dispatchers.IO) {
-        hourglassRepository.delete(hourglass)
+    fun deleteDice(diceROOM: DiceROOM) = viewModelScope.launch(Dispatchers.IO) {
+        diceRepository.delete(diceROOM)
     }
 
-    fun deleteTimer (timer: Timer) = viewModelScope.launch(Dispatchers.IO) {
-        timerRepository.delete(timer)
+    fun deleteHourglass(hourglassROOM: HourglassROOM) = viewModelScope.launch(Dispatchers.IO) {
+        hourglassRepository.delete(hourglassROOM)
     }
 
-    fun deleteNote (note: Note) = viewModelScope.launch(Dispatchers.IO) {
-        noteRepository.delete(note)
+    fun deleteTimer(timerROOM: TimerROOM) = viewModelScope.launch(Dispatchers.IO) {
+        timerRepository.delete(timerROOM)
     }
 
-    fun updateGame(game: Game) = viewModelScope.launch(Dispatchers.IO) {
-        gameRepository.update(game)
+    fun deleteNote(noteROOM: NoteROOM) = viewModelScope.launch(Dispatchers.IO) {
+        noteRepository.delete(noteROOM)
     }
 
-    fun updateDice(dice:Dice) = viewModelScope.launch(Dispatchers.IO) {
-        diceRepository.update(dice)
+    fun updateGame(gameROOM: GameROOM) = viewModelScope.launch(Dispatchers.IO) {
+        gameRepository.update(gameROOM)
     }
 
-    fun updateTimer(timer: Timer) = viewModelScope.launch(Dispatchers.IO) {
-        timerRepository.update(timer)
+    fun updateDice(diceROOM: DiceROOM) = viewModelScope.launch(Dispatchers.IO) {
+        diceRepository.update(diceROOM)
     }
 
-    fun updateNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
-        noteRepository.update(note)
+    fun updateTimer(timerROOM: TimerROOM) = viewModelScope.launch(Dispatchers.IO) {
+        timerRepository.update(timerROOM)
     }
 
-    fun addGame(game: Game) = viewModelScope.launch(Dispatchers.IO) {
-        gameRepository.insert(game)
+    fun updateNote(noteROOM: NoteROOM) = viewModelScope.launch(Dispatchers.IO) {
+        noteRepository.update(noteROOM)
     }
 
-    fun addDice(dice:Dice) = viewModelScope.launch(Dispatchers.IO) {
-        diceRepository.insert(dice)
+    fun addGame(gameROOM: GameROOM) = viewModelScope.launch(Dispatchers.IO) {
+        gameRepository.insert(gameROOM)
     }
 
-    fun addHourglass(hourglass: Hourglass) = viewModelScope.launch(Dispatchers.IO) {
-        hourglassRepository.insert(hourglass)
+    fun addDice(diceROOM: DiceROOM) = viewModelScope.launch(Dispatchers.IO) {
+        diceRepository.insert(diceROOM)
+    }
+
+    fun addHourglass(hourglassROOM: HourglassROOM) = viewModelScope.launch(Dispatchers.IO) {
+        hourglassRepository.insert(hourglassROOM)
     }
 
 
-    fun addTimer(timer: Timer) = viewModelScope.launch(Dispatchers.IO) {
-        timerRepository.insert(timer)
+    fun addTimer(timerROOM: TimerROOM) = viewModelScope.launch(Dispatchers.IO) {
+        timerRepository.insert(timerROOM)
     }
 
-    fun addNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
-        noteRepository.insert(note)
+    fun addNote(noteROOM: NoteROOM) = viewModelScope.launch(Dispatchers.IO) {
+        noteRepository.insert(noteROOM)
     }
 
-    fun addGameApi(){
+    fun addGameApi() {
 
     }
 
-    fun getGame(id:Long) = gameRepository.getOneGame(id)
-
-    fun getDice(id:Long) = diceRepository.getOneDice(id)
-
-    fun getTimer(id:Long) = timerRepository.getOneTimer(id)
-
-    fun getNote(id:Long) = noteRepository.getOneNote(id)
-
-    fun getAllGame() = gameRepository.allGame
-
-    fun getAllDice() = diceRepository.allDice
-
-    fun getAllTimer() = timerRepository.allTimer
-
+    fun getAllGames() = gameRepository.getAllGames
+    fun getAllDice() = diceRepository.allDiceROOM
+    fun getAllTimer() = timerRepository.allTimerROOM
     fun getAllNotes() = noteRepository.allNotes
 
-    fun getAllNoteOfGame(id:Long) = gameRepository.getAllNoteOfGame(id).distinctUntilChanged()
+    fun getGame(id: Int) = gameRepository.getGameById(id)
+    fun getDice(id: Int) = diceRepository.getOneDice(id)
+    fun getTimer(id: Int) = timerRepository.getOneTimer(id)
+    fun getNote(id: Int) = noteRepository.getOneNote(id)
 
-    fun getAllDiceOfGame(id:Long) = gameRepository.getAllDiceOfGame(id).distinctUntilChanged()
+    fun getCountGames() = gameRepository.getCountGames()
 
-    fun getAllHourglassOfGame(id:Long) = gameRepository.getAllHourglassOfGame(id).distinctUntilChanged()
+    fun getAllNoteOfGame(id: Int) = gameRepository.getAllNoteOfGame(id).distinctUntilChanged()
+    fun getAllDiceOfGame(id: Int) = gameRepository.getAllDiceOfGame(id).distinctUntilChanged()
+    fun getAllHourglassOfGame(id: Int) = gameRepository.getAllHourglassOfGame(id).distinctUntilChanged()
+    fun getAllTimerOfGame(id: Int) = gameRepository.getAllTimerOfGame(id).distinctUntilChanged()
 
-    fun getAllTimerOfGame(id:Long) = gameRepository.getAllTimerOfGame(id).distinctUntilChanged()
+    fun getOneNoteOfGame(gameid: Int, materialid: Int) =
+        gameRepository.getOneNoteOfGame(gameid, materialid)
 
-    fun getDeleteTimersOfGame(count:Int) = gameRepository.getDeleteTimersOfGame(count)
-    fun getDeleteNotesOfGame(count:Int) = gameRepository.getDeleteNotesOfGame(count)
-    fun getDeleteDicesOfGame(count:Int) = gameRepository.getDeleteDicesOfGame(count)
-    fun getDeleteHourglassesOfGame(count:Int) = gameRepository.getDeleteHourglassesOfGame(count)
+    fun getOneDiceOfGame(gameid: Int, materialid: Int) =
+        gameRepository.getOneDiceOfGame(gameid, materialid)
 
-    fun getOneNoteOfGame(gameid:Long,materialid:Long)  = gameRepository.getOneNoteOfGame(gameid,materialid)
+    fun getOneTimerOfGame(gameid: Int, materialid: Int) =
+        gameRepository.getOneTimerOfGame(gameid, materialid)
 
-    fun getOneDiceOfGame(gameid:Long,materialid:Long)  = gameRepository.getOneDiceOfGame(gameid,materialid)
-
-    fun getOneTimerOfGame(gameid:Long,materialid:Long) = gameRepository.getOneTimerOfGame(gameid,materialid)
-
-    fun getAllGameFromApi(){
-        viewModelScope.launch{
-            val games = arrayListOf(1,2,3)
-            materialManager.getGames(games){
-                    result, error ->
-                when{
-                    result!= null -> {
-                        result.forEach { addGame(Game(it.name,it.description,it.image, count = 0) )}
-                        //addMaterial(Material(result.name,result.description,result.image_url))
-                    }
-                    error!=null->null
-                }
-            }
-        }
-    }
+//    fun getAllGameFromApi() {
+//        viewModelScope.launch {
+//            val games = arrayListOf(1, 2, 3)
+//            materialManager.getGames(games) { result, error ->
+//                when {
+//                    result != null -> {
+//                        result.forEach { addGame(GameROOM(getCountGames(), it.name, it.description, it.image)) }
+//                        //addMaterial(Material(result.name,result.description,result.image_url))
+//                    }
+//                    error != null -> null
+//                }
+//            }
+//        }
+//    }
 
 }

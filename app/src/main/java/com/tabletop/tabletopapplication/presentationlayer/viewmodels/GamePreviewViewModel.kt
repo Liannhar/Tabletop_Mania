@@ -4,20 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tabletop.tabletopapplication.businesslayer.managers.MaterialManager
-import com.tabletop.tabletopapplication.businesslayer.models.GameEntity
-import com.tabletop.tabletopapplication.businesslayer.models.MaterialEntity
-import com.tabletop.tabletopapplication.presentationlayer.models.LoadState
+import com.tabletop.tabletopapplication.businesslayer.API.managers.MaterialManager
+import com.tabletop.tabletopapplication.businesslayer.API.entities.GameAPI
+import com.tabletop.tabletopapplication.businesslayer.API.entities.MaterialAPI
+import com.tabletop.tabletopapplication.businesslayer.API.common.LoadState
 import kotlinx.coroutines.launch
 
 class GamePreviewViewModel : ViewModel() {
 
-    private val MLDgame = MutableLiveData(GameEntity())
+    private val MLDgame = MutableLiveData(GameAPI())
 
-    val LDgame: LiveData<GameEntity>
+    val LDgame: LiveData<GameAPI>
         get() = MLDgame
 
-    var game: GameEntity? = null
+    var game: GameAPI? = null
         get() = MLDgame.value
         set(value) {
             field = null
@@ -37,7 +37,7 @@ class GamePreviewViewModel : ViewModel() {
             MLDstate.value = LoadState.Pending()
             materialManager.getMaterials(game?.materials!!) { result, error ->
                 when {
-                    result != null -> MLDstate.value = LoadState.Success<List<MaterialEntity>>(result)
+                    result != null -> MLDstate.value = LoadState.Success<List<MaterialAPI>>(result)
                     error != null -> MLDstate.value = LoadState.Error(error)
                 }
             }

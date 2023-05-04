@@ -4,11 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.tabletop.tabletopapplication.businesslayer.managers.MaterialManager
-import com.tabletop.tabletopapplication.presentationlayer.models.LoadState
-import com.tabletop.tabletopapplication.presentationlayer.models.Material.Material
-import com.tabletop.tabletopapplication.presentationlayer.models.Material.MaterialRepository
-import com.tabletop.tabletopapplication.presentationlayer.models.game.GameDatabase
+import com.tabletop.tabletopapplication.businesslayer.API.managers.MaterialManager
+import com.tabletop.tabletopapplication.businesslayer.API.common.LoadState
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.MaterialRepository
+import com.tabletop.tabletopapplication.businesslayer.ROOM.GameDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,19 +23,19 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
         repository = MaterialRepository(dao)
     }
 
-    fun deleteMaterial (material: Material) = viewModelScope.launch(Dispatchers.IO) {
-        repository.delete(material)
+    fun deleteMaterial (materialROOM: MaterialROOM) = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete(materialROOM)
     }
 
-    fun updateMaterial(material:Material) = viewModelScope.launch(Dispatchers.IO) {
-        repository.update(material)
+    fun updateMaterial(materialROOM: MaterialROOM) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(materialROOM)
     }
 
-    fun addMaterial(material:Material) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(material)
+    fun addMaterial(materialROOM: MaterialROOM) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insert(materialROOM)
     }
 
-    fun getMaterial(id:Long) = repository.getOneMaterial(id)
+    fun getMaterial(id:Int) = repository.getOneMaterial(id)
 
     suspend fun getAllMaterials() = repository.allMaterials
 
@@ -46,7 +46,7 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
                 result, error ->
                 when{
                     result!= null -> {
-                        //result.forEach { addMaterial(Material(it.name,it.description,it.image_url.,it.id.toLong())) }
+                        //result.forEach { addMaterial(Material(it.name,it.description,it.image_url.,it.id.toInt())) }
                         //addMaterial(Material(result.name,result.description,result.image_url))
                     }
                     error!=null->null

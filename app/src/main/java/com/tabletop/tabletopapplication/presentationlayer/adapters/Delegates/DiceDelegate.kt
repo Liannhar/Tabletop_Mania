@@ -11,16 +11,16 @@ import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
-import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
-import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
-import com.tabletop.tabletopapplication.presentationlayer.models.Model
+import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class DiceDelegate(val adapter: ModelAdapter, private val diceDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
+class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
     class DiceViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dice_card,parent,false))
     {
-        fun bind(item: Dice, adapter: ModelAdapter, position: Int, diceDBViewModel: GameDBViewModel)
+        fun bind(item: DiceROOM, adapter: MaterialsAdapter, position: Int, diceDBViewModel: GameDBViewModel)
         {
             val dice= itemView.findViewById<CardView>(R.id.dice_card_mini)
 
@@ -47,8 +47,8 @@ class DiceDelegate(val adapter: ModelAdapter, private val diceDBViewModel: GameD
         }
     }
 
-    override fun isForViewType(items: ArrayList<Model>, position: Int): Boolean {
-        return items[position] is Dice
+    override fun isForViewType(items: ArrayList<EntityROOM>, position: Int): Boolean {
+        return items[position] is DiceROOM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -56,11 +56,11 @@ class DiceDelegate(val adapter: ModelAdapter, private val diceDBViewModel: GameD
     }
 
     override fun onBindViewHolder(
-        items: ArrayList<Model>,
+        items: ArrayList<EntityROOM>,
         position: Int,
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as DiceViewHolder).bind(items[position] as Dice,adapter,position,diceDBViewModel)
+        (holder as DiceViewHolder).bind(items[position] as DiceROOM,adapter,position,diceDBViewModel)
     }
 }

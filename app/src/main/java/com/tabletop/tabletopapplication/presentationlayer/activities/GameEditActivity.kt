@@ -14,84 +14,79 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
-import com.tabletop.tabletopapplication.presentationlayer.models.Model
+import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
+import com.tabletop.tabletopapplication.presentationlayer.models.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
+    private val viewModel by lazy { ViewModelProvider(this)[GameDBViewModel::class.java] }
 
-
-    private val gameDBViewModel by lazy{ ViewModelProvider(this)[GameDBViewModel::class.java]}
-
+    private var game: Game = Game()
+    private val differentMaterialsAdapter by lazy { MaterialsAdapter(this, viewModel) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
-        val gameId = prefs.getLong("currentGameId", -1)
-        prefs.edit().putLong("currentGameId", gameId).apply()
-        val gameCount = prefs.getInt("gameCount", -1)
+
+        var gameId: Int = -1
+        if (intent.extras != null) {
+            gameId = intent.getIntExtra("id", -1)
+        }
+
         val editGameTitle = findViewById<TextView>(R.id.activity_edit_game__title)
         val editGameImage = findViewById<ImageView>(R.id.activity_edit_game__image)
         val editGameDescription = findViewById<TextView>(R.id.activity_edit_game__description)
-        val differentMaterialsadapter by lazy{ ModelAdapter(this,gameDBViewModel)}
-        val materials = arrayListOf<Model>()
 
-        val job = lifecycleScope.launch(){
-            gameDBViewModel.getGame(gameId).collect(){
-                if (it.id>0)
-                {
-                    editGameTitle.text = it.name
-                    editGameDescription.text = it.description
-                    Glide.with(this@GameEditActivity).load(it.image).into(editGameImage)
-                }
-
-            }
-        }
-
-
-        fillRecycler(gameId,materials,differentMaterialsadapter)
-        //drawDB(gameId,materials)
         findViewById<RecyclerView>(R.id.activity_edit_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = differentMaterialsadapter
+            adapter = differentMaterialsAdapter
         }
 
         findViewById<ImageView>(R.id.activity_edit_game__save_button).setOnClickListener {
-            val intent = Intent(this, GamePreviewActivity::class.java)
-            startActivity(intent)
+            // TODO(save Materials)
+            setResult(RESULT_OK, Intent().apply {
+                putExtra("Game", game)
+            })
             finish()
         }
 
         findViewById<ImageView>(R.id.activity_edit_game__back_button).setOnClickListener {
-            deleteMaterials(gameCount,gameId)
-
-            val intent = Intent(this, GamePreviewActivity::class.java)
+            setResult(RESULT_CANCELED)
             finish()
-            startActivity(intent)
-
         }
 
         findViewById<ImageView>(R.id.activity_edit_game__add_button).setOnClickListener {
-            val intent = Intent(this, ChooseMaterialActivity::class.java)
 
-            startActivity(intent)
-            finish()
         }
 
         findViewById<CardView>(R.id.activity_edit_game__edit_button).setOnClickListener {
-            val intent = Intent(this, GameEditPropertiesActivity::class.java)
-            startActivity(intent)
-            finish()
+
         }
 
+        lifecycleScope.launch {
+            if (gameId >= 0)
+                viewModel.getGame(gameId).collect {
+                    game = it
+                }
+            else
+                viewModel.getCountGames().collect {
+                    game = Game(it, "Title", "Description", null)
+                }
+
+            editGameTitle.text = game.name
+            editGameDescription.text = game.description
+            Glide.with(this@GameEditActivity)
+                .load(game.image)
+                .into(editGameImage)
+        }
     }
-    /*private fun drawDB(gameId:Long, materials:ArrayList<Model>) {
-         val idMaterial = intent.getLongExtra("idMaterial", -1)
-         when (intent.getLongExtra("typeMaterial", -1)) {
+    /*private fun drawDB(gameId:Int, materials:ArrayList<Model>) {
+         val idMaterial = intent.getIntExtra("idMaterial", -1)
+         when (intent.getIntExtra("typeMaterial", -1)) {
              4L -> {
                  gameDBViewModel.getOneDiceOfGame(gameId,idMaterial).observe(this) {dice ->
                      differentMaterialsadapter.setItem(dice)
@@ -111,31 +106,29 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
          }
      }*/
 
-    private fun deleteMaterials(gameCount:Int,gameId: Long){
-        lifecycleScope.launch(){
-            gameDBViewModel.getDeleteTimersOfGame(gameCount).first().forEach{gameDBViewModel.deleteTimer(it)}
-            gameDBViewModel.getDeleteNotesOfGame(gameCount).first().forEach{gameDBViewModel.deleteNote(it)}
-            gameDBViewModel.getDeleteDicesOfGame(gameCount).first().forEach{gameDBViewModel.deleteDice(it)}
-            gameDBViewModel.getDeleteHourglassesOfGame(gameCount).first().forEach{gameDBViewModel.deleteHourglass(it)}
-            val game = gameDBViewModel.getGame(gameId).first()
-            Log.i("AAAAAA",game.count.toString())
-            game.count=gameCount
-            gameDBViewModel.updateGame(game)
+    private fun deleteMaterials(gameCount: Int, gameId: Int) {
+        lifecycleScope.launch() {
+            val game = viewModel.getGame(gameId).first()
+            viewModel.updateGame(game)
         }
     }
 
-    private fun fillRecycler(gameId:Long,materials:ArrayList<Model>,differentMaterialsadapter:ModelAdapter) {
-        lifecycleScope.launch(){
-            var m:List<Model> =   gameDBViewModel.getAllTimerOfGame(gameId).first()
+    private fun fillRecycler(
+        gameId: Int,
+        materials: ArrayList<EntityROOM>,
+        differentMaterialsadapter: MaterialsAdapter
+    ) {
+        lifecycleScope.launch() {
+            var m: List<EntityROOM> = viewModel.getAllTimerOfGame(gameId).first()
             materials.addAll(m)
-            m =   gameDBViewModel.getAllDiceOfGame(gameId).first()
+            m = viewModel.getAllDiceOfGame(gameId).first()
             materials.addAll(m)
-            m =   gameDBViewModel.getAllNoteOfGame(gameId).first()
+            m = viewModel.getAllNoteOfGame(gameId).first()
             materials.addAll(m)
-            m =   gameDBViewModel.getAllHourglassOfGame(gameId).first()
+            m = viewModel.getAllHourglassOfGame(gameId).first()
             materials.addAll(m)
 
-            materials.sortByDescending { it.positionAdd }
+//            materials.sortByDescending { it.positionAdd }
             differentMaterialsadapter.setItems(materials)
         }
 
