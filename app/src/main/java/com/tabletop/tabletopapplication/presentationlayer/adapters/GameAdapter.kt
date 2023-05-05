@@ -1,13 +1,14 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.registerForActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.DiffUtil
@@ -16,16 +17,20 @@ import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameSelectionActivity
+import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
 
 
 class GameAdapter(
-    private var games: ArrayList<Game> = arrayListOf()
+    private var games: ArrayList<Game> = arrayListOf(),
+    private val clickAction: ActivityResultLauncher<Intent>
 ) : RecyclerView.Adapter<GameAdapter.Holder>() {
 
-    class Holder(view: View) : RecyclerView.ViewHolder(view) {
+    class Holder(
+        view: View,
+        private val clickAction: ActivityResultLauncher<Intent>
+        ) : RecyclerView.ViewHolder(view) {
 
-        private val context = view.context
         private val element = view.findViewById<LinearLayout>(R.id.game_element__ll)
         private val name = view.findViewById<TextView>(R.id.game_name)
         private val image = view.findViewById<ImageView>(R.id.game_img)
@@ -33,26 +38,15 @@ class GameAdapter(
         fun bind(item: Game) {
             name.text = item.name
 
-            Glide.with(context)
+            Glide.with(itemView.context)
                 .load(item.image)
                 .error(R.drawable.baseline_error_outline_24)
                 .into(image)
 
             element.setOnClickListener {
-                when (context) {
-                    is GameSelectionActivity -> {
-                        val intent = Intent(context, GamePreviewActivity::class.java).apply {
-                            context.getSharedPreferences(
-                                "MyPrefsFile",
-                                AppCompatActivity.MODE_PRIVATE
-                            ).edit().putInt("currentGameId", item.id).apply()
-
-                        }
-
-                        startActivityForResult(context, intent, 1, Bundle())
-                        context.finish()
-                    }
-                }
+                clickAction.launch(Intent(itemView.context, GamePreviewActivity::class.java).apply {
+                    putExtra("id", item.id)
+                })
             }
 
         }
@@ -60,7 +54,7 @@ class GameAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.game_element, parent, false)
-        return Holder(view)
+        return Holder(view, clickAction)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) =

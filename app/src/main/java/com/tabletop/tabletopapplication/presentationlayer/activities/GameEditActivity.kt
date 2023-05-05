@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameROOM
+import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import kotlinx.coroutines.flow.first
@@ -23,19 +25,22 @@ import kotlinx.coroutines.launch
 
 class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
-    private val viewModel by lazy { ViewModelProvider(this)[GameDBViewModel::class.java] }
+    private val databaseVM by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[GameDBViewModel::class.java]
+    }
 
-    private var game: Game = Game()
-    private val differentMaterialsAdapter by lazy { MaterialsAdapter(this, viewModel) }
+    private var currentGame: Game = Game()
+    private val differentMaterialsAdapter by lazy { MaterialsAdapter(this, databaseVM) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        var gameId: Int = -1
-        if (intent.extras != null) {
-            gameId = intent.getIntExtra("id", -1)
-        }
+        currentGame.id = intent?.run {
+            getIntExtra("id", -1)
+        } ?: -1
 
         val editGameTitle = findViewById<TextView>(R.id.activity_edit_game__title)
         val editGameImage = findViewById<ImageView>(R.id.activity_edit_game__image)
@@ -48,8 +53,17 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
         findViewById<ImageView>(R.id.activity_edit_game__save_button).setOnClickListener {
             // TODO(save Materials)
+            lifecycleScope.launch {
+                databaseVM.addGame(currentGame)
+            }
+
             setResult(RESULT_OK, Intent().apply {
-                putExtra("Game", game)
+                Log.i("ASD", currentGame.id.toString())
+                Log.i("ASD", currentGame.name.toString())
+                Log.i("ASD", currentGame.description.toString())
+                Log.i("ASD", currentGame.image.toString())
+                putExtra("Game", currentGame)
+                putExtra("Game", currentGame)
             })
             finish()
         }
@@ -63,24 +77,39 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
         }
 
-        findViewById<CardView>(R.id.activity_edit_game__edit_button).setOnClickListener {
+        val editGameActivityLauncher = registerForActivityResult(IntentGameContract()) { result ->
+            lifecycleScope.launch {
+                result?.let {
+                    currentGame = it
 
+                    editGameTitle.text = currentGame.name
+                    editGameDescription.text = currentGame.description
+                    Glide.with(this@GameEditActivity)
+                        .load(currentGame.image)
+                        .error(R.drawable.baseline_error_outline_24)
+                        .into(editGameImage)
+                }
+            }
+        }
+
+        findViewById<CardView>(R.id.activity_edit_game__edit_button).setOnClickListener {
+            editGameActivityLauncher.launch(Intent(applicationContext, GameEditPropertiesActivity::class.java).apply {
+                putExtra("Game", currentGame)
+            })
         }
 
         lifecycleScope.launch {
-            if (gameId >= 0)
-                viewModel.getGame(gameId).collect {
-                    game = it
-                }
-            else
-                viewModel.getCountGames().collect {
-                    game = Game(it, "Title", "Description", null)
-                }
 
-            editGameTitle.text = game.name
-            editGameDescription.text = game.description
+            databaseVM.getGame(currentGame.id)?.run {
+                currentGame = this
+            } ?: launch {
+                currentGame = Game(databaseVM.getCountGames(), "Title", "Description", null)
+            }.join()
+
+            editGameTitle.text = currentGame.name
+            editGameDescription.text = currentGame.description
             Glide.with(this@GameEditActivity)
-                .load(game.image)
+                .load(currentGame.image)
                 .into(editGameImage)
         }
     }
@@ -106,14 +135,14 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
          }
      }*/
 
-    private fun deleteMaterials(gameCount: Int, gameId: Int) {
-        lifecycleScope.launch() {
-            val game = viewModel.getGame(gameId).first()
-            viewModel.updateGame(game)
-        }
-    }
+//    private fun deleteMaterials(gameCount: Int, gameId: Int) {
+//        lifecycleScope.launch {
+//            val game = viewModel.getGame(gameId)
+//            viewModel.updateGame(game)
+//        }
+//    }
 
-    private fun fillRecycler(
+/*    private fun fillRecycler(
         gameId: Int,
         materials: ArrayList<EntityROOM>,
         differentMaterialsadapter: MaterialsAdapter
@@ -132,6 +161,6 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
             differentMaterialsadapter.setItems(materials)
         }
 
-    }
+    }*/
 
 }

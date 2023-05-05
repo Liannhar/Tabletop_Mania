@@ -14,4 +14,5 @@ class GameROOM(
 ) : Game(), EntityROOM, java.io.Serializable {
 
     constructor(game: Game): this(game.id, game.name, game.description, game.image)
+
 }

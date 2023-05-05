@@ -15,6 +15,7 @@ import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.TimerRep
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.GameDatabase
 import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.GameRepository
+import com.tabletop.tabletopapplication.presentationlayer.models.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -29,6 +30,7 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
     val materialManager by lazy { GameManager() }
 
     init {
+        val db = GameDatabase.getDatabase(application)
         val dao = GameDatabase.getDatabase(application).getGameDao()
         gameRepository = GameRepository(dao)
         noteRepository = NoteRepository(dao)
@@ -73,8 +75,8 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
         noteRepository.update(noteROOM)
     }
 
-    fun addGame(gameROOM: GameROOM) = viewModelScope.launch(Dispatchers.IO) {
-        gameRepository.insert(gameROOM)
+    fun addGame(game: Game) = viewModelScope.launch(Dispatchers.IO) {
+        gameRepository.insert(GameROOM(game))
     }
 
     fun addDice(diceROOM: DiceROOM) = viewModelScope.launch(Dispatchers.IO) {
@@ -103,12 +105,12 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
     fun getAllTimer() = timerRepository.allTimerROOM
     fun getAllNotes() = noteRepository.allNotes
 
-    fun getGame(id: Int) = gameRepository.getGameById(id)
+    suspend fun getGame(id: Int) = gameRepository.getGameById(id) as Game?
     fun getDice(id: Int) = diceRepository.getOneDice(id)
     fun getTimer(id: Int) = timerRepository.getOneTimer(id)
     fun getNote(id: Int) = noteRepository.getOneNote(id)
 
-    fun getCountGames() = gameRepository.getCountGames()
+    suspend fun getCountGames() = gameRepository.getCountGames()
 
     fun getAllNoteOfGame(id: Int) = gameRepository.getAllNoteOfGame(id).distinctUntilChanged()
     fun getAllDiceOfGame(id: Int) = gameRepository.getAllDiceOfGame(id).distinctUntilChanged()

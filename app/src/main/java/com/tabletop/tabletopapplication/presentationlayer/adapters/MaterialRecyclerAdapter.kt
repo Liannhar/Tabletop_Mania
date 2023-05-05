@@ -106,9 +106,10 @@ class MaterialRecyclerAdapter(
                     itemView.findViewById<LinearLayout>(R.id.card_material__material)
                         .setOnClickListener {
                             (itemView.context as ChooseMaterialActivity).lifecycleScope.launch() {
-                                val game = gameDBViewModel.getGame(gameId).first()
-                                sendID(materialROOM, gameDBViewModel, gameId, game)
-                                gameDBViewModel.updateGame(game)
+                                val game = gameDBViewModel.getGame(gameId)?.let {
+                                    sendID(materialROOM, gameDBViewModel, gameId, GameROOM(it))
+                                    gameDBViewModel.updateGame(GameROOM(it))
+                                }
                             }
                             val intent = Intent(itemView.context, GameEditActivity::class.java)
                             startActivity(itemView.context, intent, null)

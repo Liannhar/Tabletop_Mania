@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GameDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(gameROOM: GameROOM)
 
     @Delete
@@ -21,7 +21,7 @@ interface GameDao {
     fun getAllGames(): Flow<List<GameROOM>>
 
     @Query("Select * from gameTable Where id=:id")
-    fun getGameById(id: Int): Flow<GameROOM>
+    fun getGameById(id: Int): Flow<GameROOM?>
 
     @Query("Select COUNT(*) FROM gameTable")
     fun getCountGames(): Flow<Int>
