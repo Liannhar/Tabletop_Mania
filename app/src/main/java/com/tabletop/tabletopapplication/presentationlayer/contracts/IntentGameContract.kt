@@ -15,13 +15,14 @@ class IntentGameContract : ActivityResultContract<Intent, Game?>() {
     override fun parseResult(resultCode: Int, intent: Intent?): Game? =
         when (resultCode) {
             Activity.RESULT_OK -> {
-                val game = intent?.extras?.getParcelable<Game>("Game")
-                Log.i("ASD", "---------")
-                Log.i("ASD", game?.id.toString())
-                Log.i("ASD", game?.name.toString())
-                Log.i("ASD", game?.description.toString())
-                Log.i("ASD", game?.image.toString())
-                game
+                intent?.extras?.run {
+                    val game = getSerializable("Game") as Game?
+                    Log.i("DEBUG", game?.id.toString())
+                    Log.i("DEBUG", game?.name.toString())
+                    Log.i("DEBUG", game?.description.toString())
+                    Log.i("DEBUG", game?.image.toString())
+                    game
+                }
             }
             else -> null
         }

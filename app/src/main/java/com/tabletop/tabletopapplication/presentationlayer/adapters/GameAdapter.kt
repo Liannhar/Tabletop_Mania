@@ -1,6 +1,8 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,17 +10,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.registerForActivityResult
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.recyclerview.widget.DiffUtil
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
-import com.tabletop.tabletopapplication.presentationlayer.activities.GameSelectionActivity
-import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
+import kotlinx.coroutines.coroutineScope
 
 
 class GameAdapter(
@@ -38,8 +36,9 @@ class GameAdapter(
         fun bind(item: Game) {
             name.text = item.name
 
-            Glide.with(itemView.context)
+            Glide.with(image)
                 .load(item.image)
+                .placeholder(R.drawable.baseline_downloading_24)
                 .error(R.drawable.baseline_error_outline_24)
                 .into(image)
 
@@ -77,7 +76,7 @@ class GameAdapter(
         notifyItemChanged(position)
     }
 
-    fun findGameById(id: Int): Int {
+    fun findPositionById(id: Int): Int {
         for (i in 0..games.size)
             if (games[i].id == id)
                 return i

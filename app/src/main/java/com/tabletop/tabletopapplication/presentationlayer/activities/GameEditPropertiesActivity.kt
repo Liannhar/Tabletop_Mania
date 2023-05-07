@@ -42,7 +42,7 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
         super.onCreate(savedInstanceState)
 
         currentGame = intent.extras?.run {
-            getParcelable("Game") ?: Game()
+            getSerializable("Game") as Game
         } ?: Game()
 
         val nameView = findViewById<EditText>(R.id.activity_edit_properties_game__name)

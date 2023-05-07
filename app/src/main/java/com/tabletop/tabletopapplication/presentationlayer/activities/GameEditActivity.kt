@@ -43,8 +43,8 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
         } ?: -1
 
         val editGameTitle = findViewById<TextView>(R.id.activity_edit_game__title)
-        val editGameImage = findViewById<ImageView>(R.id.activity_edit_game__image)
         val editGameDescription = findViewById<TextView>(R.id.activity_edit_game__description)
+        val editGameImage = findViewById<ImageView>(R.id.activity_edit_game__image)
 
         findViewById<RecyclerView>(R.id.activity_edit_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
@@ -58,11 +58,6 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
             }
 
             setResult(RESULT_OK, Intent().apply {
-                Log.i("ASD", currentGame.id.toString())
-                Log.i("ASD", currentGame.name.toString())
-                Log.i("ASD", currentGame.description.toString())
-                Log.i("ASD", currentGame.image.toString())
-                putExtra("Game", currentGame)
                 putExtra("Game", currentGame)
             })
             finish()
@@ -84,6 +79,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
                     editGameTitle.text = currentGame.name
                     editGameDescription.text = currentGame.description
+
                     Glide.with(this@GameEditActivity)
                         .load(currentGame.image)
                         .error(R.drawable.baseline_error_outline_24)

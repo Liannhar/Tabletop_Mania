@@ -32,19 +32,20 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
     }
 
     private var currentGame = Game()
-    private val differentMaterialsAdapter by lazy{ MaterialsAdapter(this, databaseVM) }
+    private val differentMaterialsAdapter by lazy { MaterialsAdapter(this, databaseVM) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        currentGame.id = (intent.extras?.run {
+        // Get data and initializations
+        currentGame.id = intent.extras?.run {
             getInt("id", -1)
-        } ?: -1)
+        } ?: -1
 
         val previewGameTitle = findViewById<TextView>(R.id.activity_preview_game__title)
-        val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
+        val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
 
         lifecycleScope.launch {
             databaseVM.getGame(currentGame.id)?.let {
@@ -65,38 +66,35 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         }
 
         findViewById<ImageView>(R.id.activity_preview_game__back_button).setOnClickListener {
-            setResult(RESULT_CANCELED)
+            setResult(RESULT_OK, Intent().apply {
+                putExtra("Game", currentGame)
+            })
             finish()
         }
 
         val editActivityLauncher = registerForActivityResult(IntentGameContract()) { result ->
             result?.let {
 
-                currentGame = result
-
-                Log.i("ASD", currentGame.id.toString())
-                Log.i("ASD", currentGame.name.toString())
-                Log.i("ASD", currentGame.description.toString())
-                Log.i("ASD", currentGame.image.toString())
+                currentGame = it
 
                 previewGameTitle.text = currentGame.name
                 previewGameDescription.text = currentGame.description
 
-                Glide.with(this@GamePreviewActivity)
+                Glide.with(this)
                     .load(currentGame.image)
                     .into(previewGameImage)
             }
         }
 
         findViewById<ImageView>(R.id.activity_preview_game__edit_button).setOnClickListener {
-            editActivityLauncher.launch(Intent(applicationContext, GameEditActivity::class.java).apply {
+            editActivityLauncher.launch(Intent(this, GameEditActivity::class.java).apply {
                 putExtra("id", currentGame.id)
             })
         }
 
     }
 
-    private fun СheckMaterials(gameId: Int,job:Job){
+    private fun СheckMaterials(gameId: Int, job: Job) {
 //        lifecycleScope.launch(){
 //            job.cancel()
 //            val game = gameDBViewModel.getGame(gameId).first()
@@ -110,7 +108,11 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
     }
 
 
-    private fun fillRecycler(gameId:Int, differentMaterialsadapter:MaterialsAdapter, materials:ArrayList<EntityROOM>) {
+    private fun fillRecycler(
+        gameId: Int,
+        differentMaterialsadapter: MaterialsAdapter,
+        materials: ArrayList<EntityROOM>
+    ) {
 //        lifecycleScope.launch(){
 //            var m:List<EntityROOM> =   gameDBViewModel.getAllTimerOfGame(gameId).first()
 //            materials.addAll(m)

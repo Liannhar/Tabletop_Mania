@@ -1,8 +1,11 @@
 package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,12 +28,31 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
     private lateinit var gameAdapter: GameAdapter
 
+    private val permisLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+        if (result) {
+            Toast.makeText(this, "YES", Toast.LENGTH_LONG)
+        } else {
+            Toast.makeText(this, "NO", Toast.LENGTH_LONG)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        permisLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        when{
+            this.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED -> {
+                //РАЗРЕШЕНИЕ УЖЕ ПОЛУЧЕНО
+            }
+            else -> {
+                permisLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+        }
+
         val selectionActivityLauncher = registerForActivityResult(IntentGameContract()) { result ->
             result?.let {
-                gameAdapter.replaceGame(gameAdapter.findGameById(result.id), result)
+                gameAdapter.replaceGame(gameAdapter.findPositionById(result.id), it)
             }
         }
 
@@ -55,11 +77,10 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
             }
         }
         findViewById<ImageView>(R.id.add_game_button).setOnClickListener {
-            addActivityLauncher.launch(Intent(applicationContext, GameEditActivity::class.java).apply {
+            addActivityLauncher.launch(Intent(this, GameEditActivity::class.java).apply {
                 putExtra("id", -1)
             })
         }
-
 
     }
 
