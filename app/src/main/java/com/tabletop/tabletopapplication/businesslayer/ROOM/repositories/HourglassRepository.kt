@@ -1,5 +1,6 @@
 package com.tabletop.tabletopapplication.businesslayer.ROOM.repositories
 
+import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.DatabaseDao
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
 
@@ -7,7 +8,7 @@ import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.GameDao
 import kotlinx.coroutines.flow.Flow
 
 
-class HourglassRepository(private val hourglassDao: GameDao) {
+class HourglassRepository(private val hourglassDao: DatabaseDao) {
 
     val allDiceROOM: Flow<List<DiceROOM>> = hourglassDao.getAllDice()
 

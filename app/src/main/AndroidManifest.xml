@@ -3,8 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACTION_OPEN_DOCUMENT"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:ignore="CoarseFineLocation" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -15,6 +19,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="31">
+
+        <!-- Главный экран -->
+        <activity android:name=".presentationlayer.activities.GameSelectionActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- Активити для песочных часов -->
         <activity
             android:name=".presentationlayer.activities.HourglassActivity"
@@ -26,6 +40,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <!-- Активити реализующее настройку броска кубиков -->
         <activity
             android:name=".presentationlayer.activities.DiceSettingsActivity"
@@ -37,6 +52,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <!-- Активити реализующее результат броска кубиков -->
         <activity
             android:name=".presentationlayer.activities.DiceResultActivity"
@@ -48,40 +64,19 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <!-- Главный экран -->
-        <activity
-            android:name=".presentationlayer.activities.GameSelectionActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-                android:name=".presentationlayer.activities.ChooseMaterialActivity"
-               >
-        </activity>
+        <activity android:name=".presentationlayer.activities.GamePreviewActivity" />
+        <activity android:name=".presentationlayer.activities.GameEditActivity" />
+        <activity android:name=".presentationlayer.activities.GameEditPropertiesActivity" />
 
-        <activity
-            android:name=".presentationlayer.activities.GamePreviewActivity"
-            >
-        </activity>
-        <activity
-            android:name=".presentationlayer.activities.InstallMaterialActivity"
-            >
-        </activity>
-        -->
+        <activity android:name=".presentationlayer.activities.ChooseMaterialActivity" />
+        <activity android:name=".presentationlayer.activities.InstallMaterialActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             tools:node="remove"
             tools:replace="android:authorities" />
-
-        <activity android:name=".presentationlayer.activities.GameEditPropertiesActivity" />
-        <activity android:name=".presentationlayer.activities.GameEditActivity" />
-
 
     </application>
 

@@ -1,11 +1,12 @@
 package com.tabletop.tabletopapplication.businesslayer.ROOM.repositories
 
+import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.DatabaseDao
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.GameDao
 import kotlinx.coroutines.flow.Flow
 
 
-class TimerRepository(private val timerDao: GameDao) {
+class TimerRepository(private val timerDao: DatabaseDao) {
 
     val allTimerROOM: Flow<List<TimerROOM>> = timerDao.getAllTimer()
 

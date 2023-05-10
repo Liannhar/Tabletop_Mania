@@ -9,6 +9,7 @@ import com.tabletop.tabletopapplication.businesslayer.API.common.LoadState
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.MaterialRepository
 import com.tabletop.tabletopapplication.businesslayer.ROOM.GameDatabase
+import com.tabletop.tabletopapplication.presentationlayer.models.Material
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -19,7 +20,7 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
     val state = MutableLiveData<LoadState>()
 
     init {
-        val dao = GameDatabase.getDatabase(application).getGameDao()
+        val dao = GameDatabase.getDatabase(application).getDbDao()
         repository = MaterialRepository(dao)
     }
 
@@ -35,7 +36,7 @@ class MaterialViewModel(application: Application) : AndroidViewModel(application
         repository.insert(materialROOM)
     }
 
-    fun getMaterial(id:Int) = repository.getOneMaterial(id)
+    suspend fun getMaterial(id:Int) = repository.getMaterialById(id) as Material
 
     suspend fun getAllMaterials() = repository.allMaterials
 

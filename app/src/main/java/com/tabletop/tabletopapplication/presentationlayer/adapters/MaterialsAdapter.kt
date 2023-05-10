@@ -12,43 +12,21 @@ import com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates.Not
 import com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates.TimerDelegate
 import com.tabletop.tabletopapplication.presentationlayer.adapters.DiffCallbacks.ModelDiffCallback
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 
 class MaterialsAdapter(
     val context: FragmentActivity,
-    gameDBViewModel: GameDBViewModel
+    DBViewModel: DBViewModel
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val adapterDelegateManager = AdapterDelegatesManager<ArrayList<EntityROOM>>()
     private val items = ArrayList<EntityROOM>()
 
     init {
-        adapterDelegateManager.addDelegate(DiceDelegate(this, gameDBViewModel))
-            .addDelegate(HourglassDelegate(this, gameDBViewModel))
-            .addDelegate(TimerDelegate(this, context, gameDBViewModel))
-            .addDelegate(NoteDelegate(this, gameDBViewModel))
-    }
-
-    fun setItems(mitems: List<EntityROOM>) {
-        items.addAll(mitems)
-        notifyDataSetChanged()
-    }
-
-    fun removeItem(position: Int) {
-        items.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-    fun setItem(item: EntityROOM) {
-        items.add(item)
-        notifyItemRangeInserted(this.items.size - items.size, 1)
-    }
-
-    fun updateItems(newItems: List<EntityROOM>) {
-        val diffResult = DiffUtil.calculateDiff(ModelDiffCallback(items, newItems))
-        items.clear()
-        items.addAll(newItems)
-        diffResult.dispatchUpdatesTo(this)
+        adapterDelegateManager.addDelegate(DiceDelegate(this, DBViewModel))
+            .addDelegate(HourglassDelegate(this, DBViewModel))
+            .addDelegate(TimerDelegate(this, context, DBViewModel))
+            .addDelegate(NoteDelegate(this, DBViewModel))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -65,5 +43,27 @@ class MaterialsAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         adapterDelegateManager.onBindViewHolder(items, position, holder)
+    }
+
+    fun addAll(list: List<EntityROOM>) {
+        items.addAll(list)
+        notifyItemRangeInserted(items.size - list.size, list.size)
+    }
+
+    fun add(item: EntityROOM) {
+        items.add(item)
+        notifyItemInserted(items.size - 1)
+    }
+
+    fun remove(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun updateItems(newItems: List<EntityROOM>) {
+        val diffResult = DiffUtil.calculateDiff(ModelDiffCallback(items, newItems))
+        items.clear()
+        items.addAll(newItems)
+        diffResult.dispatchUpdatesTo(this)
     }
 }

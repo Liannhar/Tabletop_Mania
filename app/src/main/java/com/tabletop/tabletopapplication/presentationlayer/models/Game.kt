@@ -9,4 +9,8 @@ open class Game(
     open var name: String = "",
     open var description: String = "",
     open var image: String? = null,
-): java.io.Serializable
+): java.io.Serializable {
+
+    constructor(name: String, description: String, image: String?): this(0, name, description, image)
+
+}

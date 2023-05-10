@@ -1,22 +1,24 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
+import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
-import androidx.core.net.toUri
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
-import kotlinx.coroutines.coroutineScope
 
 
 class GameAdapter(
@@ -38,6 +40,7 @@ class GameAdapter(
 
             Glide.with(image)
                 .load(item.image)
+                .centerCrop()
                 .placeholder(R.drawable.baseline_downloading_24)
                 .error(R.drawable.baseline_error_outline_24)
                 .into(image)
@@ -66,7 +69,7 @@ class GameAdapter(
         notifyItemInserted(games.size - 1)
     }
 
-    fun addListGames(games: List<Game>) {
+    fun addAll(games: List<Game>) {
         this.games.addAll(games)
         notifyItemRangeInserted(this.games.size - games.size, games.size)
     }

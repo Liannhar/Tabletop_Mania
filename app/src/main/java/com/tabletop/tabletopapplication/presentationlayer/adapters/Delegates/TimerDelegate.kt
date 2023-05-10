@@ -14,14 +14,14 @@ import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdap
 import com.tabletop.tabletopapplication.presentationlayer.fragments.TimerFragment
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 
-class TimerDelegate(val adapter: MaterialsAdapter, private val contextt:FragmentActivity, private val timerViewModel: GameDBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
+class TimerDelegate(val adapter: MaterialsAdapter, private val contextt:FragmentActivity, private val timerViewModel: DBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
 
     class TimerViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.timer_host_layout,parent,false))
     {
-        fun bind(item: TimerROOM, position: Int, contextt: FragmentActivity, timerViewModel: GameDBViewModel, adapter: MaterialsAdapter)
+        fun bind(item: TimerROOM, position: Int, contextt: FragmentActivity, timerViewModel: DBViewModel, adapter: MaterialsAdapter)
         {
              when(itemView.context) {
                is GamePreviewActivity -> {
@@ -35,7 +35,7 @@ class TimerDelegate(val adapter: MaterialsAdapter, private val contextt:Fragment
                    val deleteButton=itemView.findViewById<CardView>(R.id.timer_card_delete)
                    deleteButton.isVisible = true
                    deleteButton.setOnClickListener {
-                       adapter.removeItem(position)
+                       adapter.remove(position)
                        timerViewModel.deleteTimer(item)
                    }
                }

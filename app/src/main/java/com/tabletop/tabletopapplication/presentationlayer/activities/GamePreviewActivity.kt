@@ -2,7 +2,6 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,28 +16,28 @@ import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdap
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
-
     private val databaseVM by lazy {
         ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[GameDBViewModel::class.java]
+        )[DBViewModel::class.java]
     }
 
     private var currentGame = Game()
-    private val differentMaterialsAdapter by lazy { MaterialsAdapter(this, databaseVM) }
+    private val differentMaterialsAdapter by lazy {
+        MaterialsAdapter(this, databaseVM)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        // Get data and initializations
         currentGame.id = intent.extras?.run {
             getInt("id", -1)
         } ?: -1
@@ -46,19 +45,6 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         val previewGameTitle = findViewById<TextView>(R.id.activity_preview_game__title)
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
         val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
-
-        lifecycleScope.launch {
-            databaseVM.getGame(currentGame.id)?.let {
-                currentGame = it
-            }
-
-            previewGameTitle.text = currentGame.name
-            previewGameDescription.text = currentGame.description
-
-            Glide.with(this@GamePreviewActivity)
-                .load(currentGame.image)
-                .into(previewGameImage)
-        }
 
         findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
             adapter = differentMaterialsAdapter
@@ -82,6 +68,9 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
                 Glide.with(this)
                     .load(currentGame.image)
+                    .centerCrop()
+                    .placeholder(R.drawable.baseline_downloading_24)
+                    .error(R.drawable.baseline_error_outline_24)
                     .into(previewGameImage)
             }
         }
@@ -92,6 +81,21 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
             })
         }
 
+        lifecycleScope.launch {
+            databaseVM.getGame(currentGame.id)?.let {
+                currentGame = it
+            }
+
+            previewGameTitle.text = currentGame.name
+            previewGameDescription.text = currentGame.description
+
+            Glide.with(previewGameImage)
+                .load(currentGame.image)
+                .centerCrop()
+                .placeholder(R.drawable.baseline_downloading_24)
+                .error(R.drawable.baseline_error_outline_24)
+                .into(previewGameImage)
+        }
     }
 
     private fun СheckMaterials(gameId: Int, job: Job) {

@@ -16,14 +16,14 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreview
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.NoteROOM
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 
-class NoteDelegate(val adapter: MaterialsAdapter, val noteViewModel: GameDBViewModel):AdapterDelegate<ArrayList<EntityROOM>>() {
+class NoteDelegate(val adapter: MaterialsAdapter, val noteViewModel: DBViewModel):AdapterDelegate<ArrayList<EntityROOM>>() {
 
     class NoteViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.note_card,parent,false))
     {
-        fun bind(item: NoteROOM, adapter: MaterialsAdapter, position: Int, noteViewModel: GameDBViewModel)
+        fun bind(item: NoteROOM, adapter: MaterialsAdapter, position: Int, noteViewModel: DBViewModel)
         {
             val note= itemView.findViewById<EditText>(R.id.editTextMini)
              when(itemView.context) {
@@ -48,7 +48,7 @@ class NoteDelegate(val adapter: MaterialsAdapter, val noteViewModel: GameDBViewM
                    val deleteButton=itemView.findViewById<CardView>(R.id.edit_text_delete)
                    deleteButton.isVisible = true
                    deleteButton.setOnClickListener {
-                       adapter.removeItem(position)
+                       adapter.remove(position)
                        noteViewModel.deleteNote(item)
                    }
                }

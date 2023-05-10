@@ -14,17 +14,27 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.HourglassAc
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 
-class HourglassDelegate(val adapter: MaterialsAdapter, private val hourglassDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
+class HourglassDelegate(
+    val adapter: MaterialsAdapter,
+    private val hourglassDBViewModel: DBViewModel
+) : AdapterDelegate<ArrayList<EntityROOM>>() {
+
     class HourglassViewHolder(val parent: ViewGroup) :
-        RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.hourglass_card,parent,false))
-    {
-        fun bind(item: HourglassROOM, adapter: MaterialsAdapter, position: Int, hourglassDBViewModel: GameDBViewModel)
-        {
-            val hourglass= itemView.findViewById<CardView>(R.id.hourglass_card_mini)
+        RecyclerView.ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.hourglass_card, parent, false)
+        ) {
 
-            when(itemView.context) {
+        fun bind(
+            item: HourglassROOM,
+            adapter: MaterialsAdapter,
+            position: Int,
+            hourglassDBViewModel: DBViewModel
+        ) {
+            val hourglass = itemView.findViewById<CardView>(R.id.hourglass_card_mini)
+
+            when (itemView.context) {
                 is GamePreviewActivity -> {
                     itemView.setOnClickListener {
                         hourglass.setOnClickListener {
@@ -34,16 +44,14 @@ class HourglassDelegate(val adapter: MaterialsAdapter, private val hourglassDBVi
                     }
                 }
                 is GameEditActivity -> {
-                    val deleteButton=itemView.findViewById<CardView>(R.id.hourglass_card_delete)
+                    val deleteButton = itemView.findViewById<CardView>(R.id.hourglass_card_delete)
                     deleteButton.isVisible = true
                     deleteButton.setOnClickListener {
-                        adapter.removeItem(position)
+                        adapter.remove(position)
                         hourglassDBViewModel.deleteHourglass(item)
                     }
                 }
             }
-
-
         }
     }
 
@@ -61,6 +69,11 @@ class HourglassDelegate(val adapter: MaterialsAdapter, private val hourglassDBVi
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as HourglassViewHolder).bind(items[position] as HourglassROOM,adapter,position,hourglassDBViewModel)
+        (holder as HourglassViewHolder).bind(
+            items[position] as HourglassROOM,
+            adapter,
+            position,
+            hourglassDBViewModel
+        )
     }
 }

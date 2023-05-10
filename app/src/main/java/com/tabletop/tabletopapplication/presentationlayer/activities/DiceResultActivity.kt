@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 
 class DiceResultActivity : AppCompatActivity() {
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dice_result)

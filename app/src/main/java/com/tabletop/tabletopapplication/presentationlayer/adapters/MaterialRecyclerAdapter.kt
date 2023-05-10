@@ -21,20 +21,15 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.ChooseMater
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.InstallMaterialActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.MySplitInstallStateUpdatedListener
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.NoteROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameROOM
 
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
-import kotlinx.coroutines.flow.first
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 import kotlinx.coroutines.launch
 
 class MaterialRecyclerAdapter(
-    private val materialROOMS: MutableList<MaterialROOM>,
-    private val gameDBViewModel: GameDBViewModel,
+    private val materialROOMS: ArrayList<MaterialROOM> = arrayListOf(),
+    private val DBViewModel: DBViewModel,
     private val gameId: Int,
 ) : RecyclerView.Adapter<MaterialRecyclerAdapter.ViewHolder>() {
 
@@ -44,7 +39,7 @@ class MaterialRecyclerAdapter(
         private val descriptionTextView: TextView = itemView.findViewById(R.id.card_material__description)
         private val image: ImageView = itemView.findViewById(R.id.card_material__image)
 
-        fun bind(materialROOM: MaterialROOM, gameDBViewModel: GameDBViewModel, gameId: Int) {
+        fun bind(materialROOM: MaterialROOM, DBViewModel: DBViewModel, gameId: Int) {
             nameTextView.text = materialROOM.name
             descriptionTextView.text = materialROOM.description
 
@@ -106,9 +101,9 @@ class MaterialRecyclerAdapter(
                     itemView.findViewById<LinearLayout>(R.id.card_material__material)
                         .setOnClickListener {
                             (itemView.context as ChooseMaterialActivity).lifecycleScope.launch() {
-                                val game = gameDBViewModel.getGame(gameId)?.let {
-                                    sendID(materialROOM, gameDBViewModel, gameId, GameROOM(it))
-                                    gameDBViewModel.updateGame(GameROOM(it))
+                                val game = DBViewModel.getGame(gameId)?.let {
+                                    sendID(materialROOM, DBViewModel, gameId, GameROOM(it))
+                                    DBViewModel.updateGame(GameROOM(it))
                                 }
                             }
                             val intent = Intent(itemView.context, GameEditActivity::class.java)
@@ -122,7 +117,7 @@ class MaterialRecyclerAdapter(
 
         private fun sendID(
             materialROOM: MaterialROOM,
-            gameDBViewModel: GameDBViewModel,
+            DBViewModel: DBViewModel,
             gameId: Int,
             gameROOM: GameROOM
         ) {
@@ -157,8 +152,7 @@ class MaterialRecyclerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.card_material, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.card_material, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -167,6 +161,11 @@ class MaterialRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(materialROOMS[position], gameDBViewModel, gameId)
+        holder.bind(materialROOMS[position], DBViewModel, gameId)
+    }
+
+    fun addAll(list: List<MaterialROOM>) {
+        materialROOMS.addAll(list)
+        notifyItemRangeChanged(materialROOMS.size - list.size, list.size)
     }
 }

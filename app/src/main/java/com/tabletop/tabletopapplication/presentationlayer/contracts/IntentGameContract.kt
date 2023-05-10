@@ -15,14 +15,7 @@ class IntentGameContract : ActivityResultContract<Intent, Game?>() {
     override fun parseResult(resultCode: Int, intent: Intent?): Game? =
         when (resultCode) {
             Activity.RESULT_OK -> {
-                intent?.extras?.run {
-                    val game = getSerializable("Game") as Game?
-                    Log.i("DEBUG", game?.id.toString())
-                    Log.i("DEBUG", game?.name.toString())
-                    Log.i("DEBUG", game?.description.toString())
-                    Log.i("DEBUG", game?.image.toString())
-                    game
-                }
+                intent?.extras?.getSerializable("Game") as Game?
             }
             else -> null
         }

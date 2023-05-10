@@ -14,13 +14,13 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreview
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 
-class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
+class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: DBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
     class DiceViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dice_card,parent,false))
     {
-        fun bind(item: DiceROOM, adapter: MaterialsAdapter, position: Int, diceDBViewModel: GameDBViewModel)
+        fun bind(item: DiceROOM, adapter: MaterialsAdapter, position: Int, diceDBViewModel: DBViewModel)
         {
             val dice= itemView.findViewById<CardView>(R.id.dice_card_mini)
 
@@ -37,7 +37,7 @@ class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: G
                     val deleteButton=itemView.findViewById<CardView>(R.id.dice_card_delete)
                     deleteButton.isVisible = true
                     deleteButton.setOnClickListener {
-                        adapter.removeItem(position)
+                        adapter.remove(position)
                         diceDBViewModel.deleteDice(item)
                     }
                 }

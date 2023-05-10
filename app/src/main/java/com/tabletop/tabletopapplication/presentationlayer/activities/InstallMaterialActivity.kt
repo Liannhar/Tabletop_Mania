@@ -14,60 +14,53 @@ import com.google.android.play.core.splitcompat.SplitCompat
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialRecyclerAdapter
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.MaterialViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
-class InstallMaterialActivity : AppCompatActivity() {
+class InstallMaterialActivity : AppCompatActivity(R.layout.actvity_download_materials) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.actvity_download_materials)
-        val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
-        val gameId = prefs.getInt("currentGameId", -1)
-        val backButton = findViewById<ImageView>(R.id.arrow_back)
+    private val databaseVM by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[DBViewModel::class.java]
+    }
 
-        val materialViewModel = ViewModelProvider(
+    private val materialViewModel by lazy {
+        ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[MaterialViewModel::class.java]
-        val gameDBViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[GameDBViewModel::class.java]
+    }
 
+    private lateinit var materialAdapter: MaterialRecyclerAdapter
 
-        val recyclerView: RecyclerView = findViewById(R.id.rv_download_material)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        lifecycle.coroutineScope.launch() {
+        materialAdapter = MaterialRecyclerAdapter(DBViewModel = databaseVM, gameId = -1)
+
+        findViewById<RecyclerView>(R.id.rv_download_material).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = materialAdapter
+        }
+
+        findViewById<ImageView>(R.id.arrow_back).setOnClickListener {
+            setResult(RESULT_CANCELED)
+            finish()
+        }
+
+        fillRV()
+    }
+
+    private fun fillRV() {
+        lifecycle.coroutineScope.launch {
             materialViewModel.getAllMaterials().collect { data ->
-                val m = mutableListOf<MaterialROOM>()
-                m.addAll(data)
-                recyclerView.adapter = MaterialRecyclerAdapter(m, gameDBViewModel, gameId)
+                materialAdapter.addAll(data)
             }
-        }
-
-        lifecycleScope.launch() {
-            val material = materialViewModel.getAllMaterials().first()
-            val m = mutableListOf<MaterialROOM>()
-            m.addAll(material)
-            recyclerView.adapter = MaterialRecyclerAdapter(m, gameDBViewModel, gameId)
-        }
-
-        backButton.setOnClickListener {
-            if (gameId == -1) {
-                startActivity(Intent(applicationContext, GameSelectionActivity::class.java))
-                prefs.edit().putInt("idmaterial", -1).apply()
-                this.finish()
-            } else {
-                startActivity(Intent(applicationContext, ChooseMaterialActivity::class.java))
-                prefs.edit().putInt("idmaterial", -1).apply()
-                this.finish()
-            }
-
         }
     }
 

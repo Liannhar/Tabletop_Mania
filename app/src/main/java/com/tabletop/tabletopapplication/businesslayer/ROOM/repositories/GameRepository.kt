@@ -1,6 +1,7 @@
 package com.tabletop.tabletopapplication.businesslayer.ROOM.repositories
 
 import android.util.Log
+import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.DatabaseDao
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.NoteROOM
@@ -10,11 +11,13 @@ import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.GameDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
-class GameRepository(private val gameDao: GameDao) {
+class GameRepository(private val gameDao: DatabaseDao) {
 
-    val getAllGames: Flow<List<GameROOM>> = gameDao.getAllGames()
+    suspend fun getAllGames() = gameDao.getAllGames().first()
 
     suspend fun getGameById(id: Int) = gameDao.getGameById(id).first()
+
+    suspend fun getLastGame() = gameDao.getLastGame().first()
 
     suspend fun getCountGames() = gameDao.getCountGames().first()
 

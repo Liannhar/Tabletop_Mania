@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
-class GameDBViewModel(application: Application) : AndroidViewModel(application) {
+class DBViewModel(application: Application) : AndroidViewModel(application) {
 
     val gameRepository: GameRepository
     val noteRepository: NoteRepository
@@ -31,7 +31,7 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         val db = GameDatabase.getDatabase(application)
-        val dao = GameDatabase.getDatabase(application).getGameDao()
+        val dao = GameDatabase.getDatabase(application).getDbDao()
         gameRepository = GameRepository(dao)
         noteRepository = NoteRepository(dao)
         timerRepository = TimerRepository(dao)
@@ -100,7 +100,7 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
 
     }
 
-    fun getAllGames() = gameRepository.getAllGames
+    suspend fun getAllGames() = gameRepository.getAllGames() as List<Game>
     fun getAllDice() = diceRepository.allDiceROOM
     fun getAllTimer() = timerRepository.allTimerROOM
     fun getAllNotes() = noteRepository.allNotes
@@ -109,6 +109,8 @@ class GameDBViewModel(application: Application) : AndroidViewModel(application) 
     fun getDice(id: Int) = diceRepository.getOneDice(id)
     fun getTimer(id: Int) = timerRepository.getOneTimer(id)
     fun getNote(id: Int) = noteRepository.getOneNote(id)
+
+    suspend fun getLastGame() = gameRepository.getLastGame() as Game?
 
     suspend fun getCountGames() = gameRepository.getCountGames()
 
