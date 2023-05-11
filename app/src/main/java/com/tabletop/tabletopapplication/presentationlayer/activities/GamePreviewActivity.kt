@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
+import com.tabletop.tabletopapplication.businesslayer.models.History
+import com.tabletop.tabletopapplication.presentationlayer.adapters.HistoryAdapter
 import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
 import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
@@ -46,6 +48,8 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
         val show_history_button = findViewById<ImageView>(R.id.show_history)
         val add_history_button = findViewById<ImageView>(R.id.add_history_button)
+        var history_list= mutableListOf<History>()
+        val history_adapter = HistoryAdapter(history_list)
 
         val job = lifecycleScope.launch() {
             gameDBViewModel.getGame(gameId).collect() {
@@ -79,20 +83,26 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
             val intent = Intent(this, GameEditActivity::class.java)
             startActivity(intent)
         }
+        findViewById<RecyclerView>(R.id.history_rv).apply {
+            adapter = history_adapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+        }
         var history_flag: Boolean = true
         show_history_button.setOnClickListener {
             if (history_flag) {findViewById<LinearLayout>(R.id.history).visibility =
                 View.VISIBLE
                 findViewById<ImageView>(R.id.history_flag_line).visibility =
                     View.VISIBLE
+                show_history_button.setImageResource(R.drawable.history_up)
             }
             else {findViewById<LinearLayout>(R.id.history).visibility =
                 View.GONE
                 findViewById<ImageView>(R.id.history_flag_line).visibility =
-                View.GONE}
+                View.GONE
+                show_history_button.setImageResource(R.drawable.history_down)}
             history_flag=!history_flag
         }
-        add_history_button.setOnClickListener { addhistory("12.05", "Oleg", "56:42") }
+        add_history_button.setOnClickListener { addhistory("12.05", "Oleg", "56:42", history_list, history_adapter) }
 
     }
 
@@ -148,8 +158,13 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         differentMaterialsadapter.updateItems(materials)*/
     }
 
-    private fun addhistory(data: String, winner: String, score: String) {
-
+    private fun addhistory(data: String, winner: String, score: String, list: MutableList<History>, adapter:HistoryAdapter) {
+        var history= History()
+        history.date=data
+        history.score=score
+        history.winner=winner
+        list.add(history)
+        adapter.notifyDataSetChanged()
     }
 }
 

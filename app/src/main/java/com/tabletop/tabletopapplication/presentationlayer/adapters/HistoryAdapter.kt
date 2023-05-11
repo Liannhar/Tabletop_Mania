@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.businesslayer.models.History
 
-class HistoryAdapter(private val list: List<History>, val callback: (Int) -> Unit) :
+class HistoryAdapter(private val list: List<History>) :
     RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_history, null)
-        return HistoryViewHolder(view, callback)
+        return HistoryViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
@@ -25,7 +25,7 @@ class HistoryAdapter(private val list: List<History>, val callback: (Int) -> Uni
         return list.size
     }
 
-    class HistoryViewHolder(view: View, val callback: (Int) -> Unit) :
+    class HistoryViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
         protected val date = view.findViewById<TextView>(R.id.date)
         protected val winner = view.findViewById<TextView>(R.id.winner)

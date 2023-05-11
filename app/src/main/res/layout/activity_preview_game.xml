@@ -156,8 +156,7 @@
             android:layout_height="100dp"
             android:orientation="horizontal"
             android:layout_gravity="end"
-            tools:listitem="@layout/card_history"
-            app:spanCount="1" />
+            tools:listitem="@layout/card_history" />
 
 
     </LinearLayout>
