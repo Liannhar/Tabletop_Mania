@@ -25,27 +25,9 @@
                 android:value="" />
         </activity>
         <!-- Активити реализующее настройку броска кубиков -->
-        <activity
-            android:name=".presentationlayer.activities.DiceSettingsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_dice_settings"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
         <!-- Активити реализующее результат броска кубиков -->
-        <activity
-            android:name=".presentationlayer.activities.DiceResultActivity"
-            android:exported="false"
-            android:label="@string/title_activity_dice_result"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
         <!-- Главный экран -->
         <activity
             android:name=".presentationlayer.activities.GameSelectionActivity"

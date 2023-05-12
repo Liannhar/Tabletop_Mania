@@ -1,4 +1,4 @@
-package com.tabletop.tabletopapplication.presentationlayer.activities
+package com.example.dice
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.tabletop.tabletopapplication.R
+import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 
 class DiceSettingsActivity : AppCompatActivity() {
 

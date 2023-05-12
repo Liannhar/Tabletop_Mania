@@ -2,22 +2,25 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
+import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallSessionState
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallErrorCode
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.tabletop.tabletopapplication.R
 
-class MySplitInstallStateUpdatedListener(val view: View) : SplitInstallStateUpdatedListener {
+class MySplitInstallStateUpdatedListener(val view: View,val splitInstallManager: SplitInstallManager) : SplitInstallStateUpdatedListener {
     override fun onStateUpdate(state: SplitInstallSessionState) {
 
-        val progressBar = view.findViewById<ProgressBar>(R.id.pb_horizontal)
 
-        val installButton = view.findViewById<CardView>(R.id.card_material__install_button)
+        val progressBar = view.findViewById<ProgressBar>(R.id.pb_horizontal)
+        val installButton = view.findViewById<ImageView>(R.id.image_card_material)
+        val installButtonCard = view.findViewById<CardView>(R.id.card_material__install_button)
         if (state.status() == SplitInstallSessionStatus.FAILED
             && state.errorCode() == SplitInstallErrorCode.SERVICE_DIED
         ) {
@@ -31,18 +34,19 @@ class MySplitInstallStateUpdatedListener(val view: View) : SplitInstallStateUpda
                 val totalBytes = state.totalBytesToDownload()
                 progressBar.max = totalBytes.toInt()
                 val progress = state.bytesDownloaded()
-                progressBar.progress = progress.toInt()
+                //progressBar.progress = progress.toInt()
             }
 
             SplitInstallSessionStatus.INSTALLED -> {
-                progressBar.isVisible = false
-                installButton.setBackgroundResource(R.drawable.baseline_check_24)
-                //installButton.setCardBackgroundColor(R.color.green)
+                //progressBar.isVisible = false
+                installButton.setImageResource(R.drawable.baseline_check_24)
+                installButtonCard.isClickable=false
                 Toast.makeText(
                     view.context,
                     "Module installation finished",
                     Toast.LENGTH_SHORT
                 ).show()
+                splitInstallManager.unregisterListener(this)
             }
 
             SplitInstallSessionStatus.CANCELED -> {

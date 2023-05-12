@@ -1,5 +1,6 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,10 +21,11 @@ import com.tabletop.tabletopapplication.presentationlayer.models.Game
 
 
 class GameAdapter(
-    private var games: ArrayList<Game> = arrayListOf()
+    private var games: ArrayList<Game> = arrayListOf(),
+    private val contextt:Context
 ) : RecyclerView.Adapter<GameAdapter.Holder>() {
 
-    class Holder(view: View) : RecyclerView.ViewHolder(view) {
+    class Holder(view: View,val contextt: Context) : RecyclerView.ViewHolder(view) {
 
         private val context = view.context
         private val element = view.findViewById<LinearLayout>(R.id.game_element__ll)
@@ -33,7 +35,7 @@ class GameAdapter(
         fun bind(item: Game) {
             name.text = item.name
 
-            Glide.with(context)
+            Glide.with(contextt)
                 .load(item.image)
                 .error(R.drawable.baseline_error_outline_24)
                 .into(image)
@@ -54,13 +56,12 @@ class GameAdapter(
                     }
                 }
             }
-
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.game_element, parent, false)
-        return Holder(view)
+        return Holder(view,contextt)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) =

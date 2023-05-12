@@ -4,17 +4,18 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
+
 
 class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
     class DiceViewHolder(val parent: ViewGroup) :
@@ -28,8 +29,14 @@ class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: G
                 is GamePreviewActivity -> {
                     itemView.setOnClickListener {
                         dice.setOnClickListener {
-                            val intent = Intent(parent.context, DiceSettingsActivity::class.java)
-                            parent.context.startActivity(intent)
+
+                            try {
+                                val intent = Intent(parent.context,Class.forName("com.example.dice.DiceSettingsActivity"))
+                                parent.context.startActivity(intent)
+                            } catch (e: ClassNotFoundException) {
+                                e.printStackTrace()
+                            }
+
                         }
                     }
                 }

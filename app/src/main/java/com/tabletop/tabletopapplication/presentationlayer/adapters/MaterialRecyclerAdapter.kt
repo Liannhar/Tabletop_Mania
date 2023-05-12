@@ -1,11 +1,13 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
+import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.ChooseMaterialActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
@@ -45,51 +48,55 @@ class MaterialRecyclerAdapter(
         private val image: ImageView = itemView.findViewById(R.id.card_material__image)
 
         fun bind(materialROOM: MaterialROOM, gameDBViewModel: GameDBViewModel, gameId: Int) {
+
             nameTextView.text = materialROOM.name
             descriptionTextView.text = materialROOM.description
 
-            val resourceId = itemView.context.resources.getIdentifier(
-                materialROOM.image,
-                "drawable",
-                itemView.context.packageName
-            )
+            if (materialROOM.image!=null) {
+                val resourceId = itemView.context.resources.getIdentifier(
+                    materialROOM.image,
+                    "drawable",
+                    itemView.context.packageName
+                )
+                Glide.with(image)
+                    .load(resourceId)
+                    .error(R.drawable.black_rectangle)
+                    .into(image)
+            }
 
-            Glide.with(image)
-                .load(resourceId)
-                .error(R.drawable.black_rectangle)
-                .into(image)
+
 
             when (itemView.context) {
                 is InstallMaterialActivity -> {
                     val installButton = itemView.findViewById<CardView>(R.id.card_material__install_button)
                     installButton.isVisible = true
-
+                    val splitInstallManager = SplitInstallManagerFactory.create(itemView.context)
+                    val installModules = splitInstallManager.installedModules
+                    val moduleName = when (materialROOM.id) {
+                        1 -> "dice"
+                        2 -> "note"
+                        3 -> "timer"
+                        4 -> "hourglass"
+                        else -> "Error"
+                    }
                     installButton.setOnClickListener {
-                        val splitInstallManager = SplitInstallManagerFactory.create(itemView.context)
-
-                        val moduleName = when (materialROOM.id) {
-                            1 -> "dice"
-                            2 -> "note"
-                            3 -> "timer"
-                            4 -> "hourglass"
-                            else -> "Error"
-                        }
-
                         if (moduleName != "Error") {
                             var mySessionId = 0
-                            val listener = MySplitInstallStateUpdatedListener(itemView)
+
+                            val listener = MySplitInstallStateUpdatedListener(itemView,splitInstallManager)
                             splitInstallManager.registerListener(listener)
 
                             val request = SplitInstallRequest.newBuilder().addModule(moduleName).build()
+                            Toast.makeText(
+                                itemView.context,
+                                "Module installation started",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
                             splitInstallManager
                                 .startInstall(request)
                                 .addOnSuccessListener { sessionId ->
                                     mySessionId = sessionId
-                                    Toast.makeText(
-                                        itemView.context,
-                                        "Module installation started",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                 }
                                 .addOnFailureListener { exception ->
                                     Toast.makeText(
@@ -98,9 +105,16 @@ class MaterialRecyclerAdapter(
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-                            splitInstallManager.unregisterListener(listener)
+
                         }
                     }
+                    installModules.forEach {
+                        if (it==moduleName) {
+                            itemView.findViewById<ImageView>(R.id.image_card_material).setImageResource(R.drawable.baseline_check_24)
+                            installButton.isClickable=false
+                        }
+                    }
+
                 }
                 is ChooseMaterialActivity -> {
                     itemView.findViewById<LinearLayout>(R.id.card_material__material)

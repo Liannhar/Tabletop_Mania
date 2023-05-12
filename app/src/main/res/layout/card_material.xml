@@ -60,10 +60,11 @@
             app:cardCornerRadius="50dp"
             android:visibility="invisible"
             >
-
             <ImageView
+                android:id="@+id/image_card_material"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="2dp"
                 android:src="@drawable/baseline_download_24"
                 android:contentDescription="@string/install" />
 

@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_properties_game) {
 
     private val viewModel by lazy{ ViewModelProvider(this)[GameDBViewModel::class.java]}
-    @SuppressLint("CutPasteId")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var us=""

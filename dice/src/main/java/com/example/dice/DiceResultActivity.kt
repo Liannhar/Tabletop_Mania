@@ -1,14 +1,14 @@
-package com.tabletop.tabletopapplication.presentationlayer.activities
+package com.example.dice
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.tabletop.tabletopapplication.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -41,7 +41,10 @@ class DiceResultActivity : AppCompatActivity() {
         res.text = "Смотрим анимацию..."
         delay(1000)
         Glide.with(this).load(R.drawable.double_dice).into(img)
-        val item = intent.getIntExtra(DiceConstants.SERIALIZABLE_DICE_NAME, DiceConstants.DEFAULT_FACE_OF_THE_CUBE)
+        val item = intent.getIntExtra(
+            DiceConstants.SERIALIZABLE_DICE_NAME,
+            DiceConstants.DEFAULT_FACE_OF_THE_CUBE
+        )
         if (item == 12) {
             res.text = "Выпало в сумме: ${(2..item).random()}"
         }

@@ -29,7 +29,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
         )[GameDBViewModel::class.java]
     }
 
-    private val gameAdapter = GameAdapter()
+    private val gameAdapter = GameAdapter(contextt = this)
 
     private val addActivityLauncher = registerForActivityResult(IntentGameContract()) { result ->
         if (result != null) {
@@ -48,7 +48,7 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
 
         findViewById<ImageView>(R.id.downloaded_materials_button).setOnClickListener {
             getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit()
-                .putLong("currentGameId", -1)
+                .putInt("currentGameId", -1)
                 .apply()
             startActivity(Intent(applicationContext, InstallMaterialActivity::class.java))
             finish()
@@ -59,8 +59,6 @@ class GameSelectionActivity : AppCompatActivity(R.layout.game_selection) {
                 putExtra("id", -1)
             })
         }
-
-
     }
 
     private fun fillRecycler() {
