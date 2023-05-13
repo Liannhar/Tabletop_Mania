@@ -2,4 +2,5 @@
 <resources>
     <string name="my_games_text">My games</string>
     <string name="title_note">note</string>
+    <string name="game_view_content_description" translatable="false">Game view</string>
 </resources>

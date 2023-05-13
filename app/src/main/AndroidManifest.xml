@@ -60,7 +60,10 @@
                 android:name=".presentationlayer.activities.ChooseMaterialActivity"
                >
         </activity>
-
+        <activity
+            android:name=".presentationlayer.activities.DiceActivity"
+            >
+        </activity>
         <activity
             android:name=".presentationlayer.activities.GamePreviewActivity"
             >
@@ -69,7 +72,6 @@
             android:name=".presentationlayer.activities.InstallMaterialActivity"
             >
         </activity>
-        -->
 
         <provider
             android:name="androidx.core.content.FileProvider"
