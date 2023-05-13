@@ -76,7 +76,6 @@
             android:authorities="${applicationId}.provider"
             tools:node="remove"
             tools:replace="android:authorities" />
-
         <activity android:name=".presentationlayer.activities.GameEditPropertiesActivity" />
         <activity android:name=".presentationlayer.activities.GameEditActivity" />
 
