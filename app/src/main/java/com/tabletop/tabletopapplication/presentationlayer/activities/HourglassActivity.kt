@@ -22,6 +22,7 @@ class HourglassActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hourglass)
+        val timerInterval = intent.getIntExtra(SandConstants.SERIALIZABLE_SAND_NAME, SandConstants.DEFAULT_SAND_VALUE).toLong()
         val tvTimer1 = findViewById<TextView>(R.id.hourglass_cv_1_text)
         tvTimer1.text = (timerInterval / 1000).toString()
         val tvTimer3 = findViewById<TextView>(R.id.hourglass_cv_3_text)
@@ -95,6 +96,6 @@ class HourglassActivity : AppCompatActivity() {
 
     companion object {
         const val refreshFunction: Long = 1
-        const val timerInterval: Long = 5000
+        // const val timerInterval: Long = 5000
     }
 }
