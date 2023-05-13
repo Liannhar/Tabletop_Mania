@@ -22,7 +22,7 @@ class ModelAdapter(val context:FragmentActivity,gameDBViewModel: GameDBViewModel
 
     init{
         adapterDelegateManager.addDelegate(DiceDelegate(this,context,gameDBViewModel))
-            .addDelegate(HourglassDelegate(this,gameDBViewModel))
+            .addDelegate(HourglassDelegate(this,context, gameDBViewModel))
             .addDelegate(TimerDelegate(this,context,gameDBViewModel))
             .addDelegate(NoteDelegate(this,gameDBViewModel))
     }
