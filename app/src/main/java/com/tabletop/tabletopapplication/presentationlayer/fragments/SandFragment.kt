@@ -20,7 +20,7 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.SandConstan
 class SandFragment : Fragment(R.layout.fragment_sand) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var selectedTime = 5
+        var selectedTime = 5000
         val times = arrayOf("5", "10", "15", "20")
 
         val spinner = view.findViewById<Spinner>(R.id.sand_fragment_spinner1)
