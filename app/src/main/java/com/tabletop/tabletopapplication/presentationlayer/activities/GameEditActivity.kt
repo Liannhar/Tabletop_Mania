@@ -1,6 +1,8 @@
 package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
@@ -46,7 +48,9 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
                 {
                     editGameTitle.text = it.name
                     editGameDescription.text = it.description
-                    Glide.with(this@GameEditActivity).load(it.image).into(editGameImage)
+                    Glide.with(this@GameEditActivity)
+                        .load(it.image)
+                        .into(editGameImage)
                 }
 
             }

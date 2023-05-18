@@ -3,10 +3,10 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
@@ -16,10 +16,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
+import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 
 
 class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_properties_game) {
@@ -83,31 +87,41 @@ class GameEditPropertiesActivity : AppCompatActivity(R.layout.activity_edit_prop
                 text = game.description
             }
             findViewById<ImageView>(R.id.activity_edit_properties_game__image).apply {
-                setImageURI(Uri.parse(game.image))
+                setImageBitmap(BitmapFactory.decodeFile(game.image))
             }
+            us=game.image.toString()
         }
 
         val selectImageIntent = registerForActivityResult(ActivityResultContracts.GetContent())
         { uri ->
-            findViewById<ImageView>(R.id.activity_edit_properties_game__image).apply {setImageURI(uri) }
-            us = uri.toString()
-
+            deleteToInternalStorage(us)
+            val bitmap=BitmapFactory.decodeStream(contentResolver.openInputStream(uri!!))
+            us = saveToInternalStorage(this,bitmap,getRandomString())
+            findViewById<ImageView>(R.id.activity_edit_properties_game__image).apply {setImageBitmap(BitmapFactory.decodeFile(us)) }
         }
         findViewById<CardView>(R.id.activity_edit_properties_game__select_file).setOnClickListener {
             selectImageIntent.launch("image/*")
         }
-
     }
-    fun getRealPathFromURI(context: Context, contentUri: Uri?): String? {
-        var cursor: Cursor? = null
-        return try {
-            val proj = arrayOf(MediaStore.Images.Media.DATA)
-            cursor = context.contentResolver.query(contentUri!!, proj, null, null, null)
-            val column_index = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            cursor.moveToFirst()
-            cursor.getString(column_index)
-        } finally {
-            cursor?.close()
+    private fun saveToInternalStorage(context: Context, bitmapImage: Bitmap, imageName: String): String {
+        val directory = context.getDir("images", Context.MODE_PRIVATE)
+        val imagePath = File(directory, "$imageName.jpg")
+        FileOutputStream(imagePath).use { fos ->
+            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos)
         }
+        return imagePath.absolutePath
+    }
+
+    private fun deleteToInternalStorage(imagePath:String){
+        val file = File(imagePath)
+        if (file.exists()) {
+            file.delete()
+        }
+    }
+    private fun getRandomString() : String {
+        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+        return (1..32)
+            .map { allowedChars.random() }
+            .joinToString("")
     }
 }
