@@ -13,22 +13,22 @@ import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 
-import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.NoteROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 
-class NoteDelegate(val adapter: MaterialsAdapter, val noteViewModel: DBViewModel):AdapterDelegate<ArrayList<EntityROOM>>() {
+class NoteDelegate(val adapter: DelegateMaterialsAdapter):AdapterDelegate<ArrayList<EntityROOM>>() {
 
     class NoteViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.note_card,parent,false))
     {
-        fun bind(item: NoteROOM, adapter: MaterialsAdapter, position: Int, noteViewModel: DBViewModel)
+        fun bind(item: MaterialROOM, adapter: DelegateMaterialsAdapter, position: Int)
         {
             val note= itemView.findViewById<EditText>(R.id.editTextMini)
              when(itemView.context) {
                is GamePreviewActivity -> {
-                   note.setText(item.noteDescription)
+                   note.setText(item.description)
                    note.setOnClickListener {
 
                        val manager = SplitInstallManagerFactory.create(parent.context)
@@ -49,7 +49,6 @@ class NoteDelegate(val adapter: MaterialsAdapter, val noteViewModel: DBViewModel
                    deleteButton.isVisible = true
                    deleteButton.setOnClickListener {
                        adapter.remove(position)
-                       noteViewModel.deleteNote(item)
                    }
                }
            }
@@ -59,7 +58,7 @@ class NoteDelegate(val adapter: MaterialsAdapter, val noteViewModel: DBViewModel
     }
 
     override fun isForViewType(items: ArrayList<EntityROOM>, position: Int): Boolean {
-        return items[position] is NoteROOM
+        return items[position] is MaterialROOM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -72,6 +71,6 @@ class NoteDelegate(val adapter: MaterialsAdapter, val noteViewModel: DBViewModel
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as NoteViewHolder).bind(items[position] as NoteROOM,adapter,position,noteViewModel)
+        (holder as NoteViewHolder).bind(items[position] as MaterialROOM,adapter,position)
     }
 }

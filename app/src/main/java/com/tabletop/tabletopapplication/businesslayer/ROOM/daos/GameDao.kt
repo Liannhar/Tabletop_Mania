@@ -1,7 +1,6 @@
 package com.tabletop.tabletopapplication.businesslayer.ROOM.daos
 
 import androidx.room.*
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.*
 import kotlinx.coroutines.flow.Flow
 

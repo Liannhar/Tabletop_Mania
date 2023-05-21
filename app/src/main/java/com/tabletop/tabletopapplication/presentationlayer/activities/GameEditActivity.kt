@@ -13,15 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
-import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentMaterialContract
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
-import com.tabletop.tabletopapplication.presentationlayer.models.Material
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
 class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
@@ -33,8 +30,8 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
     }
 
     private var currentGame: Game = Game()
-    private val materialsAdapter by lazy {
-        MaterialsAdapter(this, databaseVM)
+    private val delegateMaterialsAdapter by lazy {
+        DelegateMaterialsAdapter(this, databaseVM)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +47,13 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
         findViewById<RecyclerView>(R.id.activity_edit_game__rv).apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = materialsAdapter
+            adapter = delegateMaterialsAdapter
         }
 
         findViewById<ImageView>(R.id.activity_edit_game__save_button).setOnClickListener {
             // TODO(save Materials)
             lifecycleScope.launch {
-                databaseVM.addGame(currentGame).join()
+                databaseVM.add(currentGame).join()
 
                 if (currentGame.id == 0)
                     currentGame.id = databaseVM.getCountGames()
@@ -74,8 +71,9 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
         }
 
         val addMaterialLauncher = registerForActivityResult(IntentMaterialContract()) { result ->
-            result?.let { 
-                materialsAdapter.add(MaterialROOM(result))
+            result?.apply {
+                delegateMaterialsAdapter.add(MaterialROOM(this))
+
             }
         }
 
@@ -87,8 +85,8 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
         val editGameActivityLauncher = registerForActivityResult(IntentGameContract()) { result ->
             lifecycleScope.launch {
-                result?.let {
-                    currentGame = it
+                result?.apply {
+                    currentGame = this
 
                     editGameTitle.text = currentGame.name
                     editGameDescription.text = currentGame.description
@@ -124,6 +122,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
                 .error(R.drawable.baseline_error_outline_24)
                 .into(editGameImage)
         }
+
     }
     /*private fun drawDB(gameId:Int, materials:ArrayList<Model>) {
          val idMaterial = intent.getIntExtra("idMaterial", -1)

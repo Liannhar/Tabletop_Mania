@@ -14,7 +14,7 @@ import com.tabletop.tabletopapplication.presentationlayer.adapters.DiffCallbacks
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 
-class MaterialsAdapter(
+class DelegateMaterialsAdapter(
     val context: FragmentActivity,
     DBViewModel: DBViewModel
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -23,10 +23,11 @@ class MaterialsAdapter(
     private val items = ArrayList<EntityROOM>()
 
     init {
-        adapterDelegateManager.addDelegate(DiceDelegate(this, DBViewModel))
-            .addDelegate(HourglassDelegate(this, DBViewModel))
-            .addDelegate(TimerDelegate(this, context, DBViewModel))
-            .addDelegate(NoteDelegate(this, DBViewModel))
+        adapterDelegateManager
+            .addDelegate(DiceDelegate(this))
+            .addDelegate(HourglassDelegate(this))
+            .addDelegate(TimerDelegate(this, context))
+            .addDelegate(NoteDelegate(this))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

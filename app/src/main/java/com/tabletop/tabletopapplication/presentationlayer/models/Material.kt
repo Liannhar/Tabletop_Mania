@@ -1,6 +1,9 @@
 package com.tabletop.tabletopapplication.presentationlayer.models
 
 import android.os.Parcelable
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.tabletop.tabletopapplication.businesslayer.API.entities.MaterialAPI
 import kotlinx.parcelize.Parcelize
 
 open class Material(

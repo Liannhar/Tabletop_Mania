@@ -5,12 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.DatabaseDao
-import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.GameDao
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.*
 
 @Database(
-    entities = [GameROOM::class, NoteROOM::class, DiceROOM::class, TimerROOM::class, MaterialROOM::class, HourglassROOM::class, GameMaterialROOM::class],
+    entities = [GameROOM::class, MaterialROOM::class, GameMaterialROOM::class],
     version = 1,
     exportSchema = false
 )

@@ -2,34 +2,25 @@ package com.tabletop.tabletopapplication.businesslayer.API.managers
 
 import com.tabletop.tabletopapplication.businesslayer.API.entities.MaterialAPI
 import com.tabletop.tabletopapplication.businesslayer.API.providers.MaterialsProvider
+import com.tabletop.tabletopapplication.presentationlayer.models.Material
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
 
 
 class MaterialManager {
     private val provider = MaterialsProvider()
 
-    fun getMaterial(id: Int, callback: (result: MaterialAPI?, error: Throwable?) -> Unit) {
+    suspend fun getMaterial(id: Int) = provider.getMaterial(id).single()
+    suspend fun getRangeMaterials(startId: Int, endId: Int) =
+        provider.getRangeMaterials(startId, endId).single()
 
-        provider.getMaterial(id) { result, error ->
-            callback(result, error)
+    suspend fun getMaterials(listId: List<Int>): List<MaterialAPI?> {
+        val result = arrayListOf<MaterialAPI?>()
+
+        listId.forEach { id ->
+            result.add(getMaterial(id))
         }
-    }
 
-    fun getMaterials(
-        listId: ArrayList<Int>,
-        callback: (result: ArrayList<MaterialAPI>?, error: Throwable?) -> Unit) {
-
-        provider.getMaterials(listId) { result, error ->
-            callback(result, error)
-        }
-    }
-
-    fun getRangeMaterials(
-        startId: Int,
-        endId: Int,
-        callback: (result: ArrayList<MaterialAPI>?, error: Throwable?) -> Unit) {
-
-        provider.getRangeMaterials(startId, endId) { result, error ->
-            callback(result, error)
-        }
+        return result
     }
 }

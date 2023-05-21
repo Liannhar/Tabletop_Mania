@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkAccessor {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://tabletop-mania-api.onrender.com/")
+        .baseUrl("http://158.160.37.110:1337/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

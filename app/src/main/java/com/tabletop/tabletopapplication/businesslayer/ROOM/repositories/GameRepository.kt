@@ -1,50 +1,37 @@
 package com.tabletop.tabletopapplication.businesslayer.ROOM.repositories
 
-import android.util.Log
 import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.DatabaseDao
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.NoteROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameMaterialROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.daos.GameDao
-import kotlinx.coroutines.flow.Flow
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
+import com.tabletop.tabletopapplication.presentationlayer.models.Game
+import com.tabletop.tabletopapplication.presentationlayer.models.Material
 import kotlinx.coroutines.flow.first
 
-class GameRepository(private val gameDao: DatabaseDao) {
+class GameRepository(private val dao: DatabaseDao) {
 
-    suspend fun getAllGames() = gameDao.getAllGames().first()
+    fun insert(gameROOM: GameROOM) = dao.insert(gameROOM)
+    fun delete(gameROOM: GameROOM) = dao.delete(gameROOM)
+    fun update(gameROOM: GameROOM) = dao.update(gameROOM)
 
-    suspend fun getGameById(id: Int) = gameDao.getGameById(id).first()
+    suspend fun getAllGames() = dao.getAllGames().first()
+    suspend fun getGameById(id: Int) = dao.getGameById(id).first()
+    suspend fun getLastGame() = dao.getLastGame().first()
+    suspend fun getCountGames() = dao.getCountGames().first()
 
-    suspend fun getLastGame() = gameDao.getLastGame().first()
+    suspend fun getMaterialsByGameId(id: Int) = dao.getMaterialsByGameId(id).first()
+    private suspend fun findGameMaterialById(gameId: Int, materialId: Int) =
+        dao.findGameMaterialById(gameId, materialId).first()
 
-    suspend fun getCountGames() = gameDao.getCountGames().first()
-
-    fun insert(gameROOM: GameROOM){
-        gameDao.insert(gameROOM)
-    }
-
-    fun delete(gameROOM: GameROOM){
-        gameDao.delete(gameROOM)
-    }
-
-    fun update(gameROOM: GameROOM){
-        gameDao.update(gameROOM)
-    }
-
-    fun getAllNoteOfGame(id:Int): Flow<List<NoteROOM>> = gameDao.getNotesOfGame(id)
-
-    fun getAllDiceOfGame(id:Int): Flow<List<DiceROOM>> = gameDao.getDicesOfGame(id)
-
-    fun getAllHourglassOfGame(id:Int): Flow<List<HourglassROOM>> = gameDao.getHourglassesOfGame(id)
-
-    fun getAllTimerOfGame(id:Int): Flow<List<TimerROOM>> = gameDao.getTimersOfGame(id)
-
-    fun getOneDiceOfGame(gameid:Int,materialid:Int): Flow<DiceROOM> = gameDao.getOneDiceOfGame(gameid,materialid)
-
-    fun getOneNoteOfGame(gameid:Int,materialid:Int): Flow<NoteROOM> =  gameDao.getNoteOfGameById(gameid,materialid)
-
-    fun getOneTimerOfGame(gameid:Int,materialid:Int): Flow<TimerROOM> = gameDao.getOneTimerOfGame(gameid,materialid)
-
+    fun addMaterialToGame(gameId: Int, material: MaterialROOM) =
+        dao.insert(GameMaterialROOM(gameId, material.id, material.extras))
+    suspend fun deleteMaterialFromGame(gameId: Int, materialId: Int) =
+        findGameMaterialById(gameId, materialId)?.let {
+            dao.delete(it)
+        }
+    suspend fun updateMaterialAtGame(gameId: Int, material: MaterialROOM) =
+        findGameMaterialById(gameId, material.id)?.let {
+            it.extras = material.extras
+            dao.update(it)
+        }
 }

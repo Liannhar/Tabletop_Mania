@@ -11,16 +11,15 @@ import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.DiceSettingsActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
-import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
 
-class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: DBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
+class DiceDelegate(val adapter: DelegateMaterialsAdapter): AdapterDelegate<ArrayList<EntityROOM>>() {
     class DiceViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dice_card,parent,false))
     {
-        fun bind(item: DiceROOM, adapter: MaterialsAdapter, position: Int, diceDBViewModel: DBViewModel)
+        fun bind(item: MaterialROOM, adapter: DelegateMaterialsAdapter, position: Int)
         {
             val dice= itemView.findViewById<CardView>(R.id.dice_card_mini)
 
@@ -38,7 +37,6 @@ class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: D
                     deleteButton.isVisible = true
                     deleteButton.setOnClickListener {
                         adapter.remove(position)
-                        diceDBViewModel.deleteDice(item)
                     }
                 }
             }
@@ -48,7 +46,7 @@ class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: D
     }
 
     override fun isForViewType(items: ArrayList<EntityROOM>, position: Int): Boolean {
-        return items[position] is DiceROOM
+        return items[position] is MaterialROOM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -61,6 +59,6 @@ class DiceDelegate(val adapter: MaterialsAdapter, private val diceDBViewModel: D
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as DiceViewHolder).bind(items[position] as DiceROOM,adapter,position,diceDBViewModel)
+        (holder as DiceViewHolder).bind(items[position] as MaterialROOM, adapter, position)
     }
 }

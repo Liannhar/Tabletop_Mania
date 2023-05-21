@@ -1,19 +1,14 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
-import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
@@ -23,7 +18,7 @@ import com.tabletop.tabletopapplication.presentationlayer.models.Game
 
 class GameAdapter(
     private var games: ArrayList<Game> = arrayListOf(),
-    private val clickAction: ActivityResultLauncher<Intent>
+    private val clickLauncher: ActivityResultLauncher<Intent>
 ) : RecyclerView.Adapter<GameAdapter.Holder>() {
 
     class Holder(
@@ -56,7 +51,7 @@ class GameAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.game_element, parent, false)
-        return Holder(view, clickAction)
+        return Holder(view, clickLauncher)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) =
@@ -69,9 +64,9 @@ class GameAdapter(
         notifyItemInserted(games.size - 1)
     }
 
-    fun addAll(games: List<Game>) {
-        this.games.addAll(games)
-        notifyItemRangeInserted(this.games.size - games.size, games.size)
+    fun addAll(list: List<Game>) {
+        games.addAll(list)
+        notifyItemRangeInserted(this.games.size - list.size, list.size)
     }
 
     fun replaceGame(position: Int, newGame: Game) {

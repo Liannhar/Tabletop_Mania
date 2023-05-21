@@ -1,25 +1,26 @@
 package com.tabletop.tabletopapplication.businesslayer.API.managers
 
 import com.tabletop.tabletopapplication.businesslayer.API.entities.GameAPI
+import com.tabletop.tabletopapplication.businesslayer.API.entities.MaterialAPI
 import com.tabletop.tabletopapplication.businesslayer.API.providers.GameProvider
+import com.tabletop.tabletopapplication.presentationlayer.models.Game
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
 
 
 class GameManager {
     private val provider = GameProvider()
 
-    fun getGame(id: Int, callback: (result: GameAPI?, error: Throwable?) -> Unit) {
+    suspend fun getGame(id: Int) = provider.getGame(id).single()
 
-        provider.getGame(id) { result, error ->
-            callback(result, error)
+    suspend fun getGames(listId: List<Int>): List<GameAPI?> {
+        val result = arrayListOf<GameAPI?>()
+
+        listId.forEach { id ->
+            result.add(getGame(id))
         }
+
+        return result
     }
 
-    fun getGames(
-        listId: ArrayList<Int>,
-        callback: (result: ArrayList<GameAPI>?, error: Throwable?) -> Unit) {
-
-        provider.getGames(listId) { result, error ->
-            callback(result, error)
-        }
-    }
 }

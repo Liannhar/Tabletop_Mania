@@ -1,146 +1,94 @@
 package com.tabletop.tabletopapplication.presentationlayer.viewmodels
 
 import android.app.Application
+import android.app.GameManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.tabletop.tabletopapplication.businesslayer.API.managers.GameManager
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.DiceROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.DiceRepository
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.HourglassRepository
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.NoteROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.NoteRepository
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.TimerRepository
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.GameDatabase
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.GameRepository
+import com.tabletop.tabletopapplication.businesslayer.ROOM.repositories.MaterialRepository
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
+import com.tabletop.tabletopapplication.presentationlayer.models.Material
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class DBViewModel(application: Application) : AndroidViewModel(application) {
 
-    val gameRepository: GameRepository
-    val noteRepository: NoteRepository
-    val timerRepository: TimerRepository
-    val diceRepository: DiceRepository
-    val hourglassRepository: HourglassRepository
-    val materialManager by lazy { GameManager() }
+    private val gameRepository: GameRepository
+    private val materialRepository: MaterialRepository
 
     init {
-        val db = GameDatabase.getDatabase(application)
-        val dao = GameDatabase.getDatabase(application).getDbDao()
-        gameRepository = GameRepository(dao)
-        noteRepository = NoteRepository(dao)
-        timerRepository = TimerRepository(dao)
-        diceRepository = DiceRepository(dao)
-        hourglassRepository = HourglassRepository(dao)
+        GameDatabase.getDatabase(application).getDbDao().apply {
+            gameRepository = GameRepository(this)
+            materialRepository = MaterialRepository(this)
+        }
     }
 
-    fun deleteGame(gameROOM: GameROOM) = viewModelScope.launch(Dispatchers.IO) {
-        gameRepository.delete(gameROOM)
-    }
-
-    fun deleteDice(diceROOM: DiceROOM) = viewModelScope.launch(Dispatchers.IO) {
-        diceRepository.delete(diceROOM)
-    }
-
-    fun deleteHourglass(hourglassROOM: HourglassROOM) = viewModelScope.launch(Dispatchers.IO) {
-        hourglassRepository.delete(hourglassROOM)
-    }
-
-    fun deleteTimer(timerROOM: TimerROOM) = viewModelScope.launch(Dispatchers.IO) {
-        timerRepository.delete(timerROOM)
-    }
-
-    fun deleteNote(noteROOM: NoteROOM) = viewModelScope.launch(Dispatchers.IO) {
-        noteRepository.delete(noteROOM)
-    }
-
-    fun updateGame(gameROOM: GameROOM) = viewModelScope.launch(Dispatchers.IO) {
-        gameRepository.update(gameROOM)
-    }
-
-    fun updateDice(diceROOM: DiceROOM) = viewModelScope.launch(Dispatchers.IO) {
-        diceRepository.update(diceROOM)
-    }
-
-    fun updateTimer(timerROOM: TimerROOM) = viewModelScope.launch(Dispatchers.IO) {
-        timerRepository.update(timerROOM)
-    }
-
-    fun updateNote(noteROOM: NoteROOM) = viewModelScope.launch(Dispatchers.IO) {
-        noteRepository.update(noteROOM)
-    }
-
-    fun addGame(game: Game) = viewModelScope.launch(Dispatchers.IO) {
+    // Game
+    fun add(game: Game) = viewModelScope.launch(Dispatchers.IO) {
         gameRepository.insert(GameROOM(game))
     }
 
-    fun addDice(diceROOM: DiceROOM) = viewModelScope.launch(Dispatchers.IO) {
-        diceRepository.insert(diceROOM)
+    fun delete(game: Game) = viewModelScope.launch(Dispatchers.IO) {
+        gameRepository.delete(GameROOM(game))
     }
 
-    fun addHourglass(hourglassROOM: HourglassROOM) = viewModelScope.launch(Dispatchers.IO) {
-        hourglassRepository.insert(hourglassROOM)
-    }
-
-
-    fun addTimer(timerROOM: TimerROOM) = viewModelScope.launch(Dispatchers.IO) {
-        timerRepository.insert(timerROOM)
-    }
-
-    fun addNote(noteROOM: NoteROOM) = viewModelScope.launch(Dispatchers.IO) {
-        noteRepository.insert(noteROOM)
-    }
-
-    fun addGameApi() {
-
+    fun update(game: Game) = viewModelScope.launch(Dispatchers.IO) {
+        gameRepository.update(GameROOM(game))
     }
 
     suspend fun getAllGames() = gameRepository.getAllGames() as List<Game>
-    fun getAllDice() = diceRepository.allDiceROOM
-    fun getAllTimer() = timerRepository.allTimerROOM
-    fun getAllNotes() = noteRepository.allNotes
-
     suspend fun getGame(id: Int) = gameRepository.getGameById(id) as Game?
-    fun getDice(id: Int) = diceRepository.getOneDice(id)
-    fun getTimer(id: Int) = timerRepository.getOneTimer(id)
-    fun getNote(id: Int) = noteRepository.getOneNote(id)
-
     suspend fun getLastGame() = gameRepository.getLastGame() as Game?
-
     suspend fun getCountGames() = gameRepository.getCountGames()
 
-    fun getAllNoteOfGame(id: Int) = gameRepository.getAllNoteOfGame(id).distinctUntilChanged()
-    fun getAllDiceOfGame(id: Int) = gameRepository.getAllDiceOfGame(id).distinctUntilChanged()
-    fun getAllHourglassOfGame(id: Int) = gameRepository.getAllHourglassOfGame(id).distinctUntilChanged()
-    fun getAllTimerOfGame(id: Int) = gameRepository.getAllTimerOfGame(id).distinctUntilChanged()
+    // Material
+    fun add(material: Material) = viewModelScope.launch(Dispatchers.IO) {
+        materialRepository.insert(MaterialROOM(material))
+    }
 
-    fun getOneNoteOfGame(gameid: Int, materialid: Int) =
-        gameRepository.getOneNoteOfGame(gameid, materialid)
+    fun delete(material: Material) = viewModelScope.launch(Dispatchers.IO) {
+        materialRepository.delete(MaterialROOM(material))
+    }
 
-    fun getOneDiceOfGame(gameid: Int, materialid: Int) =
-        gameRepository.getOneDiceOfGame(gameid, materialid)
+    fun update(material: Material) = viewModelScope.launch(Dispatchers.IO) {
+        materialRepository.update(MaterialROOM(material))
+    }
 
-    fun getOneTimerOfGame(gameid: Int, materialid: Int) =
-        gameRepository.getOneTimerOfGame(gameid, materialid)
+    suspend fun getAllMaterials() = materialRepository.getAllMaterials() as List<Material>
+    suspend fun getMaterial(id: Int) = materialRepository.getMaterialById(id) as Material?
+    suspend fun getMaterial(name: String) = materialRepository.getMaterialByName(name) as Material?
+    suspend fun getCountMaterials() = materialRepository.getCountMaterials()
 
-//    fun getAllGameFromApi() {
-//        viewModelScope.launch {
-//            val games = arrayListOf(1, 2, 3)
-//            materialManager.getGames(games) { result, error ->
-//                when {
-//                    result != null -> {
-//                        result.forEach { addGame(GameROOM(getCountGames(), it.name, it.description, it.image)) }
-//                        //addMaterial(Material(result.name,result.description,result.image_url))
-//                    }
-//                    error != null -> null
-//                }
-//            }
-//        }
-//    }
+    suspend fun updateMaterials(list: List<Material>) {
 
+        for (material in getAllMaterials()) {
+            if (list.none { it.id == material.id })
+                delete(material)
+        }
+
+        list.forEach { material ->
+            add(material)
+        }
+    }
+
+    // GameMaterial
+    fun addMaterialToGame(gameId: Int, material: Material) =
+        gameRepository.addMaterialToGame(gameId, MaterialROOM(material))
+    fun addMaterialToGame(game: Game, material: Material) =
+        addMaterialToGame(game.id, material)
+
+    suspend fun deleteMaterialFromGame(gameId: Int, materialId: Int) =
+        gameRepository.deleteMaterialFromGame(gameId, materialId)
+    suspend fun deleteMaterialFromGame(game: Game, material: Material) =
+        deleteMaterialFromGame(game.id, material.id)
+
+    suspend fun updateMaterialAtGame(gameId: Int, material: Material) =
+        gameRepository.updateMaterialAtGame(gameId, MaterialROOM(material))
+    suspend fun updateMaterialAtGame(game: Game, material: Material) =
+        updateMaterialAtGame(game.id, material)
+
+    suspend fun getMaterialsByGame(id: Int) = gameRepository.getMaterialsByGameId(id) as List<Material>
 }

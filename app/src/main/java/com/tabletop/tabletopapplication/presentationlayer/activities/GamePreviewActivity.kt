@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
@@ -30,8 +30,8 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
     }
 
     private var currentGame = Game()
-    private val differentMaterialsAdapter by lazy {
-        MaterialsAdapter(this, databaseVM)
+    private val differentDelegateMaterialsAdapter by lazy {
+        DelegateMaterialsAdapter(this, databaseVM)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +47,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
 
         findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
-            adapter = differentMaterialsAdapter
+            adapter = differentDelegateMaterialsAdapter
             layoutManager = LinearLayoutManager(context)
         }
 
@@ -59,14 +59,14 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         }
 
         val editActivityLauncher = registerForActivityResult(IntentGameContract()) { result ->
-            result?.let {
+            result?.apply {
 
-                currentGame = it
+                currentGame = this
 
                 previewGameTitle.text = currentGame.name
                 previewGameDescription.text = currentGame.description
 
-                Glide.with(this)
+                Glide.with(previewGameImage)
                     .load(currentGame.image)
                     .centerCrop()
                     .placeholder(R.drawable.baseline_downloading_24)
@@ -96,54 +96,6 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
                 .error(R.drawable.baseline_error_outline_24)
                 .into(previewGameImage)
         }
-    }
-
-    private fun СheckMaterials(gameId: Int, job: Job) {
-//        lifecycleScope.launch(){
-//            job.cancel()
-//            val game = gameDBViewModel.getGame(gameId).first()
-//            if (game.count==0)
-//            {
-//
-//                gameDBViewModel.deleteGame(game)
-//            }
-//
-//        }
-    }
-
-
-    private fun fillRecycler(
-        gameId: Int,
-        differentMaterialsadapter: MaterialsAdapter,
-        materials: ArrayList<EntityROOM>
-    ) {
-//        lifecycleScope.launch(){
-//            var m:List<EntityROOM> =   gameDBViewModel.getAllTimerOfGame(gameId).first()
-//            materials.addAll(m)
-//            m =   gameDBViewModel.getAllDiceOfGame(gameId).first()
-//            materials.addAll(m)
-//            m =   gameDBViewModel.getAllNoteOfGame(gameId).first()
-//            materials.addAll(m)
-//            m =   gameDBViewModel.getAllHourglassOfGame(gameId).first()
-//            materials.addAll(m)
-//
-//            //materials.sortByDescending { it.positionAdd }
-//            differentMaterialsadapter.updateItems(materials)
-//        }
-        /*gameDBViewModel.getAllTimerOfGame(gameId).onEach { newList ->
-            materials.addAll(newList)
-        }.launchIn(lifecycleScope)
-        gameDBViewModel.getAllNoteOfGame(gameId).onEach { newList ->
-            materials.addAll(newList)
-        }.launchIn(lifecycleScope)
-        gameDBViewModel.getAllHourglassOfGame(gameId).onEach { newList ->
-            materials.addAll(newList)
-        }.launchIn(lifecycleScope)
-        gameDBViewModel.getAllDiceOfGame(gameId).onEach { newList ->
-            materials.addAll(newList)
-        }.launchIn(lifecycleScope)
-        materials.sortByDescending { it.positionAdd }
-        differentMaterialsadapter.updateItems(materials)*/
     }
 }
 

@@ -10,18 +10,17 @@ import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
-import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
 import com.tabletop.tabletopapplication.presentationlayer.fragments.TimerFragment
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.TimerROOM
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
 
-class TimerDelegate(val adapter: MaterialsAdapter, private val contextt:FragmentActivity, private val timerViewModel: DBViewModel): AdapterDelegate<ArrayList<EntityROOM>>() {
+class TimerDelegate(val adapter: DelegateMaterialsAdapter, private val context:FragmentActivity): AdapterDelegate<ArrayList<EntityROOM>>() {
 
     class TimerViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.timer_host_layout,parent,false))
     {
-        fun bind(item: TimerROOM, position: Int, contextt: FragmentActivity, timerViewModel: DBViewModel, adapter: MaterialsAdapter)
+        fun bind(item: MaterialROOM, position: Int, contextt: FragmentActivity, adapter: DelegateMaterialsAdapter)
         {
              when(itemView.context) {
                is GamePreviewActivity -> {
@@ -36,7 +35,6 @@ class TimerDelegate(val adapter: MaterialsAdapter, private val contextt:Fragment
                    deleteButton.isVisible = true
                    deleteButton.setOnClickListener {
                        adapter.remove(position)
-                       timerViewModel.deleteTimer(item)
                    }
                }
            }
@@ -44,7 +42,7 @@ class TimerDelegate(val adapter: MaterialsAdapter, private val contextt:Fragment
     }
 
     override fun isForViewType(items: ArrayList<EntityROOM>, position: Int): Boolean {
-        return items[position] is TimerROOM
+        return items[position] is MaterialROOM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -57,6 +55,6 @@ class TimerDelegate(val adapter: MaterialsAdapter, private val contextt:Fragment
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as TimerViewHolder).bind(items[position] as TimerROOM,position,contextt, timerViewModel,adapter)
+        (holder as TimerViewHolder).bind(items[position] as MaterialROOM,position,context,adapter)
     }
 }

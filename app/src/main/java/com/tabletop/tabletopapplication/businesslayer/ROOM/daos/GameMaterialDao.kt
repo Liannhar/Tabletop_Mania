@@ -24,7 +24,6 @@ interface GameMaterialDao {
     @Query("SELECT materials.* FROM materials JOIN (SELECT * FROM games_materials WHERE gameId = :id) mIds ON materials.id = mIds.materialId")
     fun getMaterialsByGameId(id: Int): Flow<List<MaterialROOM>>
 
-    fun addMaterialToGame(game: GameROOM, material: MaterialROOM) {
-        insert(GameMaterialROOM(game.id, material.id, material.extras))
-    }
+    @Query("SELECT * FROM games_materials WHERE gameId = :gameId AND materialId = :materialId")
+    fun findGameMaterialById(gameId: Int, materialId: Int): Flow<GameMaterialROOM?>
 }

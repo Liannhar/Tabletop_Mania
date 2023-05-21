@@ -11,14 +11,13 @@ import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.HourglassActivity
-import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialsAdapter
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.HourglassROOM
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
+import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 
 class HourglassDelegate(
-    val adapter: MaterialsAdapter,
-    private val hourglassDBViewModel: DBViewModel
+    val adapter: DelegateMaterialsAdapter
 ) : AdapterDelegate<ArrayList<EntityROOM>>() {
 
     class HourglassViewHolder(val parent: ViewGroup) :
@@ -27,10 +26,9 @@ class HourglassDelegate(
         ) {
 
         fun bind(
-            item: HourglassROOM,
-            adapter: MaterialsAdapter,
-            position: Int,
-            hourglassDBViewModel: DBViewModel
+            item: MaterialROOM,
+            adapter: DelegateMaterialsAdapter,
+            position: Int
         ) {
             val hourglass = itemView.findViewById<CardView>(R.id.hourglass_card_mini)
 
@@ -48,7 +46,6 @@ class HourglassDelegate(
                     deleteButton.isVisible = true
                     deleteButton.setOnClickListener {
                         adapter.remove(position)
-                        hourglassDBViewModel.deleteHourglass(item)
                     }
                 }
             }
@@ -56,7 +53,7 @@ class HourglassDelegate(
     }
 
     override fun isForViewType(items: ArrayList<EntityROOM>, position: Int): Boolean {
-        return items[position] is HourglassROOM
+        return items[position] is MaterialROOM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -70,10 +67,9 @@ class HourglassDelegate(
         payloads: MutableList<Any>
     ) {
         (holder as HourglassViewHolder).bind(
-            items[position] as HourglassROOM,
+            items[position] as MaterialROOM,
             adapter,
-            position,
-            hourglassDBViewModel
+            position
         )
     }
 }
