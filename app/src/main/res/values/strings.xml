@@ -35,4 +35,5 @@
     <string name="title_dice">dice</string>
     <string name="title_hourglass">hourglass</string>
     <string name="timer_text">Поставь таймер для передышки</string>
+    <string name="game_view_content_description" translatable="false">Game view</string>
 </resources>

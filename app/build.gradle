@@ -8,6 +8,7 @@ plugins {
 android {
     namespace 'com.tabletop.tabletopapplication'
     compileSdk 33
+    ndkVersion "21.3.6528147"
 
     defaultConfig {
         applicationId "com.tabletop.tabletopapplication"
@@ -41,7 +42,7 @@ android {
 }
 
 dependencies {
-
+    implementation project(path: ':unityLibrary')
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
