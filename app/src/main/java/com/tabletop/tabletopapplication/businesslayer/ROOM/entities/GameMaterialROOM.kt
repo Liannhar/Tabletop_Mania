@@ -10,7 +10,8 @@ import androidx.room.*
     ), ForeignKey(
         entity = MaterialROOM::class,
         parentColumns = ["id"], childColumns = ["materialId"], onDelete = ForeignKey.CASCADE
-    )]
+    )],
+    indices = [Index("gameId"), Index("materialId")]
 )
 class GameMaterialROOM(
     @PrimaryKey(autoGenerate = true)    var id: Int = 0,

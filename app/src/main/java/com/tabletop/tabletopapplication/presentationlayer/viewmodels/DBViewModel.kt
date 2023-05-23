@@ -2,6 +2,7 @@ package com.tabletop.tabletopapplication.presentationlayer.viewmodels
 
 import android.app.Application
 import android.app.GameManager
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameROOM
@@ -75,19 +76,26 @@ class DBViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // GameMaterial
-    fun addMaterialToGame(gameId: Int, material: Material) =
+    fun addMaterialToGame(gameId: Int, material: Material) = viewModelScope.launch(Dispatchers.IO) {
         gameRepository.addMaterialToGame(gameId, MaterialROOM(material))
+    }
     fun addMaterialToGame(game: Game, material: Material) =
         addMaterialToGame(game.id, material)
+    fun addListMaterialToGame(game: Game, materials: List<Material>) = materials.forEach { material ->
+        addMaterialToGame(game, material)
+    }
 
-    suspend fun deleteMaterialFromGame(gameId: Int, materialId: Int) =
+    fun deleteMaterialFromGame(gameId: Int, materialId: Int) = viewModelScope.launch(Dispatchers.IO) {
         gameRepository.deleteMaterialFromGame(gameId, materialId)
-    suspend fun deleteMaterialFromGame(game: Game, material: Material) =
+    }
+
+    fun deleteMaterialFromGame(game: Game, material: Material) =
         deleteMaterialFromGame(game.id, material.id)
 
-    suspend fun updateMaterialAtGame(gameId: Int, material: Material) =
+    fun updateMaterialAtGame(gameId: Int, material: Material) = viewModelScope.launch(Dispatchers.IO) {
         gameRepository.updateMaterialAtGame(gameId, MaterialROOM(material))
-    suspend fun updateMaterialAtGame(game: Game, material: Material) =
+    }
+    fun updateMaterialAtGame(game: Game, material: Material) =
         updateMaterialAtGame(game.id, material)
 
     suspend fun getMaterialsByGame(id: Int) = gameRepository.getMaterialsByGameId(id) as List<Material>

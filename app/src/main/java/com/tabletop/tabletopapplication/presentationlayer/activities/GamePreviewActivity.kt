@@ -2,7 +2,6 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
@@ -30,13 +27,13 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
     }
 
     private var currentGame = Game()
-    private val differentDelegateMaterialsAdapter by lazy {
-        DelegateMaterialsAdapter(this, databaseVM)
+    private val delegateMaterialsAdapter by lazy {
+        DelegateMaterialsAdapter(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+//        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         currentGame.id = intent.extras?.run {
             getInt("id", -1)
@@ -47,7 +44,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
 
         findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
-            adapter = differentDelegateMaterialsAdapter
+            adapter = delegateMaterialsAdapter
             layoutManager = LinearLayoutManager(context)
         }
 
@@ -84,6 +81,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         lifecycleScope.launch {
             databaseVM.getGame(currentGame.id)?.let {
                 currentGame = it
+                delegateMaterialsAdapter.addAll(databaseVM.getMaterialsByGame(it.id))
             }
 
             previewGameTitle.text = currentGame.name

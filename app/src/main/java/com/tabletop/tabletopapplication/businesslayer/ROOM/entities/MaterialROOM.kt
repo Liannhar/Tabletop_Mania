@@ -14,6 +14,8 @@ class MaterialROOM(
     @Ignore
     constructor(name: String, description: String, image: String?): this(0, name, description, image)
     @Ignore
-    constructor(material: Material) : this(material.id, material.name, material.description, material.image)
+    constructor(material: Material) : this(material.id, material.name, material.description, material.image) {
+        extras = material.extras
+    }
 
 }

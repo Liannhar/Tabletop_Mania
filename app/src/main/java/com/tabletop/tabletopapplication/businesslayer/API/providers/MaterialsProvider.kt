@@ -16,7 +16,6 @@ class MaterialsProvider {
             val result = NetworkAccessor.getService().getMaterial(id)
             emit(result.data.getOrNull(0))
         } catch (error: Throwable) {
-            Log.d("DEBUG", error.toString())
             emit(null)
         }
     }
@@ -26,7 +25,6 @@ class MaterialsProvider {
             val result = NetworkAccessor.getService().getRangeMaterials(startId, endId)
             emit(result.data.toList())
         } catch (error: Throwable) {
-            Log.d("DEBUG", error.toString())
             emit(listOf())
         }
     }

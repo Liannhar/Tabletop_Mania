@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface GameMaterialDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(gameMaterial: GameMaterialROOM)
 
     @Delete
@@ -21,7 +21,7 @@ interface GameMaterialDao {
     @Update
     fun update(gameMaterial: GameMaterialROOM)
 
-    @Query("SELECT materials.* FROM materials JOIN (SELECT * FROM games_materials WHERE gameId = :id) mIds ON materials.id = mIds.materialId")
+    @Query("SELECT materials.*, extras FROM materials JOIN (SELECT * FROM games_materials WHERE gameId = :id) mIds ON materials.id = mIds.materialId")
     fun getMaterialsByGameId(id: Int): Flow<List<MaterialROOM>>
 
     @Query("SELECT * FROM games_materials WHERE gameId = :gameId AND materialId = :materialId")

@@ -1,12 +1,11 @@
-package com.tabletop.tabletopapplication.presentationlayer.fragments
+package com.example.timer.fragments
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.example.tabletopapplication.presentationlayer.models.TimerViewModel
+import com.example.timer.viewModels.TimerViewModel
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
@@ -18,7 +17,7 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
         val stopButton: Button = view.findViewById(R.id.stop_button)
         val setButton: Button = view.findViewById(R.id.set_button)
         var flag = true
-         val viewModel by viewModels<TimerViewModel>()
+         val viewModel = TimerViewModel()
         var minuets: String = arguments?.getString("minuets") ?: "00"
         var seconds: String = arguments?.getString("seconds") ?: "00"
         val time = "$minuets:$seconds"
@@ -68,7 +67,10 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
 
 
             val transaction = it.beginTransaction()
-            transaction.replace(R.id.timer_card_mini, SetTimeFragment.newInstance(), SetTimeFragment.TAG)
+            transaction.replace(R.id.timer_card_mini,
+                SetTimeFragment.newInstance(),
+                SetTimeFragment.TAG
+            )
             transaction.commit()
         }
 

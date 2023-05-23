@@ -2,6 +2,7 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameCo
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentMaterialContract
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
@@ -31,7 +33,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
     private var currentGame: Game = Game()
     private val delegateMaterialsAdapter by lazy {
-        DelegateMaterialsAdapter(this, databaseVM)
+        DelegateMaterialsAdapter(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,9 +53,10 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
         }
 
         findViewById<ImageView>(R.id.activity_edit_game__save_button).setOnClickListener {
-            // TODO(save Materials)
             lifecycleScope.launch {
                 databaseVM.add(currentGame).join()
+
+                databaseVM.addListMaterialToGame(currentGame, delegateMaterialsAdapter.getMaterials())
 
                 if (currentGame.id == 0)
                     currentGame.id = databaseVM.getCountGames()
@@ -72,8 +75,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
         val addMaterialLauncher = registerForActivityResult(IntentMaterialContract()) { result ->
             result?.apply {
-                delegateMaterialsAdapter.add(MaterialROOM(this))
-
+                delegateMaterialsAdapter.add(this)
             }
         }
 
@@ -87,6 +89,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
             lifecycleScope.launch {
                 result?.apply {
                     currentGame = this
+                    delegateMaterialsAdapter.updateAll(databaseVM.getMaterialsByGame(currentGame.id))
 
                     editGameTitle.text = currentGame.name
                     editGameDescription.text = currentGame.description
@@ -109,8 +112,9 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
         lifecycleScope.launch {
 
-            currentGame = databaseVM.getGame(currentGame.id)
-                ?: Game("Title", "Description", null)
+            currentGame = databaseVM.getGame(currentGame.id)?.apply {
+                delegateMaterialsAdapter.addAll(databaseVM.getMaterialsByGame(id))
+            } ?: Game("Title", "Description", null)
 
             editGameTitle.text = currentGame.name
             editGameDescription.text = currentGame.description
@@ -124,54 +128,5 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
         }
 
     }
-    /*private fun drawDB(gameId:Int, materials:ArrayList<Model>) {
-         val idMaterial = intent.getIntExtra("idMaterial", -1)
-         when (intent.getIntExtra("typeMaterial", -1)) {
-             4L -> {
-                 gameDBViewModel.getOneDiceOfGame(gameId,idMaterial).observe(this) {dice ->
-                     differentMaterialsadapter.setItem(dice)
-                 }
-             }
-             5L ->{
-                 gameDBViewModel.getOneNoteOfGame(gameId,idMaterial).observe(this) {note ->
-                     differentMaterialsadapter.setItem(note)
-                 }
-             }
-             6L->{
-                 gameDBViewModel.getOneTimerOfGame(gameId,idMaterial).observe(this) {timer ->
-                     differentMaterialsadapter.setItem(timer)
-                 }
-             }
-             else -> {}
-         }
-     }*/
-
-//    private fun deleteMaterials(gameCount: Int, gameId: Int) {
-//        lifecycleScope.launch {
-//            val game = viewModel.getGame(gameId)
-//            viewModel.updateGame(game)
-//        }
-//    }
-
-/*    private fun fillRecycler(
-        gameId: Int,
-        materials: ArrayList<EntityROOM>,
-        differentMaterialsadapter: MaterialsAdapter
-    ) {
-        lifecycleScope.launch() {
-            var m: List<EntityROOM> = viewModel.getAllTimerOfGame(gameId).first()
-            materials.addAll(m)
-            m = viewModel.getAllDiceOfGame(gameId).first()
-            materials.addAll(m)
-            m = viewModel.getAllNoteOfGame(gameId).first()
-            materials.addAll(m)
-            m = viewModel.getAllHourglassOfGame(gameId).first()
-            materials.addAll(m)
-
-//            materials.sortByDescending { it.positionAdd }
-            differentMaterialsadapter.setItems(materials)
-        }
-
-    }*/
 
 }

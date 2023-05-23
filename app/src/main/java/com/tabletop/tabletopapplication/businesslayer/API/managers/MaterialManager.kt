@@ -14,13 +14,5 @@ class MaterialManager {
     suspend fun getRangeMaterials(startId: Int, endId: Int) =
         provider.getRangeMaterials(startId, endId).single()
 
-    suspend fun getMaterials(listId: List<Int>): List<MaterialAPI?> {
-        val result = arrayListOf<MaterialAPI?>()
-
-        listId.forEach { id ->
-            result.add(getMaterial(id))
-        }
-
-        return result
-    }
+    suspend fun getMaterials(listId: List<Int>) = listId.map { getMaterial(it) }
 }

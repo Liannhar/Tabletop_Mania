@@ -1,4 +1,4 @@
-package com.example.tabletopapplication.presentationlayer.models
+package com.example.timer.viewModels
 
 import android.os.CountDownTimer
 import android.widget.TextView

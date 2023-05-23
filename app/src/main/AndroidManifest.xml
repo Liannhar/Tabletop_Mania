@@ -32,7 +32,7 @@
 
         <!-- Активити для песочных часов -->
         <activity
-            android:name=".presentationlayer.activities.HourglassActivity"
+            android:name="com.example.hourglass.activities.HourglassActivity"
             android:exported="false"
             android:label="@string/title_activity_hourglass"
             android:screenOrientation="portrait"
@@ -44,7 +44,7 @@
 
         <!-- Активити реализующее настройку броска кубиков -->
         <activity
-            android:name=".presentationlayer.activities.DiceSettingsActivity"
+            android:name="com.example.dice.activities.DiceSettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_dice_settings"
             android:screenOrientation="portrait"
@@ -56,7 +56,7 @@
 
         <!-- Активити реализующее результат броска кубиков -->
         <activity
-            android:name=".presentationlayer.activities.DiceResultActivity"
+            android:name="com.example.dice.activities.DiceResultActivity"
             android:exported="false"
             android:label="@string/title_activity_dice_result"
             android:screenOrientation="portrait"

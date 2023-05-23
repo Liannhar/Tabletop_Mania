@@ -2,8 +2,12 @@ package com.tabletop.tabletopapplication.presentationlayer.adapters.DiffCallback
 
 import androidx.recyclerview.widget.DiffUtil
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
+import com.tabletop.tabletopapplication.presentationlayer.models.Material
 
-class ModelDiffCallback(private val oldList: List<EntityROOM>, private val newList: List<EntityROOM>) : DiffUtil.Callback() {
+class ModelDiffCallback(
+    private val oldList: List<Material>,
+    private val newList: List<Material>
+) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
         return oldList.size
@@ -14,8 +18,7 @@ class ModelDiffCallback(private val oldList: List<EntityROOM>, private val newLi
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-//        return oldList[oldItemPosition].positionAdd == newList[newItemPosition].positionAdd
-        return true
+        return oldList[oldItemPosition].name == newList[newItemPosition].name
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

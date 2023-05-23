@@ -1,6 +1,5 @@
 package com.tabletop.tabletopapplication.presentationlayer.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
@@ -9,10 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.play.core.splitcompat.SplitCompat
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialAdapter
-import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentListMaterialsContract
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentUnitContract
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates
+package com.example.hourglass
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,26 +10,17 @@ import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
-import com.tabletop.tabletopapplication.presentationlayer.activities.HourglassActivity
-import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.EntityROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
+import com.example.hourglass.activities.HourglassActivity
+import com.tabletop.tabletopapplication.presentationlayer.models.Material
 
-class HourglassDelegate(
-    val adapter: DelegateMaterialsAdapter
-) : AdapterDelegate<ArrayList<EntityROOM>>() {
+class Delegate: AdapterDelegate<ArrayList<Material>>() {
 
     class HourglassViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.hourglass_card, parent, false)
         ) {
 
-        fun bind(
-            item: MaterialROOM,
-            adapter: DelegateMaterialsAdapter,
-            position: Int
-        ) {
+        fun bind(item: Material) {
             val hourglass = itemView.findViewById<CardView>(R.id.hourglass_card_mini)
 
             when (itemView.context) {
@@ -44,16 +35,16 @@ class HourglassDelegate(
                 is GameEditActivity -> {
                     val deleteButton = itemView.findViewById<CardView>(R.id.hourglass_card_delete)
                     deleteButton.isVisible = true
-                    deleteButton.setOnClickListener {
-                        adapter.remove(position)
-                    }
+//                    deleteButton.setOnClickListener {
+//                        adapter.remove(position)
+//                    }
                 }
             }
         }
     }
 
-    override fun isForViewType(items: ArrayList<EntityROOM>, position: Int): Boolean {
-        return items[position] is MaterialROOM
+    override fun isForViewType(items: ArrayList<Material>, position: Int): Boolean {
+        return items[position].name == "hourglass"
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -61,15 +52,11 @@ class HourglassDelegate(
     }
 
     override fun onBindViewHolder(
-        items: ArrayList<EntityROOM>,
+        items: ArrayList<Material>,
         position: Int,
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as HourglassViewHolder).bind(
-            items[position] as MaterialROOM,
-            adapter,
-            position
-        )
+        (holder as HourglassViewHolder).bind(items[position])
     }
 }

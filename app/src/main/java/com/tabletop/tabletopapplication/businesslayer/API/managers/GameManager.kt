@@ -12,15 +12,6 @@ class GameManager {
     private val provider = GameProvider()
 
     suspend fun getGame(id: Int) = provider.getGame(id).single()
-
-    suspend fun getGames(listId: List<Int>): List<GameAPI?> {
-        val result = arrayListOf<GameAPI?>()
-
-        listId.forEach { id ->
-            result.add(getGame(id))
-        }
-
-        return result
-    }
+    suspend fun getGames(listId: List<Int>) = listId.map { getGame(it) }
 
 }

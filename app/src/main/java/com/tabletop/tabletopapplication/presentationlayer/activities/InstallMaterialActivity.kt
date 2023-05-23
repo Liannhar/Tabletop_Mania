@@ -37,7 +37,9 @@ class InstallMaterialActivity : AppCompatActivity(R.layout.actvity_download_mate
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        materialAdapter = MaterialAdapter(this, mode = MaterialAdapter.Mode.INSTALL)
+        materialAdapter = MaterialAdapter(this,
+            mode = MaterialAdapter.Mode.INSTALL,
+            databaseVM = databaseVM)
 
         findViewById<RecyclerView>(R.id.rv_download_material).apply {
             layoutManager = LinearLayoutManager(context)
@@ -56,6 +58,6 @@ class InstallMaterialActivity : AppCompatActivity(R.layout.actvity_download_mate
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        SplitCompat.install(this)
+        SplitCompat.installActivity(this)
     }
 }

@@ -1,12 +1,14 @@
-package com.tabletop.tabletopapplication.presentationlayer.activities
+package com.example.dice.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.tabletop.tabletopapplication.R
+import com.example.dice.DiceConstants
+import com.example.dice.R
 
 class DiceSettingsActivity : AppCompatActivity() {
 
@@ -46,10 +48,8 @@ class DiceSettingsActivity : AppCompatActivity() {
         }
 
         findViewById<ImageView>(R.id.dice_setting_goback).setOnClickListener {
-            val intent = Intent(this, GamePreviewActivity::class.java)
-            val gameId = intent.getLongExtra("gameId",-1)
-            intent.putExtra("gameId",gameId)
-            startActivity(intent)
+            setResult(Activity.RESULT_OK)
+            finish()
         }
     }
 }
