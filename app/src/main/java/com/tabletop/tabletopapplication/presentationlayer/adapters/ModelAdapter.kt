@@ -21,8 +21,8 @@ class ModelAdapter(val context:FragmentActivity,gameDBViewModel: GameDBViewModel
     private val items = ArrayList<Model>()
 
     init{
-        adapterDelegateManager.addDelegate(DiceDelegate(this,gameDBViewModel))
-            .addDelegate(HourglassDelegate(this,gameDBViewModel))
+        adapterDelegateManager.addDelegate(DiceDelegate(this,context,gameDBViewModel))
+            .addDelegate(HourglassDelegate(this,context, gameDBViewModel))
             .addDelegate(TimerDelegate(this,context,gameDBViewModel))
             .addDelegate(NoteDelegate(this,gameDBViewModel))
     }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.R
@@ -13,26 +14,26 @@ import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditAct
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.HourglassActivity
 import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
+import com.tabletop.tabletopapplication.presentationlayer.fragments.DiceFragment
+import com.tabletop.tabletopapplication.presentationlayer.fragments.SandFragment
 import com.tabletop.tabletopapplication.presentationlayer.models.DIce.Dice
 import com.tabletop.tabletopapplication.presentationlayer.models.Hourglass.Hourglass
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 
-class HourglassDelegate(val adapter: ModelAdapter, private val hourglassDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
+class HourglassDelegate(val adapter: ModelAdapter, private val contextt: FragmentActivity, private val hourglassDBViewModel: GameDBViewModel): AdapterDelegate<ArrayList<Model>>() {
     class HourglassViewHolder(val parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.hourglass_card,parent,false))
     {
-        fun bind(item: Hourglass, adapter: ModelAdapter, position: Int,hourglassDBViewModel: GameDBViewModel)
+        fun bind(item: Hourglass, position: Int, contextt: FragmentActivity,  hourglassDBViewModel: GameDBViewModel, adapter: ModelAdapter)
         {
-            val hourglass= itemView.findViewById<CardView>(R.id.hourglass_card_mini)
 
             when(itemView.context) {
                 is GamePreviewActivity -> {
-                    itemView.setOnClickListener {
-                        hourglass.setOnClickListener {
-                            val intent = Intent(parent.context, HourglassActivity::class.java)
-                            parent.context.startActivity(intent)
-                        }
+                    contextt.supportFragmentManager.let {
+                        val transaction = it.beginTransaction()
+                        transaction.add(R.id.hourglass_card_mini, SandFragment.newInstance(), SandFragment.TAG)
+                        transaction.commit()
                     }
                 }
                 is GameEditActivity -> {
@@ -63,6 +64,6 @@ class HourglassDelegate(val adapter: ModelAdapter, private val hourglassDBViewMo
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as HourglassViewHolder).bind(items[position] as Hourglass,adapter,position,hourglassDBViewModel)
+        (holder as HourglassViewHolder).bind(items[position] as Hourglass, position, contextt, hourglassDBViewModel, adapter)
     }
 }

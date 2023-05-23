@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        tools:replace="android:extractNativeLibs"
+        android:extractNativeLibs="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,9 +23,6 @@
             android:label="@string/title_activity_hourglass"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <!-- Активити реализующее настройку броска кубиков -->
         <activity
@@ -76,7 +76,6 @@
             android:authorities="${applicationId}.provider"
             tools:node="remove"
             tools:replace="android:authorities" />
-
         <activity android:name=".presentationlayer.activities.GameEditPropertiesActivity" />
         <activity android:name=".presentationlayer.activities.GameEditActivity" />
 

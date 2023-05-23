@@ -8,7 +8,7 @@ plugins {
 android {
     namespace 'com.tabletop.tabletopapplication'
     compileSdk 33
-
+    ndkVersion "21.3.6528147"
     defaultConfig {
         applicationId "com.tabletop.tabletopapplication"
         minSdk 24
@@ -16,6 +16,14 @@ android {
         versionCode 14
         versionName "1.5"
 
+        splits {
+            abi {
+                enable true
+                reset()
+                //include  'x86','x86_64', 'armeabi-v7a', 'armeabi'
+                // universalApk true
+            }
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,6 +49,8 @@ android {
 }
 
 dependencies {
+
+    implementation project(path: ':unityLibrary')
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
