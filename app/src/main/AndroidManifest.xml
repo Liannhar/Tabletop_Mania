@@ -66,6 +66,10 @@
             >
         </activity>
         <activity
+            android:name=".presentationlayer.activities.DiceActivity"
+            >
+        </activity>
+        <activity
             android:name=".presentationlayer.activities.InstallMaterialActivity"
             >
         </activity>

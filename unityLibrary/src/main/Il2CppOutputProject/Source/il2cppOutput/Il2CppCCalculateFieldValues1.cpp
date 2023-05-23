@@ -516,6 +516,8 @@ struct ReadOnlyCollection_1_t23633718B1ADFA60DD4047E37F4F2D278B8DC3D9;
 struct Recursion_1_tDFF1B549E70648F1694033FADF89F8F0EB28587D;
 // System.Collections.Generic.Stack`1<System.Collections.Generic.HashSet`1<System.Linq.Expressions.ParameterExpression>>
 struct Stack_1_tC4810ACEE7FD00840B5CB4333A83E2E1553CAD26;
+// System.Collections.Generic.Stack`1<UnityEngine.GameObject>
+struct Stack_1_tEDA6555F162AE2CC5394B19622F8A10CD078C7AF;
 // System.Collections.Generic.Stack`1<System.Int32>
 struct Stack_1_t3197E0F5EA36E611B259A88751D31FC2396FE4B6;
 // System.Collections.Generic.Stack`1<System.Linq.Expressions.ParameterExpression>
@@ -16511,25 +16513,6 @@ struct CollisionEventUnit_t10568A689D97B9ED5F2D1B8F396D6639C7C42D56  : public Ga
 	ValueOutput_tADDC9DBF6515A1572E876C3881B5F110DC5EBE1B* ___U3CdataU3Ek__BackingField_22;
 };
 
-// CubeBehaviour
-struct CubeBehaviour_tF1EBC0C9B257624F77E974CB71F4775DF0F8D3BC  : public MonoBehaviour_t532A11E69716D348D8AA7F854AFCBFCB8AD17F71
-{
-	// UnityEngine.Rigidbody CubeBehaviour::rb
-	Rigidbody_t268697F5A994213ED97393309870968BC1C7393C* ___rb_4;
-	// System.Single CubeBehaviour::speedX
-	float ___speedX_5;
-	// System.Single CubeBehaviour::speedY
-	float ___speedY_6;
-	// System.Single CubeBehaviour::speedZ
-	float ___speedZ_7;
-	// System.Single CubeBehaviour::maxspeed
-	float ___maxspeed_8;
-	// System.Single CubeBehaviour::minspeed
-	float ___minspeed_9;
-	// System.Single CubeBehaviour::x
-	float ___x_10;
-};
-
 // Unity.VisualScripting.CustomEvent
 struct CustomEvent_t68DCB5C6D36D2058F4A1A7385B9852234DF2F540  : public GameObjectEventUnit_1_t7D37696A86712423521A34B1A0CA32C5CB2EA26A
 {
@@ -16748,6 +16731,34 @@ struct SetObjectVariable_t8348087222C6571AFFF0157AB5370857B0312EFC  : public Set
 {
 	// Unity.VisualScripting.ValueInput Unity.VisualScripting.SetObjectVariable::<source>k__BackingField
 	ValueInput_t2F9A2AA29F683A1C27C273BF8AABA4C2D9851392* ___U3CsourceU3Ek__BackingField_21;
+};
+
+// Spawner
+struct Spawner_t387EDFC7BADAEFFD3305FD31D1E8DDE8998FCDD7  : public MonoBehaviour_t532A11E69716D348D8AA7F854AFCBFCB8AD17F71
+{
+	// UnityEngine.Vector3 Spawner::where
+	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ___where_4;
+	// UnityEngine.GameObject Spawner::rb
+	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___rb_5;
+};
+
+// Throw
+struct Throw_t91857F5726AB92988E26CBE178FFC1A3D9D07A85  : public MonoBehaviour_t532A11E69716D348D8AA7F854AFCBFCB8AD17F71
+{
+	// UnityEngine.Rigidbody Throw::rb
+	Rigidbody_t268697F5A994213ED97393309870968BC1C7393C* ___rb_4;
+	// System.Single Throw::speedX
+	float ___speedX_5;
+	// System.Single Throw::speedY
+	float ___speedY_6;
+	// System.Single Throw::speedZ
+	float ___speedZ_7;
+	// System.Single Throw::maxspeed
+	float ___maxspeed_8;
+	// System.Single Throw::minspeed
+	float ___minspeed_9;
+	// System.Single Throw::x
+	float ___x_10;
 };
 
 // Unity.VisualScripting.TriggerEvent2DUnit
@@ -24042,10 +24053,6 @@ struct TextGenerator_t6B84DC798596D3A9944DC346DD453C075EE62366_StaticFields
 
 // Unity.VisualScripting.CollisionEventUnit
 
-// CubeBehaviour
-
-// CubeBehaviour
-
 // Unity.VisualScripting.CustomEvent
 
 // Unity.VisualScripting.CustomEvent
@@ -24154,6 +24161,19 @@ struct SamsungAndroidProviderLoader_t750DAFC3B980CC2B2FB3F5BC080B536ECAF5D293_St
 // Unity.VisualScripting.SetObjectVariable
 
 // Unity.VisualScripting.SetObjectVariable
+
+// Spawner
+struct Spawner_t387EDFC7BADAEFFD3305FD31D1E8DDE8998FCDD7_StaticFields
+{
+	// System.Collections.Generic.Stack`1<UnityEngine.GameObject> Spawner::clones
+	Stack_1_tEDA6555F162AE2CC5394B19622F8A10CD078C7AF* ___clones_6;
+};
+
+// Spawner
+
+// Throw
+
+// Throw
 
 // Unity.VisualScripting.TriggerEvent2DUnit
 
@@ -28279,9 +28299,12 @@ IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable5315[3] =
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable5333[3] = 
 {
 	static_cast<int32_t>(offsetof(XmlReader_t4C709DEF5F01606ECB60B638F1BD6F6E0A9116FD_StaticFields, ___IsTextualNodeBitmap_0)),static_cast<int32_t>(offsetof(XmlReader_t4C709DEF5F01606ECB60B638F1BD6F6E0A9116FD_StaticFields, ___CanReadContentAsBitmap_1)),static_cast<int32_t>(offsetof(XmlReader_t4C709DEF5F01606ECB60B638F1BD6F6E0A9116FD_StaticFields, ___HasValueBitmap_2)),};
-IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable5336[7] = 
+IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable5336[3] = 
 {
-	static_cast<int32_t>(offsetof(CubeBehaviour_tF1EBC0C9B257624F77E974CB71F4775DF0F8D3BC, ___rb_4)),static_cast<int32_t>(offsetof(CubeBehaviour_tF1EBC0C9B257624F77E974CB71F4775DF0F8D3BC, ___speedX_5)),static_cast<int32_t>(offsetof(CubeBehaviour_tF1EBC0C9B257624F77E974CB71F4775DF0F8D3BC, ___speedY_6)),static_cast<int32_t>(offsetof(CubeBehaviour_tF1EBC0C9B257624F77E974CB71F4775DF0F8D3BC, ___speedZ_7)),static_cast<int32_t>(offsetof(CubeBehaviour_tF1EBC0C9B257624F77E974CB71F4775DF0F8D3BC, ___maxspeed_8)),static_cast<int32_t>(offsetof(CubeBehaviour_tF1EBC0C9B257624F77E974CB71F4775DF0F8D3BC, ___minspeed_9)),static_cast<int32_t>(offsetof(CubeBehaviour_tF1EBC0C9B257624F77E974CB71F4775DF0F8D3BC, ___x_10)),};
+	static_cast<int32_t>(offsetof(Spawner_t387EDFC7BADAEFFD3305FD31D1E8DDE8998FCDD7, ___where_4)),static_cast<int32_t>(offsetof(Spawner_t387EDFC7BADAEFFD3305FD31D1E8DDE8998FCDD7, ___rb_5)),static_cast<int32_t>(offsetof(Spawner_t387EDFC7BADAEFFD3305FD31D1E8DDE8998FCDD7_StaticFields, ___clones_6)),};
+IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable5337[7] = 
+{
+	static_cast<int32_t>(offsetof(Throw_t91857F5726AB92988E26CBE178FFC1A3D9D07A85, ___rb_4)),static_cast<int32_t>(offsetof(Throw_t91857F5726AB92988E26CBE178FFC1A3D9D07A85, ___speedX_5)),static_cast<int32_t>(offsetof(Throw_t91857F5726AB92988E26CBE178FFC1A3D9D07A85, ___speedY_6)),static_cast<int32_t>(offsetof(Throw_t91857F5726AB92988E26CBE178FFC1A3D9D07A85, ___speedZ_7)),static_cast<int32_t>(offsetof(Throw_t91857F5726AB92988E26CBE178FFC1A3D9D07A85, ___maxspeed_8)),static_cast<int32_t>(offsetof(Throw_t91857F5726AB92988E26CBE178FFC1A3D9D07A85, ___minspeed_9)),static_cast<int32_t>(offsetof(Throw_t91857F5726AB92988E26CBE178FFC1A3D9D07A85, ___x_10)),};
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable5338[4] = 
 {
 	static_cast<int32_t>(offsetof(Section_t50C894D0A717C2368EBAAE5477D4E8626D0B5401, ___heading_0)),static_cast<int32_t>(offsetof(Section_t50C894D0A717C2368EBAAE5477D4E8626D0B5401, ___text_1)),static_cast<int32_t>(offsetof(Section_t50C894D0A717C2368EBAAE5477D4E8626D0B5401, ___linkText_2)),static_cast<int32_t>(offsetof(Section_t50C894D0A717C2368EBAAE5477D4E8626D0B5401, ___url_3)),};

@@ -4,11 +4,10 @@ apply plugin: 'com.android.library'
 dependencies {
     api files("libs/classes.jar")
     api files("libs/unity-classes.jar")
-
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     buildToolsVersion '30.0.2'
     ndkVersion "21.3.6528147"
     compileOptions {
@@ -18,7 +17,7 @@ android {
 
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdkVersion 33
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
@@ -85,8 +84,8 @@ def BuildIl2Cpp(String workingDir, String configuration, String architecture, St
 android {
     task BuildIl2CppTask {
         doLast {
-            BuildIl2Cpp(projectDir.toString().replaceAll('\\\\', '/'), 'Release', 'armv7', 'armeabi-v7a', [  ] as String[]);
-            BuildIl2Cpp(projectDir.toString().replaceAll('\\\\', '/'), 'Release', 'arm64', 'arm64-v8a', [  ] as String[]);
+              BuildIl2Cpp(projectDir.toString().replaceAll('\\\\', '/'), 'Release', 'armv7', 'armeabi-v7a', [  ] as String[]);
+              BuildIl2Cpp(projectDir.toString().replaceAll('\\\\', '/'), 'Release', 'arm64', 'arm64-v8a', [  ] as String[]);
         }
     }
     afterEvaluate {
@@ -101,4 +100,6 @@ android {
         }
     }
 }
+
+
 

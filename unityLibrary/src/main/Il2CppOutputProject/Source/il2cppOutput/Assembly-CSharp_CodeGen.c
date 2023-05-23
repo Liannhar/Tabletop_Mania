@@ -12,56 +12,48 @@
 
 
 
-// 0x00000001 System.Void CubeBehaviour::Start()
-extern void CubeBehaviour_Start_m70F3D932277DB25F38D57FD58F80E72AA5D721B1 (void);
-// 0x00000002 System.Single CubeBehaviour::randdirection()
-extern void CubeBehaviour_randdirection_m1D6A9512E6094DE04F3B1D3EF2FE1F769A3E83C3 (void);
-// 0x00000003 System.Void CubeBehaviour::Update()
-extern void CubeBehaviour_Update_mA1BEB317CA55DB461820D8ABD8FDB69FA7BDA8E8 (void);
-// 0x00000004 System.Void CubeBehaviour::.ctor()
-extern void CubeBehaviour__ctor_m138228A7A41ADD4B83A771FCF38A4FA983F9DA72 (void);
-// 0x00000005 System.Void Packages_NewPlayableBehaviour::OnGraphStart(UnityEngine.Playables.Playable)
-extern void Packages_NewPlayableBehaviour_OnGraphStart_m4A26194D1B859DB70748EFA8DFD5F20B0ACF7D87 (void);
-// 0x00000006 System.Void Packages_NewPlayableBehaviour::OnGraphStop(UnityEngine.Playables.Playable)
-extern void Packages_NewPlayableBehaviour_OnGraphStop_m0CE99B7CB0185FF9E948230B90A7E8AB9C589DCB (void);
-// 0x00000007 System.Void Packages_NewPlayableBehaviour::OnBehaviourPlay(UnityEngine.Playables.Playable,UnityEngine.Playables.FrameData)
-extern void Packages_NewPlayableBehaviour_OnBehaviourPlay_mB888CFF4BCCAB81335EDF41942E0A0AB52DE944B (void);
-// 0x00000008 System.Void Packages_NewPlayableBehaviour::OnBehaviourPause(UnityEngine.Playables.Playable,UnityEngine.Playables.FrameData)
-extern void Packages_NewPlayableBehaviour_OnBehaviourPause_m373C887A3B648D9B7CAAE37BC3C23C99EDF67FFB (void);
-// 0x00000009 System.Void Packages_NewPlayableBehaviour::PrepareFrame(UnityEngine.Playables.Playable,UnityEngine.Playables.FrameData)
-extern void Packages_NewPlayableBehaviour_PrepareFrame_m050B031C5946742312434D4F001C472398731BD2 (void);
-// 0x0000000A System.Void Packages_NewPlayableBehaviour::.ctor()
-extern void Packages_NewPlayableBehaviour__ctor_mE3D474FF20EACA1E162596EBE43272BDD8301A75 (void);
-// 0x0000000B System.Void Readme::.ctor()
+// 0x00000001 System.Void Spawner::Spawn()
+extern void Spawner_Spawn_m992EA9504776B40AE50865A0AB1DBFD1BA7F5956 (void);
+// 0x00000002 System.Void Spawner::Kill()
+extern void Spawner_Kill_m8D135494F88E8AE4F753C0780E4D9298BFFD260C (void);
+// 0x00000003 System.Void Spawner::.ctor()
+extern void Spawner__ctor_mBF592E8E9B5682687D8C28E73A64BF29B6BF2088 (void);
+// 0x00000004 System.Void Spawner::.cctor()
+extern void Spawner__cctor_m54AB90DE48C1D6A1B40FC929C51A8426AABD4032 (void);
+// 0x00000005 System.Void Throw::Start()
+extern void Throw_Start_m483224AB07D40DBB68FBB8E0C60FA5405CF8E1C5 (void);
+// 0x00000006 System.Single Throw::randdirection()
+extern void Throw_randdirection_m25960AED91DD01C1209BB22399E9272862EA1E16 (void);
+// 0x00000007 System.Void Throw::Update()
+extern void Throw_Update_mE5BBC677910832380A25176D80CF39BF9098A423 (void);
+// 0x00000008 System.Void Throw::.ctor()
+extern void Throw__ctor_m6CA6A2EBB9A9A3AD9A8644673C69D4983D550EA6 (void);
+// 0x00000009 System.Void Readme::.ctor()
 extern void Readme__ctor_m69C325C4C171DCB0312B646A9034AA91EA8C39C6 (void);
-// 0x0000000C System.Void Readme/Section::.ctor()
+// 0x0000000A System.Void Readme/Section::.ctor()
 extern void Section__ctor_m5F732533E4DFC0167D965E5F5DB332E46055399B (void);
-static Il2CppMethodPointer s_methodPointers[12] = 
+static Il2CppMethodPointer s_methodPointers[10] = 
 {
-	CubeBehaviour_Start_m70F3D932277DB25F38D57FD58F80E72AA5D721B1,
-	CubeBehaviour_randdirection_m1D6A9512E6094DE04F3B1D3EF2FE1F769A3E83C3,
-	CubeBehaviour_Update_mA1BEB317CA55DB461820D8ABD8FDB69FA7BDA8E8,
-	CubeBehaviour__ctor_m138228A7A41ADD4B83A771FCF38A4FA983F9DA72,
-	Packages_NewPlayableBehaviour_OnGraphStart_m4A26194D1B859DB70748EFA8DFD5F20B0ACF7D87,
-	Packages_NewPlayableBehaviour_OnGraphStop_m0CE99B7CB0185FF9E948230B90A7E8AB9C589DCB,
-	Packages_NewPlayableBehaviour_OnBehaviourPlay_mB888CFF4BCCAB81335EDF41942E0A0AB52DE944B,
-	Packages_NewPlayableBehaviour_OnBehaviourPause_m373C887A3B648D9B7CAAE37BC3C23C99EDF67FFB,
-	Packages_NewPlayableBehaviour_PrepareFrame_m050B031C5946742312434D4F001C472398731BD2,
-	Packages_NewPlayableBehaviour__ctor_mE3D474FF20EACA1E162596EBE43272BDD8301A75,
+	Spawner_Spawn_m992EA9504776B40AE50865A0AB1DBFD1BA7F5956,
+	Spawner_Kill_m8D135494F88E8AE4F753C0780E4D9298BFFD260C,
+	Spawner__ctor_mBF592E8E9B5682687D8C28E73A64BF29B6BF2088,
+	Spawner__cctor_m54AB90DE48C1D6A1B40FC929C51A8426AABD4032,
+	Throw_Start_m483224AB07D40DBB68FBB8E0C60FA5405CF8E1C5,
+	Throw_randdirection_m25960AED91DD01C1209BB22399E9272862EA1E16,
+	Throw_Update_mE5BBC677910832380A25176D80CF39BF9098A423,
+	Throw__ctor_m6CA6A2EBB9A9A3AD9A8644673C69D4983D550EA6,
 	Readme__ctor_m69C325C4C171DCB0312B646A9034AA91EA8C39C6,
 	Section__ctor_m5F732533E4DFC0167D965E5F5DB332E46055399B,
 };
-static const int32_t s_InvokerIndices[12] = 
+static const int32_t s_InvokerIndices[10] = 
 {
+	3977,
+	3977,
+	3977,
+	5935,
 	3977,
 	3930,
 	3977,
-	3977,
-	3247,
-	3247,
-	1871,
-	1871,
-	1871,
 	3977,
 	3977,
 	3977,
@@ -70,7 +62,7 @@ IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule;
 const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule = 
 {
 	"Assembly-CSharp.dll",
-	12,
+	10,
 	s_methodPointers,
 	0,
 	NULL,
