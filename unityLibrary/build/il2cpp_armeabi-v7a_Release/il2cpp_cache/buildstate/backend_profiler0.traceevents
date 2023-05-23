@@ -1,11 +1,3 @@
-{ "pid": 0, "tid": -1, "ph": "M", "name": "process_name", "args": { "name": "BeeDriver" } },
-{ "pid": 0, "tid": -1, "ph": "M", "name": "process_sort_index", "args": { "sort_index": "-2" } },
-{ "pid": 0, "tid": 1, "ph": "M", "name": "thread_name", "args": { "name": "Main thread" } },
-{ "pid": 0, "tid": 1, "ts": 1684842015036301, "dur": 1683124, "ph": "X", "name": "Build FinalProgram", "args": {} },
-{ "pid": 0, "tid": 1, "ts": 1684842015038163, "dur": 7661, "ph": "X", "name": "WriteBuildProgramData", "args": {} },
-{ "pid": 0, "tid": 1, "ts": 1684842015046090, "dur": 1673221, "ph": "X", "name": "Run Backend", "args": {} },
-{ "pid": 0, "tid": 1, "ts": 1684842016719344, "dur": 81, "ph": "X", "name": "Finish", "args": {} },
-{ "pid": 0, "tid": 1, "ts": 1684842016724685, "dur": 1316, "ph": "X", "name": "Main thread", "args": {} },
 { "cat":"", "pid":12345, "tid":0, "ts":0, "ph":"M", "name":"process_name", "args": { "name":"bee_backend" } }
 ,{ "pid":12345, "tid":0, "ts":1684842015104926, "dur":1734, "ph":"X", "name": "DriverInitData",  "args": { "detail":"" }}
 ,{ "pid":12345, "tid":0, "ts":1684842015106679, "dur":969, "ph":"X", "name": "Tundra",  "args": { "detail":"RemoveStaleOutputs" }}
@@ -924,5 +916,4 @@
 ,{ "pid":12345, "tid":12, "ts":1684842015167679, "dur":67, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
 ,{ "pid":12345, "tid":12, "ts":1684842015167747, "dur":1526381, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
 ,{ "pid":12345, "tid":0, "ts":1684842016706292, "dur":2723, "ph":"X", "name": "ProfilerWriteOutput" }
-,{ "pid": 0, "tid": 1, "ts": 1684842016726112, "dur": 5526, "ph": "X", "name": "backend_profiler0.traceevents", "args": {} },
-{ "pid": 0, "tid": 1, "ts": 1684842016723993, "dur": 7683, "ph": "X", "name": "Write chrome-trace events", "args": {} },
+,
