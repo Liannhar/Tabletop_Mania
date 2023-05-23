@@ -39,6 +39,7 @@ class DiceDelegate(val adapter: ModelAdapter, private val contextt:FragmentActiv
 
                     itemView.setOnClickListener {
                         val intent = Intent(itemView.context, DiceActivity::class.java)
+                        intent.putExtra("doQuit", true)
                         startActivity(itemView.context,intent,null)
                     }
                 }
