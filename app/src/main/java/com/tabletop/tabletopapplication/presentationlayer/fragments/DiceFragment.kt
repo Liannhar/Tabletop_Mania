@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import com.tabletop.tabletopapplication.R
+import com.tabletop.tabletopapplication.presentationlayer.activities.DiceActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.DiceConstants
 import com.tabletop.tabletopapplication.presentationlayer.activities.DiceResultActivity
 
@@ -63,7 +64,7 @@ class DiceFragment : Fragment(R.layout.fragment_dice) {
         view.findViewById<Button>(R.id.dice_fragment_button).setOnClickListener {
 
             // Переход на активити с супер кубанами (пока что обычные)
-            val intent = Intent(context, DiceResultActivity::class.java).apply {
+            val intent = Intent(context, DiceActivity::class.java).apply {
                 putExtra(DiceConstants.SERIALIZABLE_DICE_NAME, selectedDice)
             }
             startActivity(intent)
