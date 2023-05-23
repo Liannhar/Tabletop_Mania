@@ -1,13 +1,17 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters.Delegates
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.R
+import com.tabletop.tabletopapplication.presentationlayer.activities.DiceActivity
+import com.tabletop.tabletopapplication.presentationlayer.activities.DiceConstants
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
@@ -26,11 +30,16 @@ class DiceDelegate(val adapter: ModelAdapter, private val contextt:FragmentActiv
             when(itemView.context) {
 
                 is GamePreviewActivity -> {
-                    contextt.supportFragmentManager.let {
+                    /*contextt.supportFragmentManager.let {
                         val transaction = it.beginTransaction()
                         transaction.add(R.id.dice_card_mini, DiceFragment.newInstance(), DiceFragment.TAG)
                         // transaction.replace(R.id.dice_card_mini, DiceFragment.newInstance(), DiceFragment.TAG)
                         transaction.commit()
+                    }*/
+
+                    itemView.setOnClickListener {
+                        val intent = Intent(itemView.context, DiceActivity::class.java)
+                        startActivity(itemView.context,intent,null)
                     }
                 }
 
