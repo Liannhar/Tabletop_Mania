@@ -1,28 +1,32 @@
 package com.example.timer
 
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.example.timer.fragments.TimerFragment
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.R
-import com.example.timer.fragments.TimerFragment
 import com.tabletop.tabletopapplication.presentationlayer.models.Material
+import kotlinx.coroutines.launch
+
 
 class Delegate : AdapterDelegate<ArrayList<Material>>() {
 
     class TimerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(material: Material) {
-            (itemView.context as FragmentActivity).supportFragmentManager.let {
-                val transaction = it.beginTransaction()
-                transaction.add(
-                    R.id.timer_card_mini,
-                    TimerFragment.newInstance(),
-                    TimerFragment.TAG
-                )
-                transaction.commit()
-            }
+
+        val fragmentManager = (itemView.context as AppCompatActivity).supportFragmentManager
+        val cwContainer = itemView.findViewById<CardView>(R.id.timer_card_mini).apply {
+            id = View.generateViewId()
+        }
+
+        fun bind() {
+
         }
     }
 
@@ -35,12 +39,36 @@ class Delegate : AdapterDelegate<ArrayList<Material>>() {
         return TimerViewHolder(view)
     }
 
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+
+        (holder as TimerViewHolder).apply {
+            try {
+                (itemView.context as AppCompatActivity)
+                    .takeIf { itemView.isAttachedToWindow }?.apply {
+                        lifecycleScope.launch {
+                            supportFragmentManager
+                                .beginTransaction()
+                                .add(cwContainer.id, TimerFragment().apply {
+                                    arguments = Bundle().apply {
+                                        putInt("viewId", cwContainer.id)
+                                    }
+                                })
+                                .commit()
+                        }
+                }
+            } catch (e: Exception) {
+                Log.d("ERROR", e.toString())
+            }
+        }
+    }
+
     override fun onBindViewHolder(
         items: ArrayList<Material>,
         position: Int,
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as TimerViewHolder).bind(items[position])
+        (holder as TimerViewHolder).bind()
     }
 }

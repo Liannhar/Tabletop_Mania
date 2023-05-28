@@ -4,13 +4,10 @@ package com.tabletop.tabletopapplication.presentationlayer.adapters
 import android.app.Activity
 import android.content.Context
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegatesManager
-import com.tabletop.tabletopapplication.presentationlayer.adapters.DiffCallbacks.ModelDiffCallback
 import com.tabletop.tabletopapplication.presentationlayer.models.Material
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 import kotlinx.coroutines.launch
@@ -48,6 +45,10 @@ class DelegateMaterialsAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         adapterDelegateManager.onBindViewHolder(materials, position, holder)
+    }
+
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        adapterDelegateManager.onViewAttachedToWindow(holder)
     }
 
     fun getMaterials() = materials

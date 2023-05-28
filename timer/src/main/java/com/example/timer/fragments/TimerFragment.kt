@@ -7,11 +7,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.timer.viewModels.TimerViewModel
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
-import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 
 class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val viewId = arguments?.run {
+            getInt("viewId")
+        } ?: 0
 
         val timeButton: TextView = view.findViewById(R.id.time)
         val stopButton: Button = view.findViewById(R.id.stop_button)
@@ -47,40 +49,16 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
                 timer.start()
             }
         }
+
         setButton.setOnClickListener {
-            onSetClick()
+            parentFragmentManager
+                .beginTransaction()
+                .replace(viewId, SetTimeFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt("viewId", viewId)
+                    }
+                })
+                .commit()
         }
-
-        when(context) {
-            is GamePreviewActivity -> {
-            }
-            is GameEditActivity -> {
-
-            }
-        }
-
-    }
-
-
-    fun onSetClick() {
-        activity?.supportFragmentManager?.let {
-
-
-            val transaction = it.beginTransaction()
-            transaction.replace(R.id.timer_card_mini,
-                SetTimeFragment.newInstance(),
-                SetTimeFragment.TAG
-            )
-            transaction.commit()
-        }
-
-    }
-
-    companion object {
-
-        fun newInstance(): Fragment = TimerFragment()
-
-        const val TAG = "GameListFragment"
-
     }
 }

@@ -33,7 +33,6 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         currentGame.id = intent.extras?.run {
             getInt("id", -1)
