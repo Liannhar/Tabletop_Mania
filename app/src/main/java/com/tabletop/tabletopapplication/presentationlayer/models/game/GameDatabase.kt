@@ -25,7 +25,7 @@ abstract class GameDatabase : RoomDatabase() {
                     context.applicationContext,
                     GameDatabase::class.java,
                     "game_database"
-                ).createFromAsset("database/game_database.db").build()
+                ).build()
                 INSTANCE = instance
                 instance
             }

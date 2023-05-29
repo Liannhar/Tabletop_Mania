@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000">
+
+    <ImageView
+        android:layout_width="280dp"
+        android:layout_height="328dp"
+        android:src="@drawable/add_history_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/background" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New match:"
+        android:textSize="28sp"
+        app:layout_constraintTop_toTopOf="@+id/background"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:id="@+id/newmatch" />
+
+    <ImageView
+        android:layout_width="280dp"
+        android:layout_height="10dp"
+        android:src="@drawable/dotted_line"
+        android:layout_marginTop="8dp"
+        android:layerType="software"
+        android:contentDescription="@string/dotted_line"
+        app:layout_constraintTop_toBottomOf="@+id/newmatch"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        android:id="@+id/line" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date:"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/line"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:id="@+id/date_txt" />
+
+    <EditText
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:backgroundTint="@color/white"
+        android:id="@+id/date"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintStart_toEndOf="@+id/date_txt"
+        app:layout_constraintTop_toTopOf="@+id/date_txt"
+        app:layout_constraintBottom_toBottomOf="@+id/date_txt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Winner:"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/date_txt"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:id="@+id/winner_txt" />
+
+    <EditText
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:backgroundTint="@color/white"
+        android:id="@+id/winner"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintStart_toEndOf="@+id/date_txt"
+        app:layout_constraintTop_toTopOf="@+id/winner_txt"
+        app:layout_constraintBottom_toBottomOf="@+id/winner_txt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score:"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/winner_txt"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:id="@+id/score_txt" />
+
+    <EditText
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:backgroundTint="@color/white"
+        android:id="@+id/score"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintStart_toEndOf="@+id/date_txt"
+        app:layout_constraintTop_toTopOf="@+id/score_txt"
+        app:layout_constraintBottom_toBottomOf="@+id/score_txt" />
+
+
+    <Button
+        android:layout_marginTop="24dp"
+        android:text="Save"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:id="@+id/save_history_button"
+        android:background="@drawable/timer_back"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintStart_toStartOf="@+id/background" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
