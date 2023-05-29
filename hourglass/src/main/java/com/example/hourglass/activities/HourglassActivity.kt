@@ -1,7 +1,6 @@
 package com.example.hourglass.activities
 
 import android.content.Context
-import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -13,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.hourglass.R
+import com.tabletop.tabletopapplication.presentationlayer.common.SandConstants
 
 class HourglassActivity : AppCompatActivity() {
     lateinit var sensManager: SensorManager

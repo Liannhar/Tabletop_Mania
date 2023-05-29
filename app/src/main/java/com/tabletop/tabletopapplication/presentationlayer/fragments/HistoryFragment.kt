@@ -39,12 +39,10 @@ class HistoryFragment : Fragment(R.layout.history_add_fragment) {
                 "-"
             }
 
-
-            activity?.supportFragmentManager?.let {
-                val transaction = it.beginTransaction()
-                transaction.remove(this)
-                transaction.commit()
-            }
+            parentFragmentManager
+                .beginTransaction()
+                .remove(this)
+                .commit()
 
         }
     }

@@ -2,17 +2,23 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
+import com.tabletop.tabletopapplication.businesslayer.models.History
 import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.adapters.HistoryAdapter
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
+import com.tabletop.tabletopapplication.presentationlayer.fragments.HistoryFragment
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 import kotlinx.coroutines.launch
@@ -97,6 +103,31 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
                 .placeholder(R.drawable.baseline_downloading_24)
                 .error(R.drawable.baseline_error_outline_24)
                 .into(previewGameImage)
+        }
+
+        val show_history_button = findViewById<ImageView>(R.id.show_history)
+        val add_history_button = findViewById<ImageView>(R.id.add_history_button)
+        var history_list = mutableListOf<History>()
+        val history_adapter = HistoryAdapter(history_list)
+
+        var history_flag = true
+        show_history_button.setOnClickListener {
+            if (history_flag) {
+                findViewById<LinearLayout>(R.id.history).isVisible = true
+                findViewById<ImageView>(R.id.history_flag_line).isVisible = true
+                show_history_button.setImageResource(R.drawable.history_up)
+            } else {
+                findViewById<LinearLayout>(R.id.history).isVisible = false
+                findViewById<ImageView>(R.id.history_flag_line).isVisible = false
+                show_history_button.setImageResource(R.drawable.history_down)
+            }
+            history_flag = !history_flag
+        }
+        add_history_button.setOnClickListener {
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.history_place, HistoryFragment.newInstance())
+                .commit()
         }
     }
 }
