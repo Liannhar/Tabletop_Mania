@@ -8,6 +8,9 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.widget.Button
+import android.widget.EdgeEffect
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +33,7 @@ class HourglassActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                tvTimer3.text = "Time is over!"
+                tvTimer3.text = "Time is up!"
                 Glide.with(applicationContext).load(R.drawable.hourglass1).into(img)
             }
         }.start()
@@ -42,58 +45,44 @@ class HourglassActivity : AppCompatActivity() {
         var NormalTimerInProgressFlag = false
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hourglass)
-        val timerInterval: Long = 10000
+        var timerInterval: Long = 0
         val tvTimer1 = findViewById<TextView>(R.id.hourglass_cv_1_text)
         tvTimer1.text = (timerInterval / 1000).toString()
         val tvTimer3 = findViewById<TextView>(R.id.hourglass_cv_3_text)
-        tvTimer3.text = "Крути телефон влево для запуска песочных часов!"
         val img = findViewById<ImageView>(R.id.hourglass_pic)
         sensManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val sens = sensManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        val saveButton = findViewById<Button>(R.id.save_button_timeHG)
+
 
 
         val sensListener = object : SensorEventListener {
             override fun onSensorChanged(p0: SensorEvent?) {
                 val a = windowManager.defaultDisplay.rotation
-                Log.d("lol", "$a")
                 if (a == 2 && !UpsideDownTimerInProgressFlag) {
                     if (FirstTurnOverFlag)
                         timer.cancel()
-                    tvTimer3.text = "Песочные часы запущены!"
+                    tvTimer3.text = "Time is running out..."
                     Glide.with(applicationContext).load(R.drawable.hourglass).into(img)
                     startHourglassTimer(timerInterval)
                     FirstTurnOverFlag = true
                     UpsideDownTimerInProgressFlag = true
-                    NormalTimerInProgressFlag=false
+                    NormalTimerInProgressFlag = false
 
                 } else if (a == 0 && FirstTurnOverFlag && !NormalTimerInProgressFlag) {
                     timer.cancel()
 
-                    tvTimer3.text = "Песочные часы запущены!"
+                    tvTimer3.text = "Time is running out..."
                     Glide.with(applicationContext).load(R.drawable.hourglass).into(img)
 
                     startHourglassTimer(timerInterval)
                     UpsideDownTimerInProgressFlag = false
-                    NormalTimerInProgressFlag=true
+                    NormalTimerInProgressFlag = true
 
                 }
 
             }
-            /*if (sideFlag && (it > 8)) {
-                        tvTimer3.text = "Песочные часы запущены!"
-                        Glide.with(applicationContext).load(R.drawable.hourglass).into(img)
-                        if (startFlag) {
-                            startHourglassTimer(timerInterval)
-                            startFlag = false
-                        }
-                    } else if (!sideFlag && (it < -8)) {
-                        tvTimer3.text = "Песочные часы запущены!"
-                        Glide.with(applicationContext).load(R.drawable.hourglass).into(img)
-                        if (startFlag) {
-                            startHourglassTimer(timerInterval)
-                            startFlag = false
-                        }
-                    }*/
+
 
             override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
                 // Изменение точности измерений нас не интересует
@@ -104,6 +93,14 @@ class HourglassActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.hourglass_goback).setOnClickListener {
             setResult(RESULT_OK)
             finish()
+        }
+
+        saveButton.setOnClickListener {
+            val seconds = findViewById<EditText>(R.id.seconds_et).text.run {
+                takeIf { isNotEmpty() }?.toString()?.toLong()
+            } ?: 0
+            timerInterval=seconds*1000
+            tvTimer1.text = (timerInterval / 1000).toString()
         }
     }
 

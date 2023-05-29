@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.hourglass.activities.HourglassActivity">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/hourglass_top_panel"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_panel_height"
         android:background="@color/primary_color_app"
         app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
             android:id="@+id/hourglass_goback"
             android:layout_width="@dimen/icon_top_panel_width"
@@ -19,76 +21,103 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/icon_top_panel_margin"
-            android:contentDescription="@string/arrow_back_description"
-            />
+            android:contentDescription="@string/arrow_back_description" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/hourglass_cv_1"
-        android:layout_width="200dp"
-        android:layout_height="65dp"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintTop_toBottomOf="@id/hourglass_top_panel"
-        app:layout_constraintStart_toStartOf="parent"
+    <ImageView
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/background"
+        android:id="@id/hourglass_cv_1"
+        app:layout_constraintTop_toBottomOf="@+id/hourglass_top_panel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="20dp"
-        app:cardBackgroundColor="@color/second_color_app">
-        <TextView
-            android:id="@+id/hourglass_cv_1_text"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="Крути"
-            android:textAlignment="center"
-            android:textSize="30dp"
-            android:textColor="@color/black"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/hourglass_cv_1_text"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:text="10"
+        android:textSize="64sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/hourglass_cv_1"
+        app:layout_constraintTop_toTopOf="@+id/hourglass_cv_1"
+        app:layout_constraintStart_toStartOf="@+id/hourglass_cv_1"
+        app:layout_constraintEnd_toEndOf="@+id/hourglass_cv_1" />
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/hourglass_cv_2"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:cardCornerRadius="45dp"
         app:layout_constraintTop_toBottomOf="@id/hourglass_cv_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="16dp">
+
         <ImageView
             android:id="@+id/hourglass_pic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/hourglass1"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
+
+
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/hourglass_cv_3"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintTop_toBottomOf="@id/hourglass_cv_2"
+
+    <ImageView
+        android:layout_marginTop="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/timer_back"
+        android:id="@+id/background"
+        app:layout_constraintTop_toBottomOf="@+id/hourglass_cv_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:flow_verticalBias="0.5"
-        android:layout_marginTop="20dp"
-        app:cardBackgroundColor="@color/primary_color_app">
-        <TextView
-            android:id="@+id/hourglass_cv_3_text"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="Крути телефон, для запуска песочных часов"
-            android:textAlignment="center"
-            android:textSize="25dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/hourglass_cv_3_text"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:text="Flip your phone!"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="@+id/background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:layout_marginTop="16dp"
+        android:inputType="number"
+        android:textColor="@color/white"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textSize="32sp"
+        android:backgroundTint="@color/white"
+        android:textAlignment="center"
+        android:id="@+id/seconds_et"
+        app:layout_constraintTop_toBottomOf="@+id/hourglass_cv_3_text"
+        android:layout_marginStart="32dp"
+        app:layout_constraintStart_toStartOf="@+id/background" />
+
+    <Button
+        android:text="save"
+        android:layout_width="132dp"
+        android:layout_height="64dp"
+        android:textSize="28sp"
+        android:id="@+id/save_button_timeHG"
+        android:background="@drawable/background"
+        app:layout_constraintBottom_toBottomOf="@+id/seconds_et"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintStart_toEndOf="@+id/seconds_et"
+        app:layout_constraintTop_toTopOf="@+id/seconds_et" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

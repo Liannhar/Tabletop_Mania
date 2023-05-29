@@ -27,14 +27,14 @@
     <string name="h1">H1</string>
     <string name="h2">H2</string>
     <string name="h3">H3</string>
-    <string name="dice_roll">Брось свои кубаны на встречу приключениям</string>
-    <string name="h_card">Эти песочные часы никогда не разобьются!</string>
+    <string name="dice_roll">The best dices ;)</string>
+    <string name="h_card">The hourglass</string>
     <string name="title_note">note</string>
     <string name="install">Install</string>
     <string name="title_timer">Timer</string>
     <string name="title_dice">dice</string>
     <string name="title_hourglass">hourglass</string>
-    <string name="timer_text">Поставь таймер для передышки</string>
+    <string name="timer_text">Amazing timer</string>
     <string name="game_view_content_description" translatable="false">Game view</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

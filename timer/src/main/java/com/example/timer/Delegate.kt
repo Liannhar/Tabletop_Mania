@@ -28,7 +28,7 @@ class Delegate(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        val cwContainer = itemView.findViewById<CardView>(R.id.timer_card_mini).apply {
+        val cwContainer = itemView.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.timer_card).apply {
             id = View.generateViewId()
         }
 
