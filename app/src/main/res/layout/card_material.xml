@@ -27,8 +27,8 @@
             <ImageView
                 android:id="@+id/card_material__image"
                 android:layout_width="match_parent"
-                android:layout_height="106dp"
-                android:src="@color/black"
+                android:layout_height="match_parent"
+                android:src="@color/white"
                 android:contentDescription="@string/image_material" />
 
         </androidx.cardview.widget.CardView>

@@ -55,19 +55,24 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         }
 
         val editActivityLauncher = registerForActivityResult(IntentGameContract()) { result ->
-            result?.apply {
+            lifecycleScope.launch {
 
-                currentGame = this
+                delegateMaterialsAdapter.updateAll(databaseVM.getMaterialsByGame(currentGame.id))
 
-                previewGameTitle.text = currentGame.name
-                previewGameDescription.text = currentGame.description
+                result?.apply {
 
-                Glide.with(previewGameImage)
-                    .load(currentGame.image)
-                    .centerCrop()
-                    .placeholder(R.drawable.baseline_downloading_24)
-                    .error(R.drawable.baseline_error_outline_24)
-                    .into(previewGameImage)
+                    currentGame = this
+
+                    previewGameTitle.text = currentGame.name
+                    previewGameDescription.text = currentGame.description
+
+                    Glide.with(previewGameImage)
+                        .load(currentGame.image)
+                        .centerCrop()
+                        .placeholder(R.drawable.baseline_downloading_24)
+                        .error(R.drawable.baseline_error_outline_24)
+                        .into(previewGameImage)
+                }
             }
         }
 

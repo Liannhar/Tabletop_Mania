@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameMaterialROOM
-import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.GameROOM
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
 import kotlinx.coroutines.flow.Flow
 
@@ -21,9 +20,12 @@ interface GameMaterialDao {
     @Update
     fun update(gameMaterial: GameMaterialROOM)
 
-    @Query("SELECT materials.*, extras FROM materials JOIN (SELECT * FROM games_materials WHERE gameId = :id) mIds ON materials.id = mIds.materialId")
+    @Query("SELECT * FROM games_materials WHERE gameId = :id")
+    fun getGameMaterialsByGameId(id: Int): Flow<List<GameMaterialROOM>>
+
+    @Query("SELECT materials.* FROM materials JOIN (SELECT * FROM games_materials WHERE gameId = :id) mIds ON materials.id = mIds.materialId")
     fun getMaterialsByGameId(id: Int): Flow<List<MaterialROOM>>
 
-    @Query("SELECT * FROM games_materials WHERE gameId = :gameId AND materialId = :materialId")
+    @Query("SELECT * FROM games_materials WHERE gameId = :gameId AND materialId = :materialId LIMIT 1")
     fun findGameMaterialById(gameId: Int, materialId: Int): Flow<GameMaterialROOM?>
 }

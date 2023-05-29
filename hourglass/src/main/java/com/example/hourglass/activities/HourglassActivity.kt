@@ -12,8 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
+import com.example.hourglass.R
 
 class HourglassActivity : AppCompatActivity() {
     lateinit var sensManager: SensorManager
@@ -61,10 +60,8 @@ class HourglassActivity : AppCompatActivity() {
         sensManager.registerListener(sensListener, sens, SensorManager.SENSOR_DELAY_NORMAL)
 
         findViewById<ImageView>(R.id.hourglass_goback).setOnClickListener {
-            val intent = Intent(this, GameEditActivity::class.java)
-            val gameId = intent.getLongExtra("gameId", -1)
-            intent.putExtra("gameId", gameId)
-            startActivity(intent)
+            setResult(RESULT_OK)
+            finish()
         }
     }
 

@@ -5,8 +5,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.timer.viewModels.TimerViewModel
-import com.tabletop.tabletopapplication.R
+import com.example.timer.R
+import com.tabletop.tabletopapplication.presentationlayer.common.Time
+import com.tabletop.tabletopapplication.presentationlayer.common.Timer
 
 class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -18,36 +19,21 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
         val timeButton: TextView = view.findViewById(R.id.time)
         val stopButton: Button = view.findViewById(R.id.stop_button)
         val setButton: Button = view.findViewById(R.id.set_button)
-        var flag = true
-         val viewModel = TimerViewModel()
-        var minuets: String = arguments?.getString("minuets") ?: "00"
-        var seconds: String = arguments?.getString("seconds") ?: "00"
-        val time = "$minuets:$seconds"
-        timeButton.text=time
-        var timer=viewModel.timer(minuets,seconds,timeButton)
+        var minutes = arguments?.getInt("minuets") ?: 0
+        var seconds = arguments?.getInt("seconds") ?: 0
+        val time = "$minutes:$seconds"
+        timeButton.text = time
 
-
+        var mTimer = Timer(Time(minutes, seconds), 1)
+        mTimer.observe(viewLifecycleOwner) {
+            timeButton.text = it.toString()
+        }
 
         timeButton.setOnClickListener {
-            timer.cancel()
-            if (!flag) {
-                flag = !flag
-            }
-             minuets= arguments?.getString("minuets") ?: "00"
-             seconds = arguments?.getString("seconds") ?: "00"
-            timer=viewModel.timer(minuets,seconds,timeButton)
-            timer.start()
+            mTimer.start()
         }
         stopButton.setOnClickListener {
-            flag = !flag
-            if (!flag) {
-                timer.cancel()
-            } else {
-                minuets= timeButton.text[0].toString()+timeButton.text[1].toString()
-                seconds= timeButton.text[3].toString()+timeButton.text[4].toString()
-                timer=viewModel.timer(minuets,seconds,timeButton)
-                timer.start()
-            }
+            mTimer.stop()
         }
 
         setButton.setOnClickListener {

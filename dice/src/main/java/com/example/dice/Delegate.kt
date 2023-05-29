@@ -34,6 +34,7 @@ class Delegate(): AdapterDelegate<ArrayList<Material>>() {
                 is GameEditActivity -> {
                     val deleteButton=itemView.findViewById<CardView>(R.id.dice_card_delete)
                     deleteButton.isVisible = true
+
                 }
             }
         }
@@ -54,6 +55,7 @@ class Delegate(): AdapterDelegate<ArrayList<Material>>() {
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
+
         (holder as DiceViewHolder).bind(items[position], position)
     }
 }

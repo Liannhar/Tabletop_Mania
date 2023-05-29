@@ -17,6 +17,7 @@ import com.google.android.play.core.splitcompat.SplitCompat
 import com.google.gson.GsonBuilder
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.adapters.MaterialAdapter
+import com.tabletop.tabletopapplication.presentationlayer.common.AdapterMode
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.APIViewModel
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 import kotlinx.coroutines.launch
@@ -38,7 +39,7 @@ class InstallMaterialActivity : AppCompatActivity(R.layout.actvity_download_mate
         super.onCreate(savedInstanceState)
 
         materialAdapter = MaterialAdapter(this,
-            mode = MaterialAdapter.Mode.INSTALL,
+            mode = AdapterMode.EDIT,
             databaseVM = databaseVM)
 
         findViewById<RecyclerView>(R.id.rv_download_material).apply {

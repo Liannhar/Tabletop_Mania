@@ -56,10 +56,10 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
             lifecycleScope.launch {
                 databaseVM.add(currentGame).join()
 
-                databaseVM.addListMaterialToGame(currentGame, delegateMaterialsAdapter.getMaterials())
-
                 if (currentGame.id == 0)
                     currentGame.id = databaseVM.getCountGames()
+
+                databaseVM.addListMaterialToGame(currentGame, delegateMaterialsAdapter.getMaterials())
 
                 setResult(RESULT_OK, Intent().apply {
                     putExtra("Game", currentGame)
@@ -75,7 +75,14 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
         val addMaterialLauncher = registerForActivityResult(IntentMaterialContract()) { result ->
             result?.apply {
-                delegateMaterialsAdapter.add(this)
+                if (currentGame.id == 0)
+                    delegateMaterialsAdapter.add(this)
+                else {
+                    lifecycleScope.launch {
+                        databaseVM.addMaterialToGame(currentGame, result).join()
+                        delegateMaterialsAdapter.updateAll(databaseVM.getMaterialsByGame(currentGame.id))
+                    }
+                }
             }
         }
 

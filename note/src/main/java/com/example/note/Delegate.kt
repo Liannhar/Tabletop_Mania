@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
-import com.tabletop.tabletopapplication.R
-
 import com.tabletop.tabletopapplication.presentationlayer.models.Material
 
 class Delegate: AdapterDelegate<ArrayList<Material>>() {

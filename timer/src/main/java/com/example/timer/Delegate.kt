@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.timer.fragments.TimerFragment
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
-import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.presentationlayer.models.Material
 import kotlinx.coroutines.launch
 
@@ -44,18 +43,17 @@ class Delegate : AdapterDelegate<ArrayList<Material>>() {
 
         (holder as TimerViewHolder).apply {
             try {
-                (itemView.context as AppCompatActivity)
-                    .takeIf { itemView.isAttachedToWindow }?.apply {
-                        lifecycleScope.launch {
-                            supportFragmentManager
-                                .beginTransaction()
-                                .add(cwContainer.id, TimerFragment().apply {
-                                    arguments = Bundle().apply {
-                                        putInt("viewId", cwContainer.id)
-                                    }
-                                })
-                                .commit()
-                        }
+                (itemView.context as AppCompatActivity).apply {
+                    lifecycleScope.launch {
+                        supportFragmentManager
+                            .beginTransaction()
+                            .add(cwContainer.id, TimerFragment().apply {
+                                arguments = Bundle().apply {
+                                    putInt("viewId", cwContainer.id)
+                                }
+                            })
+                            .commit()
+                    }
                 }
             } catch (e: Exception) {
                 Log.d("ERROR", e.toString())

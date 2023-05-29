@@ -26,6 +26,7 @@ import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.tabletop.tabletopapplication.R
+import com.tabletop.tabletopapplication.presentationlayer.common.AdapterMode
 import com.tabletop.tabletopapplication.presentationlayer.models.Material
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 import kotlinx.coroutines.launch
@@ -33,14 +34,9 @@ import kotlinx.coroutines.launch
 class MaterialAdapter(
     private val context: Context,
     private val materials: ArrayList<Material> = arrayListOf(),
-    private val mode: Mode = Mode.PREVIEW,
+    private val mode: AdapterMode = AdapterMode.PREVIEW,
     private val databaseVM: DBViewModel = DBViewModel((context as Activity).application)
 ) : RecyclerView.Adapter<MaterialAdapter.ViewHolder>() {
-
-    enum class Mode {
-        PREVIEW,
-        INSTALL
-    }
 
     private val splitInstallManager = SplitInstallManagerFactory.create(context).apply {
         registerListener {
@@ -60,7 +56,7 @@ class MaterialAdapter(
     class ViewHolder(
         itemView: View,
         private val splitInstallManager: SplitInstallManager,
-        private val mode: Mode,
+        private val mode: AdapterMode,
         private val databaseVM: DBViewModel
     ) : RecyclerView.ViewHolder(itemView) {
 
@@ -92,7 +88,7 @@ class MaterialAdapter(
                 .into(image)
 
             when (mode) {
-                Mode.PREVIEW -> {
+                AdapterMode.PREVIEW -> {
                     itemView.setOnClickListener {
                         (it.context as Activity).apply {
                             setResult(Activity.RESULT_OK, Intent().apply {
@@ -102,7 +98,7 @@ class MaterialAdapter(
                         }
                     }
                 }
-                Mode.INSTALL -> {
+                AdapterMode.EDIT -> {
                     databaseVM.viewModelScope.launch {
                         if (databaseVM.getMaterial(material.name) != null)
                             deleteButton.isVisible = true
