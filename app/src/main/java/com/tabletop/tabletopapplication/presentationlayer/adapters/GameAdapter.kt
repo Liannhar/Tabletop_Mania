@@ -1,50 +1,49 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.businesslayer.models.GameEntity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
-import com.tabletop.tabletopapplication.presentationlayer.activities.GameSelectionActivity
-import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
+import com.tabletop.tabletopapplication.presentationlayer.models.Game
+
 
 class GameAdapter(
-    private var games: ArrayList<GameEntity> = arrayListOf()
+    private var games: ArrayList<Game> = arrayListOf(),
+    private val clickLauncher: ActivityResultLauncher<Intent>
 ) : RecyclerView.Adapter<GameAdapter.Holder>() {
 
-    class Holder(view: View) : RecyclerView.ViewHolder(view) {
+    class Holder(
+        view: View,
+        private val clickAction: ActivityResultLauncher<Intent>
+        ) : RecyclerView.ViewHolder(view) {
 
-        private val context = view.context
         private val element = view.findViewById<LinearLayout>(R.id.game_element__ll)
         private val name = view.findViewById<TextView>(R.id.game_name)
         private val image = view.findViewById<ImageView>(R.id.game_img)
 
-        fun bind(item: GameEntity) {
+        fun bind(item: Game) {
             name.text = item.name
 
             Glide.with(image)
-                 .load(item.image)
-                 .error(R.drawable.baseline_error_outline_24)
-                 .into(image)
+                .load(item.image)
+                .centerCrop()
+                .placeholder(R.drawable.baseline_downloading_24)
+                .error(R.drawable.baseline_error_outline_24)
+                .into(image)
 
             element.setOnClickListener {
-                when(context) {
-                    is GameSelectionActivity -> {
-                        val intent = Intent(context, GamePreviewActivity::class.java).apply {
-                            putExtra("Game", item)
-                        }
-                        startActivityForResult(context, intent, ACTIVITY_REQUEST_CODE.PREVIEW.value, Bundle())
-                    }
-                }
+                clickAction.launch(Intent(itemView.context, GamePreviewActivity::class.java).apply {
+                    putExtra("id", item.id)
+                })
             }
 
         }
@@ -52,7 +51,7 @@ class GameAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.game_element, parent, false)
-        return Holder(view)
+        return Holder(view, clickLauncher)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) =
@@ -60,35 +59,25 @@ class GameAdapter(
 
     override fun getItemCount(): Int = games.size
 
-    fun submitItems(data: ArrayList<GameEntity>) {
-        games = data
-        notifyItemRangeChanged(0, games.size - 1)
-    }
-
-    fun addGame(game: GameEntity) {
+    fun addGame(game: Game) {
         games.add(game)
         notifyItemInserted(games.size - 1)
     }
 
-    fun addListGames(games: List<GameEntity>) {
-        this.games.addAll(games)
-        notifyItemRangeInserted(this.games.size - games.size, games.size)
+    fun addAll(list: List<Game>) {
+        games.addAll(list)
+        notifyItemRangeInserted(this.games.size - list.size, list.size)
     }
 
-    fun getGamePosition(game: GameEntity): Int {
-        for (i in 0 until games.size)
-            if (game.id == games[i].id)
-                return i
-
-        return -1
-    }
-
-    fun changeGame(game: GameEntity) {
-        val position = getGamePosition(game)
-        if (position == -1)
-            return
-
-        games[position] = game
+    fun replaceGame(position: Int, newGame: Game) {
+        games[position] = newGame
         notifyItemChanged(position)
+    }
+
+    fun findPositionById(id: Int): Int {
+        for (i in 0..games.size)
+            if (games[i].id == id)
+                return i
+        return -1
     }
 }

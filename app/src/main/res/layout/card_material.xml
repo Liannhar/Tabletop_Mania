@@ -28,7 +28,7 @@
                 android:id="@+id/card_material__image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@color/black"
+                android:src="@color/white"
                 android:contentDescription="@string/image_material" />
 
         </androidx.cardview.widget.CardView>
@@ -58,8 +58,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:cardCornerRadius="50dp"
-            android:visibility="invisible"
-            >
+            android:visibility="invisible">
 
             <ImageView
                 android:layout_width="match_parent"

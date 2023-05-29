@@ -2,9 +2,7 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -13,156 +11,93 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.businesslayer.models.History
-import com.tabletop.tabletopapplication.presentationlayer.adapters.HistoryAdapter
-import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
-import com.tabletop.tabletopapplication.presentationlayer.fragments.HistoryFragment
-import com.tabletop.tabletopapplication.presentationlayer.fragments.SetTimeFragment
-import com.tabletop.tabletopapplication.presentationlayer.models.Model
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.first
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
+import com.tabletop.tabletopapplication.presentationlayer.models.Game
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
 import kotlinx.coroutines.launch
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
+    private val databaseVM by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[DBViewModel::class.java]
+    }
 
-    private val gameDBViewModel by lazy { ViewModelProvider(this)[GameDBViewModel::class.java] }
-
+    private var currentGame = Game()
+    private val delegateMaterialsAdapter by lazy {
+        DelegateMaterialsAdapter(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
-        val gameId = prefs.getLong("currentGameId", -1)
-        prefs.edit().putLong("currentGameId", gameId).apply()
-        val differentMaterialsadapter by lazy { ModelAdapter(this, gameDBViewModel) }
-        val materials = arrayListOf<Model>()
+
+        currentGame.id = intent.extras?.run {
+            getInt("id", -1)
+        } ?: -1
+
         val previewGameTitle = findViewById<TextView>(R.id.activity_preview_game__title)
-        val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
-        val show_history_button = findViewById<ImageView>(R.id.show_history)
-        val add_history_button = findViewById<ImageView>(R.id.add_history_button)
-        var history_list = mutableListOf<History>()
-        val history_adapter = HistoryAdapter(history_list)
+        val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
 
-        val job = lifecycleScope.launch() {
-            gameDBViewModel.getGame(gameId).collect() {
-                previewGameTitle.text = it.name
-                previewGameDescription.text = it.description
-                Glide.with(this@GamePreviewActivity).load(it.image).into(previewGameImage)
-            }
-
-        }
-
-
-        /*gameDBViewModel.getGame(gameId).observe(this){game ->
-            previewGameTitle.text = game.name
-            previewGameDescription.text = game.description
-            Glide.with(this).load(game.image).into(previewGameImage)
-        }*/
-
-
-
-
-        fillRecycler(gameId, differentMaterialsadapter, materials)
         findViewById<RecyclerView>(R.id.activity_preview_game__rv).apply {
-            adapter = differentMaterialsadapter
+            adapter = delegateMaterialsAdapter
             layoutManager = LinearLayoutManager(context)
         }
+
         findViewById<ImageView>(R.id.activity_preview_game__back_button).setOnClickListener {
-            СheckMaterials(gameId, job)
-            val intent = Intent(this, GameSelectionActivity::class.java)
-            startActivity(intent)
+            setResult(RESULT_OK, Intent().apply {
+                putExtra("Game", currentGame)
+            })
+            finish()
         }
+
+        val editActivityLauncher = registerForActivityResult(IntentGameContract()) { result ->
+            lifecycleScope.launch {
+
+                delegateMaterialsAdapter.updateAll(databaseVM.getMaterialsByGame(currentGame.id))
+
+                result?.apply {
+
+                    currentGame = this
+
+                    previewGameTitle.text = currentGame.name
+                    previewGameDescription.text = currentGame.description
+
+                    Glide.with(previewGameImage)
+                        .load(currentGame.image)
+                        .centerCrop()
+                        .placeholder(R.drawable.baseline_downloading_24)
+                        .error(R.drawable.baseline_error_outline_24)
+                        .into(previewGameImage)
+                }
+            }
+        }
+
         findViewById<ImageView>(R.id.activity_preview_game__edit_button).setOnClickListener {
-            val intent = Intent(this, GameEditActivity::class.java)
-            startActivity(intent)
+            editActivityLauncher.launch(Intent(this, GameEditActivity::class.java).apply {
+                putExtra("id", currentGame.id)
+            })
         }
-        findViewById<RecyclerView>(R.id.history_rv).apply {
-            adapter = history_adapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
-        }
-        var history_flag: Boolean = true
-        show_history_button.setOnClickListener {
-            if (history_flag) {
-                findViewById<LinearLayout>(R.id.history).visibility =
-                    View.VISIBLE
-                findViewById<ImageView>(R.id.history_flag_line).visibility =
-                    View.VISIBLE
-                show_history_button.setImageResource(R.drawable.history_up)
-            } else {
-                findViewById<LinearLayout>(R.id.history).visibility =
-                    View.GONE
-                findViewById<ImageView>(R.id.history_flag_line).visibility =
-                    View.GONE
-                show_history_button.setImageResource(R.drawable.history_down)
-            }
-            history_flag = !history_flag
-        }
-        add_history_button.setOnClickListener {
-            supportFragmentManager?.let {
-                val transaction = it.beginTransaction()
-                transaction.add(R.id.history_place, HistoryFragment.newInstance())
-                transaction.commit()
+
+        lifecycleScope.launch {
+            databaseVM.getGame(currentGame.id)?.let {
+                currentGame = it
+                delegateMaterialsAdapter.addAll(databaseVM.getMaterialsByGame(it.id))
             }
 
-        }
+            previewGameTitle.text = currentGame.name
+            previewGameDescription.text = currentGame.description
 
-    }
-
-
-    private fun СheckMaterials(gameId: Long, job: Job) {
-        lifecycleScope.launch() {
-            job.cancel()
-            val game = gameDBViewModel.getGame(gameId).first()
-            if (game.count == 0) {
-
-                gameDBViewModel.deleteGame(game)
-            }
-
+            Glide.with(previewGameImage)
+                .load(currentGame.image)
+                .centerCrop()
+                .placeholder(R.drawable.baseline_downloading_24)
+                .error(R.drawable.baseline_error_outline_24)
+                .into(previewGameImage)
         }
     }
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        fillRecycler()
-    }*/
-
-
-    private fun fillRecycler(
-        gameId: Long,
-        differentMaterialsadapter: ModelAdapter,
-        materials: ArrayList<Model>
-    ) {
-        lifecycleScope.launch() {
-            var m: List<Model> = gameDBViewModel.getAllTimerOfGame(gameId).first()
-            materials.addAll(m)
-            m = gameDBViewModel.getAllDiceOfGame(gameId).first()
-            materials.addAll(m)
-            m = gameDBViewModel.getAllNoteOfGame(gameId).first()
-            materials.addAll(m)
-            m = gameDBViewModel.getAllHourglassOfGame(gameId).first()
-            materials.addAll(m)
-
-            materials.sortByDescending { it.positionAdd }
-            differentMaterialsadapter.updateItems(materials)
-        }
-        /*gameDBViewModel.getAllTimerOfGame(gameId).onEach { newList ->
-            materials.addAll(newList)
-        }.launchIn(lifecycleScope)
-        gameDBViewModel.getAllNoteOfGame(gameId).onEach { newList ->
-            materials.addAll(newList)
-        }.launchIn(lifecycleScope)
-        gameDBViewModel.getAllHourglassOfGame(gameId).onEach { newList ->
-            materials.addAll(newList)
-        }.launchIn(lifecycleScope)
-        gameDBViewModel.getAllDiceOfGame(gameId).onEach { newList ->
-            materials.addAll(newList)
-        }.launchIn(lifecycleScope)
-        materials.sortByDescending { it.positionAdd }
-        differentMaterialsadapter.updateItems(materials)*/
-    }
-
-
 }
 

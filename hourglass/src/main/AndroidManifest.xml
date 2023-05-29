@@ -9,5 +9,19 @@
             <dist:on-demand />
         </dist:delivery>
         <dist:fusing dist:include="true" />
+
     </dist:module>
+
+    <application>
+        <activity
+            android:name="com.example.hourglass.activities.HourglassActivity"
+            android:exported="false"
+            android:label="@string/title_activity_hourglass"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+    </application>
 </manifest>
