@@ -17,7 +17,7 @@
             android:name="com.example.hourglass.activities.HourglassActivity"
             android:exported="false"
             android:label="@string/title_activity_hourglass"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
