@@ -1,6 +1,6 @@
 package com.example.dice.activities
 
-import android.content.Intent
+/*import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.FrameLayout
@@ -85,4 +85,4 @@ class DiceActivity : UnityPlayerActivity() {
             layout.addView(myButton, 300, 200)
         }
     }
-}
+}*/

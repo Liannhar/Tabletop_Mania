@@ -4,5 +4,5 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/glegoo_regular" />
+        android:font="@font/glegooregular" />
 </font-family>
