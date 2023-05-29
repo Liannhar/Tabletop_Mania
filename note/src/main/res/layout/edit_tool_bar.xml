@@ -98,8 +98,7 @@
         android:maxHeight="20dp"
         android:padding="11dp"
         android:scaleType="centerInside"
-        android:maxWidth="20dp"
-        android:src="@drawable/highlight" />
+        android:maxWidth="20dp" />
 
 
     <ImageButton
