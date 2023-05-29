@@ -1,4 +1,5 @@
 package com.example.dice.activities
+/*
 
 import android.content.Intent
 import android.os.Bundle
@@ -42,11 +43,14 @@ class DiceActivity : UnityPlayerActivity() {
 
     fun addControlsToUnityFrame() {
         val layout: FrameLayout = mUnityPlayer
-        /*val view = View(this)
+        */
+/*val view = View(this)
         view.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color_app))
         view.layoutParams = ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT)
-        layout.addView(view)*/
-        /*run {
+        layout.addView(view)*//*
+
+        */
+/*run {
         val myButton = Button(this)
         myButton.text = "Show Main"
         myButton.x = 10f
@@ -75,7 +79,8 @@ class DiceActivity : UnityPlayerActivity() {
         myButton.y = 500f
         myButton.setOnClickListener { mUnityPlayer.unload() }
         layout.addView(myButton, 300, 200)
-        }*/
+        }*//*
+
         run {
             val myButton = Button(this)
             myButton.text = "Finish"
@@ -86,3 +91,4 @@ class DiceActivity : UnityPlayerActivity() {
         }
     }
 }
+*/

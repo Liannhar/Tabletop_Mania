@@ -1,5 +1,6 @@
 package com.example.note
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.EditText
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.note.activities.NoteActivity
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
 import com.tabletop.tabletopapplication.presentationlayer.common.AdapterMode
@@ -26,7 +28,11 @@ class Delegate(
         fun bind(position: Int) {
             when (adapter.mode) {
                 AdapterMode.PREVIEW -> {
-
+                    note.setOnClickListener{
+                        val intent = Intent(itemView.context, NoteActivity::class.java)
+                        itemView
+                        itemView.context.startActivity(intent)
+                    }
                 }
                 AdapterMode.EDIT -> {
                     itemView.findViewById<CardView>(R.id.edit_text_delete).apply {

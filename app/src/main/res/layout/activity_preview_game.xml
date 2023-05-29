@@ -134,7 +134,7 @@
                 android:text="Last
          games:"
 
-                android:textSize="32sp"
+                android:textSize="30sp"
                 android:textAlignment="center" />
 
             <ImageView

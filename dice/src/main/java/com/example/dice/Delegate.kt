@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dice.activities.DiceActivity
+//import com.example.dice.activities.DiceActivity
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.example.dice.activities.DiceSettingsActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
@@ -31,12 +31,10 @@ class Delegate(
         {
             when(adapter.mode) {
                 AdapterMode.PREVIEW -> {
-                    itemView.setOnClickListener {
-                        dice.setOnClickListener {
-                            val intent = Intent(itemView.context, DiceActivity::class.java)
+                    dice.setOnClickListener {
+                            /*val intent = Intent(itemView.context, DiceActivity::class.java)
                             intent.putExtra("doQuit", true)
-                            itemView.context.startActivity(intent)
-                        }
+                            itemView.context.startActivity(intent)*/
                     }
                 }
                 AdapterMode.EDIT -> {
