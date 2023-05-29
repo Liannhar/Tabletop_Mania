@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/game_element__ll"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:orientation="vertical">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/game_img"
         android:layout_width="180dp"
-        android:layout_height="180dp" />
+        android:scaleType="centerCrop"
+        android:layout_height="180dp"
+        app:riv_corner_radius="24dp"/>
 
     <TextView
         android:id="@+id/game_name"

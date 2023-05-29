@@ -57,6 +57,7 @@
         android:textSize="24sp"
         android:backgroundTint="@color/white"
         android:id="@+id/date"
+        android:inputType="date"
         app:layout_constraintEnd_toEndOf="@+id/background"
         app:layout_constraintStart_toEndOf="@+id/date_txt"
         app:layout_constraintTop_toTopOf="@+id/date_txt"
@@ -95,6 +96,7 @@
         app:layout_constraintStart_toStartOf="@+id/background"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
+
         android:id="@+id/score_txt" />
 
     <EditText
@@ -104,6 +106,7 @@
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:backgroundTint="@color/white"
+        android:inputType="number"
         android:id="@+id/score"
         app:layout_constraintEnd_toEndOf="@+id/background"
         app:layout_constraintStart_toEndOf="@+id/date_txt"
