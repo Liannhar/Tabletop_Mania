@@ -1,6 +1,7 @@
 package com.example.dice
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,17 +13,24 @@ import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.example.dice.activities.DiceSettingsActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.common.AdapterMode
 import com.tabletop.tabletopapplication.presentationlayer.models.Material
 
-class Delegate(): AdapterDelegate<ArrayList<Material>>() {
-    class DiceViewHolder(view: View): RecyclerView.ViewHolder(view)
+class Delegate(
+    private val adapter: DelegateMaterialsAdapter
+): AdapterDelegate<ArrayList<Material>>() {
+    class DiceViewHolder(
+        val adapter: DelegateMaterialsAdapter,
+        view: View
+    ): RecyclerView.ViewHolder(view)
     {
         private val dice = itemView.findViewById<CardView>(R.id.dice_card_mini)
 
-        fun bind(material: Material, position: Int)
+        fun bind(position: Int)
         {
-            when(itemView.context) {
-                is GamePreviewActivity -> {
+            when(adapter.mode) {
+                AdapterMode.PREVIEW -> {
                     itemView.setOnClickListener {
                         dice.setOnClickListener {
                             val intent = Intent(itemView.context, DiceActivity::class.java)
@@ -31,10 +39,13 @@ class Delegate(): AdapterDelegate<ArrayList<Material>>() {
                         }
                     }
                 }
-                is GameEditActivity -> {
-                    val deleteButton=itemView.findViewById<CardView>(R.id.dice_card_delete)
-                    deleteButton.isVisible = true
-
+                AdapterMode.EDIT -> {
+                    itemView.findViewById<CardView>(R.id.dice_card_delete).apply {
+                        isVisible = true
+                        setOnClickListener {
+                            adapter.remove(position)
+                        }
+                    }
                 }
             }
         }
@@ -46,7 +57,7 @@ class Delegate(): AdapterDelegate<ArrayList<Material>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.dice_card,parent,false)
-        return DiceViewHolder(view)
+        return DiceViewHolder(adapter, view)
     }
 
     override fun onBindViewHolder(
@@ -56,6 +67,6 @@ class Delegate(): AdapterDelegate<ArrayList<Material>>() {
         payloads: MutableList<Any>
     ) {
 
-        (holder as DiceViewHolder).bind(items[position], position)
+        (holder as DiceViewHolder).bind(position)
     }
 }

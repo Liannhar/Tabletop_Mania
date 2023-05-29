@@ -7,25 +7,62 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.view.doOnAttach
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.timer.fragments.TimerFragment
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.common.AdapterMode
 import com.tabletop.tabletopapplication.presentationlayer.models.Material
 import kotlinx.coroutines.launch
 
 
-class Delegate : AdapterDelegate<ArrayList<Material>>() {
+class Delegate(
+    private val adapter: DelegateMaterialsAdapter
+) : AdapterDelegate<ArrayList<Material>>() {
 
-    class TimerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class TimerViewHolder(
+        val adapter: DelegateMaterialsAdapter,
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
 
-        val fragmentManager = (itemView.context as AppCompatActivity).supportFragmentManager
         val cwContainer = itemView.findViewById<CardView>(R.id.timer_card_mini).apply {
             id = View.generateViewId()
         }
 
-        fun bind() {
-
+        fun bind(position: Int) {
+            when(adapter.mode) {
+                AdapterMode.PREVIEW -> {
+                    itemView.doOnAttach {
+                        try {
+                            (itemView.context as AppCompatActivity).apply {
+                                lifecycleScope.launch {
+                                    supportFragmentManager
+                                        .beginTransaction()
+                                        .add(cwContainer.id, TimerFragment().apply {
+                                            arguments = Bundle().apply {
+                                                putInt("viewId", cwContainer.id)
+                                            }
+                                        })
+                                        .commit()
+                                }
+                            }
+                        } catch (e: Exception) {
+                            Log.d("ERROR", e.toString())
+                        }
+                    }
+                }
+                AdapterMode.EDIT -> {
+                    itemView.findViewById<CardView>(R.id.timer_card_delete).apply {
+                        isVisible = true
+                        setOnClickListener {
+                            adapter.remove(position)
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -35,29 +72,14 @@ class Delegate : AdapterDelegate<ArrayList<Material>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.timer_host_layout, parent, false)
-        return TimerViewHolder(view)
+        return TimerViewHolder(adapter, view)
     }
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
 
         (holder as TimerViewHolder).apply {
-            try {
-                (itemView.context as AppCompatActivity).apply {
-                    lifecycleScope.launch {
-                        supportFragmentManager
-                            .beginTransaction()
-                            .add(cwContainer.id, TimerFragment().apply {
-                                arguments = Bundle().apply {
-                                    putInt("viewId", cwContainer.id)
-                                }
-                            })
-                            .commit()
-                    }
-                }
-            } catch (e: Exception) {
-                Log.d("ERROR", e.toString())
-            }
+
         }
     }
 
@@ -67,6 +89,6 @@ class Delegate : AdapterDelegate<ArrayList<Material>>() {
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as TimerViewHolder).bind()
+        (holder as TimerViewHolder).bind(position)
     }
 }

@@ -1,19 +1,13 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
 
-import android.app.Activity
 import android.content.Context
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegatesManager
 import com.tabletop.tabletopapplication.presentationlayer.common.AdapterMode
 import com.tabletop.tabletopapplication.presentationlayer.models.Material
-import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
-import kotlinx.coroutines.launch
 
 class DelegateMaterialsAdapter(
     private val context: Context,
@@ -89,8 +83,8 @@ class DelegateMaterialsAdapter(
     private fun addDelegate(item: Material) {
         val ref = Class.forName("com.example.${item.name}.Delegate")
         adapterDelegateManager.addDelegate(ref
-            .getConstructor()
-            .newInstance() as AdapterDelegate<ArrayList<Material>>)
+            .getConstructor(DelegateMaterialsAdapter::class.java)
+            .newInstance(this) as AdapterDelegate<ArrayList<Material>>)
     }
 
     private fun addListDelegate(list: List<Material>) {
@@ -102,8 +96,8 @@ class DelegateMaterialsAdapter(
     private fun removeDelegate(item: Material) {
         val ref = Class.forName("com.example.${item.name}.Delegate")
         adapterDelegateManager.removeDelegate(ref
-            .getConstructor()
-            .newInstance() as AdapterDelegate<ArrayList<Material>>)
+            .getConstructor(DelegateMaterialsAdapter::class.java)
+            .newInstance(this) as AdapterDelegate<ArrayList<Material>>)
     }
 
     private fun removeListDelegate(list: List<Material>) {

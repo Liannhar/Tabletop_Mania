@@ -8,34 +8,37 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
-import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
-import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
 import com.example.hourglass.activities.HourglassActivity
+import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.common.AdapterMode
 import com.tabletop.tabletopapplication.presentationlayer.models.Material
 
-class Delegate : AdapterDelegate<ArrayList<Material>>() {
+class Delegate(
+    private val adapter: DelegateMaterialsAdapter
+) : AdapterDelegate<ArrayList<Material>>() {
 
-    class HourglassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(
+        val adapter: DelegateMaterialsAdapter,
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
 
         private val hourglass = itemView.findViewById<CardView>(R.id.hourglass_card_mini)
 
-        fun bind(item: Material) {
-            when (itemView.context) {
-                is GamePreviewActivity -> {
+        fun bind(position: Int) {
+            when (adapter.mode) {
+                AdapterMode.PREVIEW -> {
                     itemView.setOnClickListener {
-                        hourglass.setOnClickListener {
-                            val intent = Intent(itemView.context, HourglassActivity::class.java)
-                            itemView.context.startActivity(intent)
-                        }
+                        val intent = Intent(itemView.context, HourglassActivity::class.java)
+                        itemView.context.startActivity(intent)
                     }
                 }
-
-                is GameEditActivity -> {
-                    val deleteButton = itemView.findViewById<CardView>(R.id.hourglass_card_delete)
-                    deleteButton.isVisible = true
-//                    deleteButton.setOnClickListener {
-//                        adapter.remove(position)
-//                    }
+                AdapterMode.EDIT -> {
+                    itemView.findViewById<CardView>(R.id.hourglass_card_delete).apply {
+                        isVisible = true
+                        setOnClickListener {
+                            adapter.remove(position)
+                        }
+                    }
                 }
             }
         }
@@ -47,7 +50,7 @@ class Delegate : AdapterDelegate<ArrayList<Material>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.hourglass_card, parent, false)
-        return HourglassViewHolder(view)
+        return ViewHolder(adapter, view)
     }
 
     override fun onBindViewHolder(
@@ -56,6 +59,6 @@ class Delegate : AdapterDelegate<ArrayList<Material>>() {
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as HourglassViewHolder).bind(items[position])
+        (holder as ViewHolder).bind(position)
     }
 }

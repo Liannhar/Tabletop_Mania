@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.businesslayer.ROOM.entities.MaterialROOM
 import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
+import com.tabletop.tabletopapplication.presentationlayer.common.AdapterMode
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentMaterialContract
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
@@ -33,7 +34,7 @@ class GameEditActivity : AppCompatActivity(R.layout.activity_edit_game) {
 
     private var currentGame: Game = Game()
     private val delegateMaterialsAdapter by lazy {
-        DelegateMaterialsAdapter(this)
+        DelegateMaterialsAdapter(this, mode = AdapterMode.EDIT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
