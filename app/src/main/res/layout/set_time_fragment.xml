@@ -59,7 +59,7 @@
 
     <Button
         android:text="OK"
-        android:background="@color/second_color_app"
+        android:background="@drawable/add_history_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/set_time_button"

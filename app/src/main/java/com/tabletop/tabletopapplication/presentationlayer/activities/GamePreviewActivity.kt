@@ -2,15 +2,12 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,15 +16,12 @@ import com.tabletop.tabletopapplication.R
 import com.tabletop.tabletopapplication.businesslayer.models.History
 import com.tabletop.tabletopapplication.presentationlayer.adapters.HistoryAdapter
 import com.tabletop.tabletopapplication.presentationlayer.adapters.ModelAdapter
-import com.tabletop.tabletopapplication.presentationlayer.models.ACTIVITY_REQUEST_CODE
+import com.tabletop.tabletopapplication.presentationlayer.fragments.HistoryFragment
+import com.tabletop.tabletopapplication.presentationlayer.fragments.SetTimeFragment
 import com.tabletop.tabletopapplication.presentationlayer.models.Model
-import com.tabletop.tabletopapplication.presentationlayer.models.Note.Note
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GameDBViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
@@ -48,7 +42,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
         val show_history_button = findViewById<ImageView>(R.id.show_history)
         val add_history_button = findViewById<ImageView>(R.id.add_history_button)
-        var history_list= mutableListOf<History>()
+        var history_list = mutableListOf<History>()
         val history_adapter = HistoryAdapter(history_list)
 
         val job = lifecycleScope.launch() {
@@ -59,6 +53,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
             }
 
         }
+
 
         /*gameDBViewModel.getGame(gameId).observe(this){game ->
             previewGameTitle.text = game.name
@@ -89,22 +84,32 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         }
         var history_flag: Boolean = true
         show_history_button.setOnClickListener {
-            if (history_flag) {findViewById<LinearLayout>(R.id.history).visibility =
-                View.VISIBLE
+            if (history_flag) {
+                findViewById<LinearLayout>(R.id.history).visibility =
+                    View.VISIBLE
                 findViewById<ImageView>(R.id.history_flag_line).visibility =
                     View.VISIBLE
                 show_history_button.setImageResource(R.drawable.history_up)
-            }
-            else {findViewById<LinearLayout>(R.id.history).visibility =
-                View.GONE
+            } else {
+                findViewById<LinearLayout>(R.id.history).visibility =
+                    View.GONE
                 findViewById<ImageView>(R.id.history_flag_line).visibility =
-                View.GONE
-                show_history_button.setImageResource(R.drawable.history_down)}
-            history_flag=!history_flag
+                    View.GONE
+                show_history_button.setImageResource(R.drawable.history_down)
+            }
+            history_flag = !history_flag
         }
-        add_history_button.setOnClickListener { addhistory("12.05", "Oleg", "56:42", history_list, history_adapter) }
+        add_history_button.setOnClickListener {
+            supportFragmentManager?.let {
+                val transaction = it.beginTransaction()
+                transaction.add(R.id.history_place, HistoryFragment.newInstance())
+                transaction.commit()
+            }
+
+        }
 
     }
+
 
     private fun СheckMaterials(gameId: Long, job: Job) {
         lifecycleScope.launch() {
@@ -158,13 +163,6 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         differentMaterialsadapter.updateItems(materials)*/
     }
 
-    private fun addhistory(data: String, winner: String, score: String, list: MutableList<History>, adapter:HistoryAdapter) {
-        var history= History()
-        history.date=data
-        history.score=score
-        history.winner=winner
-        list.add(history)
-        adapter.notifyDataSetChanged()
-    }
+
 }
 
