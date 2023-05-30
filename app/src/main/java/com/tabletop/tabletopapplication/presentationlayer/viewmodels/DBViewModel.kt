@@ -90,18 +90,16 @@ class DBViewModel(application: Application) : AndroidViewModel(application) {
         addMaterialToGame(game, material)
     }
 
-    fun deleteMaterialFromGame(gameId: Int, materialId: Int) = viewModelScope.launch(Dispatchers.IO) {
-        //TODO()
-    }
+    fun updateMaterialsAtGame(gameId: Int, materials: List<Material>) = viewModelScope.launch(Dispatchers.IO) {
+        gmRepository.getGameMaterialsByGameId(gameId).forEach {
+            gmRepository.delete(it)
+        }
 
-    fun deleteMaterialFromGame(game: Game, material: Material) =
-        deleteMaterialFromGame(game.id, material.id)
+        materials.forEach {
+            addMaterialToGame(gameId, it)
+        }
 
-    fun updateMaterialAtGame(gameId: Int, material: Material) = viewModelScope.launch(Dispatchers.IO) {
-        //TODO()
     }
-    fun updateMaterialAtGame(game: Game, material: Material) =
-        updateMaterialAtGame(game.id, material)
 
     suspend fun getMaterialsByGame(id: Int) =
         gmRepository.getMaterialsWithExtrasByGameId(id) as List<Material>

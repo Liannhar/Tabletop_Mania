@@ -2,6 +2,8 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -10,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,8 +23,10 @@ import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameCo
 import com.tabletop.tabletopapplication.presentationlayer.fragments.HistoryFragment
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
+import kotlinx.coroutines.Dispatchers
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GamePreviewViewModel
 import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
 
@@ -45,7 +50,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         currentGame.id = intent.extras?.run {
             getInt("id", -1)
         } ?: -1
-
+        Log.i("WINWIN",currentGame.id.toString()+"P")
         val previewGameTitle = findViewById<TextView>(R.id.activity_preview_game__title)
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
         val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)
@@ -56,6 +61,11 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         }
 
         findViewById<ImageView>(R.id.activity_preview_game__back_button).setOnClickListener {
+
+            databaseVM.viewModelScope.launch(Dispatchers.IO) {
+                databaseVM.updateMaterialsAtGame(currentGame.id, delegateMaterialsAdapter.getMaterials())
+            }
+
             setResult(RESULT_OK, Intent().apply {
                 putExtra("Game", currentGame)
             })
