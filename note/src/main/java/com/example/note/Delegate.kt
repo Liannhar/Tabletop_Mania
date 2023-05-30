@@ -1,16 +1,17 @@
 package com.example.note
 
-import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.note.activities.NoteActivity
+import com.example.note.common.Connector
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
 import com.tabletop.tabletopapplication.presentationlayer.common.AdapterMode
@@ -27,17 +28,23 @@ class Delegate(
 
         private val note = itemView.findViewById<EditText>(R.id.editTextMini)
 
-        fun bind(position: Int) {
+        fun bind(material: Material, position: Int) {
             when (adapter.mode) {
                 AdapterMode.PREVIEW -> {
-                    note.text.insert(0, adapter.getMaterials()[position].extras)
-                    Log.i("WINWIN", adapter.getMaterials()[position].extras + "TEXT")
+                    note.setText(material.extras)
+
+                    Connector.item.observe((itemView.context as AppCompatActivity)) {
+                        if (it.first == position) {
+                            material.extras = it.second.toString()
+                            note.setText(material.extras)
+                        }
+                    }
+
                     note.setOnClickListener {
-                        val intent = Intent(itemView.context, NoteActivity::class.java)
-                        Log.i("WINWIN", position.toString() + "AP")
-                        Log.i("WINWIN", adapter.getMaterials()[position].id.toString() + "A")
-                        intent.putExtra("MaterialId", adapter.getMaterials()[position].id)
-                        itemView.context.startActivity(intent)
+                        itemView.context.startActivity(Intent(itemView.context, NoteActivity::class.java).apply {
+                            putExtra("text", material.extras)
+                            putExtra("position", position)
+                        })
                     }
                 }
 
@@ -68,6 +75,6 @@ class Delegate(
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        (holder as ViewHolder).bind(position)
+        (holder as ViewHolder).bind(items[position], position)
     }
 }
