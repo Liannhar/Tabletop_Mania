@@ -2,10 +2,10 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.businesslayer.models.History
 import com.tabletop.tabletopapplication.presentationlayer.adapters.DelegateMaterialsAdapter
 import com.tabletop.tabletopapplication.presentationlayer.adapters.HistoryAdapter
 import com.tabletop.tabletopapplication.presentationlayer.contracts.IntentGameContract
 import com.tabletop.tabletopapplication.presentationlayer.fragments.HistoryFragment
 import com.tabletop.tabletopapplication.presentationlayer.models.Game
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
+import com.tabletop.tabletopapplication.presentationlayer.viewmodels.GamePreviewViewModel
 import kotlinx.coroutines.launch
 
 class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
@@ -31,6 +31,8 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[DBViewModel::class.java]
     }
+
+    private val gamePreviewVM: GamePreviewViewModel by viewModels()
 
     private var currentGame = Game()
     private val delegateMaterialsAdapter by lazy {
@@ -105,30 +107,39 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
                 .into(previewGameImage)
         }
 
-        val show_history_button = findViewById<ImageView>(R.id.show_history)
-        val add_history_button = findViewById<ImageView>(R.id.add_history_button)
-        var history_list = mutableListOf<History>()
-        val history_adapter = HistoryAdapter(history_list)
+        val historyView = findViewById<LinearLayout>(R.id.history)
+        val historyFlagLine = findViewById<ImageView>(R.id.history_flag_line)
+        val historyButton = findViewById<ImageView>(R.id.show_history)
+        val historyAdapter = HistoryAdapter()
 
-        var history_flag = true
-        show_history_button.setOnClickListener {
-            if (history_flag) {
-                findViewById<LinearLayout>(R.id.history).isVisible = true
-                findViewById<ImageView>(R.id.history_flag_line).isVisible = true
-                show_history_button.setImageResource(R.drawable.history_up)
-            } else {
-                findViewById<LinearLayout>(R.id.history).isVisible = false
-                findViewById<ImageView>(R.id.history_flag_line).isVisible = false
-                show_history_button.setImageResource(R.drawable.history_down)
-            }
-            history_flag = !history_flag
+        findViewById<RecyclerView>(R.id.history_rv).apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = historyAdapter
         }
-        add_history_button.setOnClickListener {
+
+        historyButton.setOnClickListener {
+            if (historyView.isVisible) {
+                historyView.isVisible = false
+                historyFlagLine.isVisible = false
+                historyButton.setImageResource(R.drawable.history_down)
+            } else {
+                historyView.isVisible = true
+                historyFlagLine.isVisible = true
+                historyButton.setImageResource(R.drawable.history_up)
+            }
+        }
+
+        gamePreviewVM.newHistory.observe(this) { newHistory ->
+            historyAdapter.add(newHistory)
+        }
+
+        findViewById<ImageView>(R.id.add_history_button).setOnClickListener {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.history_place, HistoryFragment.newInstance())
+                .add(R.id.history_place, HistoryFragment())
                 .commit()
         }
+
+
     }
 }
-
