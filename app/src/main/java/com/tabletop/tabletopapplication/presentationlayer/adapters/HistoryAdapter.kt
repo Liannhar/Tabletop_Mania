@@ -1,21 +1,20 @@
 package com.tabletop.tabletopapplication.presentationlayer.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tabletop.tabletopapplication.R
-import com.tabletop.tabletopapplication.businesslayer.models.History
+import com.tabletop.tabletopapplication.presentationlayer.models.History
 
 
 class HistoryAdapter(
-    private val list: MutableList<History>
+    private val list: ArrayList<History> = arrayListOf()
 ): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) :
-        RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         private val date = view.findViewById<TextView>(R.id.date)
         private val winner = view.findViewById<TextView>(R.id.winner)
         private val score = view.findViewById<TextView>(R.id.score)
@@ -24,7 +23,6 @@ class HistoryAdapter(
             date.text = history.date
             winner.text = history.winner
             score.text = history.score
-
         }
     }
 
@@ -40,10 +38,8 @@ class HistoryAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    fun updateData(new_history: List<History>) {
-        notifyItemRangeRemoved(0, list.size)
-        list.clear()
-        list.addAll(new_history)
-        notifyItemRangeInserted(0, list.size)
+    fun add(item: History) {
+        list.add(item)
+        notifyItemChanged(list.size - 1)
     }
 }
