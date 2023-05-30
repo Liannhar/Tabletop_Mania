@@ -22,7 +22,7 @@ class Delegate(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        private val hourglass = itemView.findViewById<CardView>(R.id.hourglass_card_mini)
+        private val hourglass = itemView.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.hourglass_card)
 
         fun bind(position: Int) {
             when (adapter.mode) {

@@ -25,7 +25,7 @@ class Delegate(
         view: View
     ): RecyclerView.ViewHolder(view)
     {
-        private val dice = itemView.findViewById<CardView>(R.id.dice_card_mini)
+        private val dice = itemView.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.dice_card)
 
         fun bind(position: Int)
         {

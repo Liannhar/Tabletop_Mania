@@ -1,6 +1,7 @@
 package com.example.timer.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -22,6 +23,7 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
         var minutes = arguments?.getInt("minuets") ?: 0
         var seconds = arguments?.getInt("seconds") ?: 0
         val time = "$minutes:$seconds"
+        var flag = true
         timeButton.text = time
 
         var mTimer = Timer(Time(minutes, seconds), 1)
@@ -30,10 +32,23 @@ class TimerFragment : Fragment(R.layout.sand_clock_fragment) {
         }
 
         timeButton.setOnClickListener {
+            mTimer.stop()
             mTimer.start()
         }
         stopButton.setOnClickListener {
-            mTimer.stop()
+            if (time != "0:0") {
+                if (flag) {
+                    mTimer.pause()
+                    flag = !flag
+                    stopButton.text = "Continue"
+                } else {
+                    mTimer.start()
+                    flag = !flag
+                    stopButton.text = "Stop"
+                }
+            }
+
+
         }
 
         setButton.setOnClickListener {
