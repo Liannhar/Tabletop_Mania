@@ -1,6 +1,8 @@
 package com.example.note
 
+import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +18,7 @@ import com.tabletop.tabletopapplication.presentationlayer.models.Material
 
 class Delegate(
     private val adapter: DelegateMaterialsAdapter
-): AdapterDelegate<ArrayList<Material>>() {
+) : AdapterDelegate<ArrayList<Material>>() {
 
     class ViewHolder(
         val adapter: DelegateMaterialsAdapter,
@@ -28,12 +30,17 @@ class Delegate(
         fun bind(position: Int) {
             when (adapter.mode) {
                 AdapterMode.PREVIEW -> {
-                    note.setOnClickListener{
+                    note.text.insert(0, adapter.getMaterials()[position].extras)
+                    Log.i("WINWIN", adapter.getMaterials()[position].extras + "TEXT")
+                    note.setOnClickListener {
                         val intent = Intent(itemView.context, NoteActivity::class.java)
-                        itemView
+                        Log.i("WINWIN", position.toString() + "AP")
+                        Log.i("WINWIN", adapter.getMaterials()[position].id.toString() + "A")
+                        intent.putExtra("MaterialId", adapter.getMaterials()[position].id)
                         itemView.context.startActivity(intent)
                     }
                 }
+
                 AdapterMode.EDIT -> {
                     itemView.findViewById<CardView>(R.id.edit_text_delete).apply {
                         isVisible = true

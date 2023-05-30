@@ -2,6 +2,7 @@ package com.tabletop.tabletopapplication.presentationlayer.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -43,7 +44,7 @@ class GamePreviewActivity : AppCompatActivity(R.layout.activity_preview_game) {
         currentGame.id = intent.extras?.run {
             getInt("id", -1)
         } ?: -1
-
+        Log.i("WINWIN",currentGame.id.toString()+"P")
         val previewGameTitle = findViewById<TextView>(R.id.activity_preview_game__title)
         val previewGameDescription = findViewById<TextView>(R.id.activity_preview_game__description)
         val previewGameImage = findViewById<ImageView>(R.id.activity_preview_game__image)

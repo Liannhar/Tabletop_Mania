@@ -2,6 +2,7 @@ package com.example.note.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
@@ -13,20 +14,21 @@ import androidx.lifecycle.lifecycleScope
 import com.example.note.R
 import com.tabletop.tabletopapplication.presentationlayer.activities.GameEditActivity
 import com.tabletop.tabletopapplication.presentationlayer.activities.GamePreviewActivity
+import com.tabletop.tabletopapplication.presentationlayer.models.Material
 import com.tabletop.tabletopapplication.presentationlayer.viewmodels.DBViewModel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
 
 class NoteActivity: AppCompatActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes)
-        /*val prefs = getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
-        val gameId = prefs.getLong("currentGameId", -1)
+
+        val materialId = intent.getIntExtra("MaterialId",-1)
+        Log.i("WINWIN",materialId.toString()+"NM")
         val saveButton = findViewById<ImageView>(R.id.activity_notes_save_button)
         val backButton = findViewById<ImageView>(R.id.activity_notes_back_button)
         val noteEdit = findViewById<EditText>(R.id.editText)
@@ -34,76 +36,56 @@ class NoteActivity: AppCompatActivity() {
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[DBViewModel::class.java]
-       *//* val noteObserver = Observer<Note> { data ->
-            noteEdit.setText(data.noteDescription)
+        var material = Material()
+        lifecycleScope.launch {
+            material = viewModel.getMaterial(materialId)!!
+            noteEdit.setText(material.extras )
         }
-        viewModel.getNote(noteId).observe(this,noteObserver)*//*
-
-
 
         saveButton.setOnClickListener {
-            lifecycleScope.launch(){
-                val game = viewModel.getGame(gameId).first()
-                SaveNote(viewModel,noteEdit,noteId,gameId,game)
-                game.count = game.count+1
-                viewModel.updateGame(game)
-                startActivity(Intent(applicationContext,GamePreviewActivity::class.java))
+            lifecycleScope.launch {
+                material.setExtras(noteEdit.text.toString())
+                viewModel.update(material)
+                Toast.makeText(this@NoteActivity, "saved",Toast.LENGTH_SHORT).show()
+                exitNote(viewModel)
             }
-            Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
-            viewModel.getGame(gameId).observe(this){
-                SaveNote(viewModel,noteEdit,noteId,gameId,it)
-                Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
-                it.count = it.count+1
-                viewModel.updateGame(it)
-                startActivity(Intent(applicationContext,GamePreviewActivity::class.java))
-                this.finish()
-            }
-
         }
 
         backButton.setOnClickListener {
-            val noteDescription = noteEdit.text.toString()
-
+            /*val noteDescription = noteEdit.text.toString()
             if (noteDescription.isNotEmpty()) {
-                AlertDialog.Builder(this).setMessage("Do you want save note?")
+                AlertDialog.Builder(this@NoteActivity).setMessage("Do you want save note?")
                     .setPositiveButton(
                         "Yes") { dialog, _ ->
-                        lifecycleScope.launch(){
-                            val game = viewModel.getGame(gameId).first()
-                            SaveNote(viewModel,noteEdit,noteId,gameId,game)
-                            game.count = game.count+1
-                            viewModel.updateGame(game)
-                            startActivity(Intent(applicationContext, GamePreviewActivity::class.java))
+                        Toast.makeText(this@NoteActivity, "saved",Toast.LENGTH_SHORT).show()
+                        dialog.cancel()
+                        lifecycleScope.launch {
+                            material.setExtras(noteEdit.text.toString())
+                            viewModel.update(material)
+                            exitNote(viewModel)
                         }
+                        }
+                        .setNegativeButton(
+                            "No") { dialog, _ ->
+                            exitNote(viewModel)
+                            dialog.cancel()
 
-                        Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
-                        dialog.cancel()
-                        viewModel.getGame(gameId).observe(this){
-                                SaveNote(viewModel,noteEdit,noteId,gameId,it)
-                                Toast.makeText(this, "saved",Toast.LENGTH_SHORT).show()
-                                dialog.cancel()
-                                it.count = it.count+1
-                                viewModel.updateGame(it)
-                                startActivity(Intent(applicationContext, GameEditActivity::class.java))
-                                this.finish()
-                            }
-                    }
-                    .setNegativeButton(
-                        "No") { dialog, _ ->
-                        startActivity(Intent(applicationContext, GamePreviewActivity::class.java))
-                        dialog.cancel()
-                    }
-                    .show()
-            }
+                        }
+                        .show()
+                }*/
+            setResult(RESULT_CANCELED)
+            finish()
         }
     }
-
-    fun SaveNote(viewModel: DBViewModel, noteEdit:EditText, noteId:Long,gameId:Long,game:Game){
-        val noteDescription = noteEdit.text.toString()
-        val updatedNote = NoteROOM(noteDescription, gameId, positionAdd = game.count)
-        updatedNote.id = noteId
-        viewModel.updateNote(updatedNote)
-        Toast.makeText(this, "Note Updated..", Toast.LENGTH_LONG).show()
-    }*/
+    private fun exitNote(viewModel:DBViewModel)
+    {
+        lifecycleScope.launch {
+            val currentGame = viewModel.getLastGame()
+            Log.i("WINWIN",currentGame?.id.toString()+"N")
+            setResult(RESULT_OK, Intent().apply {
+                putExtra("Game", currentGame)
+            })
+            this@NoteActivity.finish()
+        }
     }
 }
